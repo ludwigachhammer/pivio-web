@@ -8,6 +8,12 @@
 <body>
 <div th:fragment="content">
 
+	<style>
+		.icon.big{
+			font-size: 2em;
+		}
+	</style>
+
     <script src="/js/overview.js"></script>
 
     <div class="ui container centered">
@@ -28,7 +34,8 @@
         <a th:each="card : ${pivioOverview}" class="ui card"
            data-th-attr="data-meta=${card.meta}" th:href="'/app/overview/' + ${card.id}">
             <div class="content">
-                <div th:if="${card.short_name}" th:text="${card.short_name}" th:class="'right floated ui button tiny '+${card.getCardColor()}"></div>
+            <!-- th:if="${card.status}"  -->
+                <div class="right floated ui"><i th:class="'icon big '+${card.getStatusIcon()}"></i></div>
                 <div class="header" th:text="${card.name}"></div>
                 <div class="meta" th:text="${card.owner}"></div>
                 <div class="description" th:text="${card.description}"></div>

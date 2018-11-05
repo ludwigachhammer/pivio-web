@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.ArrayList;
 
 import static java.util.Collections.sort;
 
@@ -35,6 +36,7 @@ public class PivioServerConnector {
 
     public Document getDocumentById(String id) throws UnsupportedEncodingException {
         ResponseEntity responseEntity = get(serverConfig.apiAddress + "/document/" + id, Document.class);
+        //System.out.println("Document in getDocumentById: "+responseEntity.getBody());
         return (Document) responseEntity.getBody();
     }
 
@@ -43,7 +45,13 @@ public class PivioServerConnector {
     }
 
     public List<Overview> getOverviews() throws IOException {
-        String path = "/document?fields=short_name,id,description,name,owner,context,lastUpdate,lastUpload,type&sort=name:asc";
+    	
+    	//matchAllQuery (Nico)
+    	String matchAllQuery = "&query={\"query\":{\"match_all\":{}}}";
+    	String encodedQuery = URLEncoder.encode(matchAllQuery, "UTF-8");
+        String path = "/document?"+encodedQuery;
+ 
+        //String path = "/document?fields=short_name,id,description,name,owner,context,lastUpdate,lastUpload,type&sort=name:asc";
         String url = serverConfig.apiAddress + path;
         RestTemplate restTemplate = new RestTemplate();
         ParameterizedTypeReference<List<Overview>> typeRef = new ParameterizedTypeReference<List<Overview>>() {
@@ -52,6 +60,10 @@ public class PivioServerConnector {
         try {
             ResponseEntity<List<Overview>> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>("", getHeaders()), typeRef);
             result = response.getBody();
+            //System.out.println("*******************************************");
+            //System.out.println("Result: "+result);
+        	//System.out.println("Name: "+result.getName()+" Status: "+result.getStatus());
+            //System.out.println("*******************************************");
             sort(result);
         } catch (Exception e) {
             log.error("Pivio Server at {} does not respond (Exception=\n{}\n).", url, e.getMessage());
@@ -82,6 +94,34 @@ public class PivioServerConnector {
         log.debug("Query {}.", url);
         ResponseEntity<List<ServiceIdShortName>> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>("", getHeaders()), typeRef);
         return response.getBody();
+    }
+    
+    public List<String> getAllNames() throws IOException{
+    	//String matchAllQuery = "query={\"query\":{\"match_all\":{}}}";
+    	//String encodedQuery = URLEncoder.encode(matchAllQuery, "UTF-8");
+        String url = serverConfig.apiAddress + "/document?fields=name"; //+encodedQuery;
+        RestTemplate restTemplate = new RestTemplate();
+        ParameterizedTypeReference<List<Document>> typeRef = new ParameterizedTypeReference<List<Document>>() {
+        };
+        log.debug("Query {}.", url);
+        List<Document> result;
+        List<String> nameList = new ArrayList<>();
+        try {
+        	ResponseEntity<List<Document>> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>("", getHeaders()), typeRef);
+        	//System.out.println("RESPONSE");
+        	//System.out.println(response);
+        	result = response.getBody();
+        	//System.out.println("RESULT");
+        	//System.out.println(result);
+        	result.forEach(r->
+        		nameList.add(r.name)
+        		//System.out.println(r.name);
+        	);
+        }catch(Exception e) {
+        	log.error("Pivio Server at {} does not respond (Exception=\n{}\n).", url, e.getMessage());
+            throw new IOException("Unable to connect to " + url + ".");
+        }
+        return nameList;
     }
 
     public boolean deleteDocument(String id) throws IOException {

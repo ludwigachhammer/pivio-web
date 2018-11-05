@@ -14,4 +14,10 @@ public class Provides {
     public String port;
     public String transport_protocol;
     public List<String> public_dns = new ArrayList<>();
+    
+    public String toString() {
+    	return "{"
+    			+"\"service_name\": \""+ service_name +"\""
+    			+"}";
+    }
 }

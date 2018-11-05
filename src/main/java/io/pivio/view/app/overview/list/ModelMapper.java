@@ -9,6 +9,7 @@ public class ModelMapper {
     public OverviewModel map(Overview overview) {
         OverviewModel overviewModel = new OverviewModel();
         overviewModel.context = overview.context;
+        overviewModel.status = overview.status;
         overviewModel.description = overview.description;
         overviewModel.name = overview.name;
         overviewModel.short_name = overview.short_name;

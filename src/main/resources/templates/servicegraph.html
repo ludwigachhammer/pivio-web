@@ -11,8 +11,8 @@
     <style>
 
         .node {
-            font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
-            fill: #bbb;
+            font: 300 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            fill: #000;
         }
 
         .node:hover {
@@ -21,9 +21,10 @@
 
         .link {
             stroke: steelblue;
-            stroke-opacity: .4;
+            stroke-opacity: .8;
             fill: none;
             pointer-events: none;
+            stroke-width: 2px;
         }
 
         .node:hover,
@@ -43,7 +44,7 @@
         .link--source,
         .link--target {
             stroke-opacity: 1;
-            stroke-width: 2px;
+            stroke-width: 4px;
         }
 
         .link--source {
@@ -63,38 +64,196 @@
 
     </style>
 
-    <script src="/webjars/d3js/3.5.12/d3.min.js"></script>
+    <!-- <script src="/webjars/d3js/3.5.12/d3.min.js"></script>  -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="/js/servicegraph.js"></script>
-
-    <div id="graph">
-
-    </div>
-    <script id="context-template" type="text/x-handlebars-template">
-        {{#each this}}
-        <div class="ui blue card">
-            <div class="content">
-                <h3 class="ui blue header">{{name}}</h3>
-
-                <ul class="ui top aligned">
-                    {{#each services}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
-        {{/each}}
-
-
-    </script>
-
+    
     <h4 class="ui horizontal divider header">
-       Bounded Contexts
+       CloudFoundry - Service communications
     </h4>
-
-
     <div id="context" class="ui cards container centered grey">
-
     </div>
+    <div id="cloudfoundry-information" style="padding:20px">
+    	
+	</div>
+	<div id="graph-cloudfoundry" style="margin:0 auto">
+	</div>  
+	<h4 class="ui horizontal divider header">
+       Domains - Applications per domain
+    </h4>
+	<div id="domain-graph">
+		<iframe src="http://localhost:5603/goto/46d9d55de2138dd15a4b94a0687a642d" height="600" width="100%"></iframe>	
+	</div>
+	
+	<script>
+	function servicegraph(jsonArray){
+		
+		function formatJsonForDrawingCanvas(jsonArray){
+			var nodeData = {
+					"name": "Cloud-landscapce",
+					"children": []
+					};
+			//include provides and dependson for relationships
+			jsonArray.forEach(function(element) {
+				//element.name = element.domain+"."+element.subdomain+"."+element.product+"."+element.name;
+				element.imports = [];
+				delete element.id;
+				if(element.hasOwnProperty('service')){
+					if(element.service.hasOwnProperty('provides')){
+						element.service.provides.forEach(function(el){
+							//el.service_name = element.domain+"."+element.subdomain+"."+element.product+"."+el.service_name;
+							element.imports.push(el.service_name);
+							//console.log("Provides el name:", el.service_name);
+						});
+					}
+					//TODO
+					//depends_on
+					if(element.service.hasOwnProperty('buildpacks')){
+						delete element.service.buildpacks;
+					}
+				}
+				console.log(element);
+				nodeData.children.push({
+					"name": element.product,
+		            "children": []
+				})
+			});
+			console.log("Json in formatJsonForDrawingCanvas", jsonArray);
+			console.log("nodeData", nodeData);
+			drawCanvas(jsonArray); //communication diagram
+			//drawSunBurst(nodeData);
+		}
+				
+		// Lazily construct the package hierarchy from class names.
+		function packageHierarchy(classes) {
+		  var map = {};
+
+		  function find(name, data) {
+		    var node = map[name], i;
+		    if (!node) {
+		      node = map[name] = data || {name: name, children: []};
+		      if (name.length) {
+		        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+		        node.parent.children.push(node);
+		        node.key = name.substring(i + 1);
+		      }
+		    }
+		    return node;
+		  }
+
+		  classes.forEach(function(d) {
+		    find(d.name, d);
+		  });
+
+		  return d3.hierarchy(map[""]);
+		}
+
+		// Return a list of imports for the given array of nodes.
+		function packageImports(nodes) {
+		  var map = {},
+		      imports = [];
+
+		  // Compute a map from name to node.
+		  nodes.forEach(function(d) {
+		    map[d.data.name] = d;
+		  });
+
+		  // For each import, construct a link from the source to target node.
+		  nodes.forEach(function(d) {
+			console.log("D: ", d);
+		    if(d.data.hasOwnProperty('imports')){
+		    	d.data.imports.forEach(function(i) {
+				      imports.push(map[d.data.name].path(map[i]));
+				});
+		    }
+		  });//end nodes.forEach
+		  return imports;
+		}//end packageImports
+		
+		function mouseovered(d) {
+		  node
+		      .each(function(n) { n.target = n.source = false; });
+
+		  link
+		      .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
+		      .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+		  	  .filter(function(l) { return l.target === d || l.source === d; })
+		      .raise();
+
+		  node
+		      .classed("node--target", function(n) { return n.target; })
+		      .classed("node--source", function(n) { return n.source; });
+		}
+
+		function mouseouted(d) {
+		  link
+		      .classed("link--target", false)
+		      .classed("link--source", false);
+
+		  node
+		      .classed("node--target", false)
+		      .classed("node--source", false);
+		}
+		
+		function drawCanvas(jsonArray){
+			
+			var root = packageHierarchy(jsonArray)
+			    .sum(function(d) { return d.size; });
+			
+			cluster(root);
+			
+			link = link
+			  .data(packageImports(root.leaves()))
+			  .enter().append("path")
+			    .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+			    .attr("class", "link")
+			    .attr("d", line);
+			
+			node = node
+			  .data(root.leaves())
+			  .enter().append("text")
+			    .attr("class", "node")
+			    .attr("dy", "0.31em")
+			    .attr("transform", function(d){return "rotate(" + (d.x - 90) + ")"+"translate(" + (d.y + 8) + ",0)";})
+			    .attr("text-anchor", function(d){return "start";})
+			    .text(function(d){return d.data.key;})
+			    .on("mouseover", mouseovered)
+      			.on("mouseout", mouseouted);
+		}
+
+		//console.log("Jsonobject:", jsonArray);
+		var cloudfoundryDivBounding = d3.select("#graph-cloudfoundry").node().getBoundingClientRect();
+		console.log(cloudfoundryDivBounding);
+		
+		var diameter = (cloudfoundryDivBounding.width) - 200,
+	    	radius = diameter / 2,
+	    	innerRadius = radius /2;
+		
+		var color = d3.scaleOrdinal(d3.schemeCategory20b);
+		
+		d3.select("#graph-cloudfoundry").attr("style", "padding: 20px 100px")
+
+		var cluster = d3.cluster()
+	    	.size([360, innerRadius]);
+
+		var line = d3.radialLine()
+	    	.curve(d3.curveBundle.beta(0.85))
+	    	.radius(function(d){ return d.y; })
+	    	.angle(function(d){ return d.x / 180 * Math.PI; });
+
+		var svg = d3.select("#graph-cloudfoundry").append("svg")
+	    	.attr("width", diameter)
+	    	.attr("height", diameter)
+	    	.attr("margin", "180px")
+	  		.append("g")
+	    	.attr("transform", "translate(" + radius + "," + radius + ")");
+
+		var link = svg.append("g").selectAll(".link"),
+	    	node = svg.append("g").selectAll(".node");
+		
+		formatJsonForDrawingCanvas(jsonArray);
+	}
+	</script> 
 
 </div>
 </body>

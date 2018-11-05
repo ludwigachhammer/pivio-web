@@ -8,6 +8,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DependsOn {
 
+	//nico
     public List<Internal> internal = new ArrayList<>();
     public List<External> external = new ArrayList<>();
 }

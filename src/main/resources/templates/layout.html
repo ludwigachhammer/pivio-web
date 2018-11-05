@@ -39,9 +39,53 @@
             var apiserver_js = /*[[${config.jsApiAddress}]]*/ '';
             /*]]>*/
             $("#" + pageId).addClass("active");
-        </script>
 
-    </div>
+	        $(function () {
+	        	var rawFile = new XMLHttpRequest();
+	            rawFile.open("GET", "../endpoint/lastUpdate}", false);
+	            rawFile.onreadystatechange = function ()
+	            {
+	                if(rawFile.readyState === 4)
+	                {
+	                    if(rawFile.status === 200 || rawFile.status == 0)
+	                    {
+	                        var allText = rawFile.responseText;
+	                        $("#last-update").text(allText);
+	                    }
+	                }
+	            }
+	            rawFile.send(null);
+	        });
+	        
+	        function exportToEATool(){
+	        	var http = new XMLHttpRequest();
+	            http.open("GET", "../export", false);
+	            http.onreadystatechange = function ()
+	            {
+	                if(http.readyState === 4)
+	                {
+	                    if(http.status === 200 || http.status == 0)
+	                    {
+	                        //Meldung
+	                    }
+	                }
+	            }
+	            http.send(null);
+	        }
+        </script>
+        
+       	<span id="last-update" class="blue item right"></span>
+        <!-- 
+        <div class="item">
+	        	<a th:ref="'/export'" class="ui right floated button" rel="nofollow" value="Export to EA Tool" />
+	            <a rel="nofollow" th:href="ref to exporter"></a> TODO th:href="ref to exporter"  
+	        </input> 
+    	</div>-->
+    	<div class="item">
+            <button class="ui blue button" onclick="exportToEATool()">Export to EA Tool</button>
+        </div>
+
+    </div> <!-- end menu div -->
 
     <div th:if="${pivioMessage}" class="ui success message">
         <div th:text="${pivioMessage}" class="header"></div>

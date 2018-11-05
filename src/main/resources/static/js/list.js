@@ -1,4 +1,6 @@
 function list(field, value) {
+	
+	console.log("List");
 
     var searchQuery = encodeURI(`{"match":{"${field}":"'${value}'"}}`),
         url = `${apiserver_js}/document?query=${searchQuery}&fields=id,name`;

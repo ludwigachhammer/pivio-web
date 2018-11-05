@@ -31,6 +31,8 @@ public class DetailService {
             e.printStackTrace();
             // TODO
         }
+        
+        System.out.println("Document in DocumentViewModel.getDetail: "+document.toString());
 
         return mapViewModel(document);
     }

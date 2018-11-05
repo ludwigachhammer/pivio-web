@@ -1,0 +1,14 @@
+api: http://192.168.99.100:9123/ // Points to your Pivio DB instance
+pages:
+  - description: Overview
+    url: /app/overview
+    id: tabOverview
+  - description: Query
+    url: app/query
+    id: tabQuery
+  - description: Service Graph
+    url: /app/servicegraph
+    id: tabServiceGraph
+  - description: Feed
+    url: /app/feed
+    id: tabFeed
