@@ -1,14 +1,16 @@
-api: http://192.168.99.100:9123/ // Points to your Pivio DB instance
+api: http://192.168.99.100:9123/
+js_api: http://192.168.99.100:9123/
+mainurl: http://localhost:8080/
 pages:
   - description: Overview
     url: /app/overview
     id: tabOverview
   - description: Query
-    url: app/query
+    url: /app/query
     id: tabQuery
-  - description: Service Graph
+  - description: Visualizations
     url: /app/servicegraph
-    id: tabServiceGraph
+    id: tabServicegraph
   - description: Feed
     url: /app/feed
     id: tabFeed
