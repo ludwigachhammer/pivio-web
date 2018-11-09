@@ -36,7 +36,7 @@ pages:
 # Run
 
 ```
-java -jar build/libs/view-0.0.1-SNAPSHOT.jar -f service_config.yaml
+java -jar build/libs/view.jar -f service_config.yaml
 ```
 
 # Build Status
