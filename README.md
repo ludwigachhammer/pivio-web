@@ -14,29 +14,32 @@ gradle build
 ```
 
 # Config File
-
+Config file is in path: pivio-conf/server_config.yaml
 
 ```
-api: http://localhost:9123/ // Points to your Pivio DB instance
+api: http://192.168.99.100:9123/ #points to pivio server
+js_api: http://192.168.99.100:9123/
+mainurl: http://localhost:8080/ #port for accessing pivio web
 pages:
   - description: Overview
     url: /app/overview
     id: tabOverview
   - description: Query
-    url: app/query
+    url: /app/query
     id: tabQuery
-  - description: Service Graph
+  - description: Visualizations
     url: /app/servicegraph
-    id: tabServiceGraph
+    id: tabServicegraph
   - description: Feed
     url: /app/feed
     id: tabFeed
+
 ```
 
 # Run
 
 ```
-java -jar build/libs/view.jar -f service_config.yaml
+java -jar build/libs/view.jar -f pivio-conf/server_config.yaml
 ```
 
 # Build Status
