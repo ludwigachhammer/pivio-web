@@ -11,9 +11,6 @@ pages:
   - description: Visualizations
     url: /app/servicegraph
     id: tabServicegraph
-  - description: GraphQL
-    url: /app/graphql
-    id: graphql
   - description: Feed
     url: /app/feed
     id: tabFeed
