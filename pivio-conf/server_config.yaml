@@ -12,7 +12,7 @@ pages:
     url: /app/servicegraph
     id: tabServicegraph
   - description: GraphQL
-    url: /app/graphql
+    url: /app/graphqlquery
     id: tabGraphql
   - description: Feed
     url: /app/feed
