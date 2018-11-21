@@ -19,7 +19,9 @@
 			}
 		</style>
 		
+		<script src="/js/12factor.js"></script>
 		<script>
+		
 			// Create the XHR object.
 			function createCORSRequest(method, url) {
 			  var xhr = new XMLHttpRequest();
@@ -213,6 +215,9 @@
             <div class="ui segment">
                 <div class="ui blue top attached label">Runtime</div>
 
+				<div class="ui basic label"> Instances
+                    <div class="detail"><a th:text="1"></a></div>
+                </div>
                 <div class="ui basic label"> RAM
                     <div class="detail"><a th:text="${pivio.document.runtime.ram}"></a></div>
                 </div>
@@ -373,13 +378,26 @@
      	<div class="ui blue top attached label">Jira Monitoring</div>
 
         <p/>
+        <div class="ui basic label">Related Components
+	    	<div class="detail"><span th:text="..."></span></div>
+	  	</div>
+	  	
+	    <div class="ui basic label">Open Issues
+	    	<div class="detail"><a th:text="X"></a></div>
+	    </div>
         
     </div>
     
     <div class="ui segment">
      	<div class="ui grey top attached label">Github Monitoring</div>
 
-        <p/>
+        <div class="ui basic label">Team size
+	    	<div class="detail"><span th:text="1"></span></div>
+	  	</div>
+	  	
+	    <div class="ui basic label">XXX
+	    	<div class="detail"><a th:text="XXX"></a></div>
+	    </div>
         
     </div>
     
@@ -424,32 +442,78 @@
     </div>
     
     <div class="ui segment">
-     	<div class="ui yellow top attached label">Governance Monitoring</div>
-
-        <p>The twelve-factor methodology</p>
-        <div class="ui basic label">I. Codebase
-	    	<div class="detail"><a th:text="Fulfilled"></a></div>
-	  	</div>
-	    <div class="ui basic label">II. Dependencies
-	    	<div class="detail"><a th:text="Fulfilled"></a></div>
+    	<div class="ui yellow top attached label">Governance Monitoring</div>
+		<div class="ui two column grid">
+	        <div class="column ui segment">
+		        <p class="ui  basic ribbon label">The twelve-factor methodology</p>
+		        <p/>
+		        <div class="ui basic label">I. Codebase
+			    	<div class="detail"><a id="codebase" th:text="XXX"></a></div>
+			  	</div><br/>
+			    <div class="ui basic label">II. Dependencies
+			    	<div class="detail"><a id="dependencies" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label" id="configuration">II. Configuration
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">IV. Backing services
+			    	<div class="detail"><a id="backingservices" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">V. Build, release, run
+			    	<div class="detail"><a id="buildreleaserun" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">VI. Processes
+			    	<div class="detail"><a id="processes" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">VII. Port binding
+			    	<div class="detail"><a id="portbinding" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">VIII. Concurrency
+			    	<div class="detail"><a id="concurrency" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">IX. Disposability
+			    	<div class="detail"><a id="disposability" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">X. Dev/prod parity
+			    	<div class="detail"><a id="devprodprity" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">XI. Logs
+			    	<div class="detail"><a id="logs" th:text="XXX"></a></div>
+			    </div><br/>
+			    <div class="ui basic label">XII. Admin processes
+			    	<div class="detail"><a id="adminprocesses" th:text="XXX"></a></div>
+			    </div>
+		    </div>
+		    
+		    <div class="column ui segment">
+			    <p class="ui  basic ribbon label">Resilienz</p>
+			    <p/>
+			    <div class="ui basic label">AZ D Cloud
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div><br/>
+			    <div class="ui basic label">Redundancy
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div><br/>
+			  	<div class="ui basic label">Zero Downtime deployment
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div><br/>
+			  	<div class="ui basic label">Retry
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div><br/>
+			  	<div class="ui basic label">Isolation
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div><br/>
+			  	<div class="ui basic label">Caching
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div><br/>
+			  	<div class="ui basic label">Fallback
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div><br/>
+			  	<div class="ui basic label">Loose Coupling
+			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	</div>
+		  	</div>
 	    </div>
-	    <div class="ui basic label">II. Configuration
-	    	<div class="detail"><a th:text="Fulfilled"></a></div>
-	    </div>
-	    <div class="ui basic label">...
-	    	<div class="detail"><a th:text="..."></a></div>
-	    </div>
-	    
-	    <p/>
-	    
-	    <p>Resilienz</p>
-	    <div class="ui basic label">Redundancy
-	    	<div class="detail"><a th:text="XXX"></a></div>
-	  	</div>
-	  	<div class="ui basic label">Zero Downtime deployment
-	    	<div class="detail"><a th:text="XXX"></a></div>
-	  	</div>
-	    
     </div>
     
     <div class="ui segment">
