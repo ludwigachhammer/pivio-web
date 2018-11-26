@@ -9,67 +9,48 @@ $(function init(){
 	//console.log("Checking 12 factors...");
 	//var url = 'http://localhost:8008/job/Masterarbeitssoftware-backend/lastBuild/api/json';
 	//makeCorsRequest(url);
-	checkCodebase();
-	checkDependencies();
-	checkConfiguration();
-	checkBackingServices();
-	checkBuildReleaseRun();
-	checkProcesses();
-	checkPortBinding();
-	checkConcurrency();
-	checkDisposability();
-	checkDevProdParity();
-	checkLogs();
-	checkAdminProcesses();
+	isHostedInAZDCloud();
+	checkRedundancy();
+	checkZeroDowntimeDeployment();
+	checkRetry();
+	checkIsolation();
+	checkCaching();
+	checkFallback();
+	checkLooseCoupling();
 });
-function checkCodebase() {
-	$("#codebase").text("Yes")
-}
-function checkDependencies() {
+function isHostedInAZDCloud() {
 	//TODO
-	$("#dependencies").text("Not implemented")
+	$("#azdcloud").text("Yes")
 }
-function checkConfiguration() {
+function checkRedundancy() {
+	//TODO
+	$("#redundancy").text("Not implemented")
+}
+function checkZeroDowntimeDeployment() {
 	//TODO
 	//strict separation of config from code
 	//check if .properties .yml  or .rb are available
-	$("#configuration").text("Not implemented")
+	$("#zerodowntimedeployment").text("Not implemented")
 }
-function checkBackingServices() {
+function checkRetry() {
 	//TODO
-	$("#backingservices").text("Not implemented")
+	$("#retry").text("Not implemented")
 }
-function checkBuildReleaseRun() {
+function checkIsolation() {
 	//TODO
-	$("#buildreleaserun").text("Not implemented")
+	$("#isolation").text("Not implemented")
 }
-function checkProcesses() {
+function checkCaching() {
 	//TODO
-	$("#processes").text("Not implemented")
+	$("#caching").text("Not implemented")
 }
-function checkPortBinding() {
+function checkFallback() {
 	//TODO
-	$("#portbinding").text("Not implemented")
+	$("#fallback").text("Not implemented")
 }
-function checkConcurrency() {
+function checkLooseCoupling() {
 	//TODO
-	$("#concurrency").text("Not implemented")
-}
-function checkDisposability() {
-	//TODO
-	$("#disposability").text("Not implemented")
-}
-function checkDevProdParity() {
-	//TODO
-	$("#devprodparity").text("Not implemented")
-}
-function checkLogs() {
-	//TODO
-	$("#logs").text("Not implemented")
-}
-function checkAdminProcesses() {
-	//TODO
-	$("#adminprocesses").text("Not implemented")
+	$("#loosecoupling").text("Not implemented")
 }
 
 //Create the XHR object.

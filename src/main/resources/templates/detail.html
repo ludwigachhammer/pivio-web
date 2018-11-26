@@ -18,8 +18,8 @@
 				display: inline-block !important;
 			}
 		</style>
-		
 		<script src="/js/12factor.js"></script>
+		<script src="/js/resiliencefactors.js"></script>
 		<script>
 		
 			// Create the XHR object.
@@ -42,7 +42,7 @@
 			// Make the actual CORS request.
 			function makeCorsRequest() {
 			  // This is a sample server that supports CORS.
-			  var url = 'https://masterarbeitssoftware-backend.cfapps.io/prometheus';
+			  var url = 'https://'+${pivio.document.url}+'/prometheus';
 	
 			  var xhr = createCORSRequest('GET', url);
 			  if (!xhr) {
@@ -54,6 +54,7 @@
 			  xhr.onload = function() {
 			    var text = xhr.responseText;
 			    console.log('Response from CORS request to ' + url);
+			    console.log(text);
 			  };
 	
 			  xhr.onerror = function() {
@@ -401,37 +402,35 @@
 		<p class="ui  basic ribbon label">Last Build</p>
 		
         <div class="ui basic label">Build by
-	    	<div class="detail"><span th:text="JenkinsUser"></span></div>
-	  	</div>
+	    	<div class="detail"><span id="buildby" th:text="JenkinsUser"></span></div>
+	  	</div><br/>
 	  	
 	    <div class="ui basic label">Build number
-	    	<div class="detail"><a th:text="18"></a></div>
-	    </div>
+	    	<div class="detail"><a id="buildnr" th:text="18"></a></div>
+	    </div><br/>
 	    
 	    <div class="ui basic label">Branch
-	    	<div class="detail"><a th:text="master"></a></div>
-	    </div>
+	    	<div class="detail"><a id="branch" th:text="master"></a></div>
+	    </div><br/>
 	    
 	    <div class="ui basic label">Duration
-	    	<div class="detail"><a th:text="292818"></a></div>
-	    </div>
+	    	<div class="detail"><a id="duration" th:text="292818"></a></div>
+	    </div><br/>
 	    
 	    <div class="ui basic label">Estimated duration
-	    	<div class="detail"><a th:text="178358"></a></div>
-	    </div>
+	    	<div class="detail"><a id="estimated duration" th:text="178358"></a></div>
+	    </div><br/>
 	    
 	    <div class="ui basic label">Result
-	    	<div class="detail"><a th:text="Success"></a></div>
-	    </div>
+	    	<div class="detail"><a id="result" th:text="Success"></a></div>
+	    </div><br/>
 	    
 	    <div class="ui basic label">Timestamp
-	    	<div class="detail"><a th:text="1540547302334"></a></div>
-	    </div>
-	    <!--  
+	    	<div class="detail"><a id="timestamp" th:text="1540547302334"></a></div>
+	    </div><br/>
 	    <div class="ui basic label">Url
-	    	<div class="detail"><a th:text="http://localhost:8008/job/Masterarbeitssoftware-backend/18/"></a></div>
+	    	<div class="detail"><a id="jenkinsurl" th:text=""></a></div>
 	    </div>
-	    -->
         
     </div>
     
@@ -447,8 +446,8 @@
 			    <div class="ui basic label">II. Dependencies
 			    	<div class="detail"><a id="dependencies" th:text="XXX"></a></div>
 			    </div><br/>
-			    <div class="ui basic label" id="configuration">II. Configuration
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			    <div class="ui basic label">II. Configuration
+			    	<div class="detail"><a id="configuration" th:text="XXX"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">IV. Backing services
 			    	<div class="detail"><a id="backingservices" th:text="XXX"></a></div>
@@ -469,7 +468,7 @@
 			    	<div class="detail"><a id="disposability" th:text="XXX"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">X. Dev/prod parity
-			    	<div class="detail"><a id="devprodprity" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="devprodparity" th:text="XXX"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">XI. Logs
 			    	<div class="detail"><a id="logs" th:text="XXX"></a></div>
@@ -482,29 +481,29 @@
 		    <div class="column ui segment">
 			    <p class="ui  basic ribbon label">Resilienz</p>
 			    <p/>
-			    <div class="ui basic label">AZ D Cloud
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			    <div class="ui basic label">I. AZD Cloud
+			    	<div class="detail"><a id="azdcloud" th:text="XXX"></a></div>
 			  	</div><br/>
-			    <div class="ui basic label">Redundancy
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			    <div class="ui basic label">II. Redundancy
+			    	<div class="detail"><a id="redundancy" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">Zero Downtime deployment
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	<div class="ui basic label">III. Zero Downtime deployment
+			    	<div class="detail"><a id="zerodowntimedeployment" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">Retry
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	<div class="ui basic label">IV. Retry
+			    	<div class="detail"><a id="retry" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">Isolation
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	<div class="ui basic label">V. Isolation
+			    	<div class="detail"><a id="isolation" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">Caching
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	<div class="ui basic label">VI. Caching
+			    	<div class="detail"><a id="caching" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">Fallback
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	<div class="ui basic label">VII. Fallback
+			    	<div class="detail"><a id="fallback" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">Loose Coupling
-			    	<div class="detail"><a th:text="XXX"></a></div>
+			  	<div class="ui basic label">VIII. Loose Coupling
+			    	<div class="detail"><a id="loosecoupling" th:text="XXX"></a></div>
 			  	</div>
 		  	</div>
 	    </div>
@@ -525,5 +524,7 @@
     </div>
 
 </div>
+	
 </body>
+
 </html>
