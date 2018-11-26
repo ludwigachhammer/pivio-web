@@ -1,12 +1,11 @@
-//jenkins: http://localhost:8008/job/Masterarbeitssoftware-backend
 /*
- * For more information please visit: https://12factor.net/
  * Author: Nicolas Corpancho Villasana
  * 
  * 
  */
 $(function init(){
-	var url = 'http://localhost:8008/job/'+jenkinsurl+'/lastBuild/api/json';
+	console.log("Jenkins");
+	var url = 'http://localhost:8008/job/'+jenkinsUrl+'/lastBuild/api/json';
 	makeCorsRequest(url);
 });
 
@@ -61,7 +60,7 @@ function createCORSRequest(method, url) {
 // Make the actual CORS request.
 function makeCorsRequest(url) {
   // This is a sample server that supports CORS.
-
+	console.log("Making request to jenkins");
   var xhr = createCORSRequest('GET', url);
   if (!xhr) {
 	console.log('CORS not supported');
@@ -71,7 +70,8 @@ function makeCorsRequest(url) {
   // Response handlers.
   xhr.onload = function() {
     var reponseJson = xhr.responseText;
-    console.log("respose: ", reponseJson);
+    console.log("respose: ");
+    console.log(reponseJson);
   };
 
   xhr.onerror = function() {

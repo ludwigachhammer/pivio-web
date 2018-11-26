@@ -5,11 +5,8 @@
  * 
  */
 $(function init(){
-	//var lastJenkinsJob;
-	//console.log("Checking 12 factors...");
-	//var url = 'http://localhost:8008/job/Masterarbeitssoftware-backend/lastBuild/api/json';
-	//makeCorsRequest(url);
-	//isHostedInAZDCloud();
+	console.log("Resilience");
+	isHostedInAZDCloud();
 	checkRedundancy();
 	checkZeroDowntimeDeployment();
 	checkRetry();
@@ -19,9 +16,7 @@ $(function init(){
 	checkLooseCoupling();
 });
 function isHostedInAZDCloud() {
-	//TODO
-	var url = /*[[${pivio.document.url}]]*/ 'No url could be found';
-	if(url.inclues("azd")){
+	if(cloudUrl.includes("azd")){
 		$("#azdcloud").text("Yes")
 	}else{
 		$("#azdcloud").text("No")

@@ -19,7 +19,9 @@
 			}
 		</style>
 		<script th:inline="javascript">
-			var jenkinsurl = /*[[${pivio.document.name}]]*/ '';
+			
+			var cloudUrl = /*[[${pivio.document.url}]]*/ 'No url could be found';
+			var jenkinsUrl = /*[[${pivio.document.name}]]*/ '';
 		</script>
 		<script th:inline="javascript" src="/js/12factor.js"></script>
 		<script th:inline="javascript" src="/js/resiliencefactors.js"></script>
@@ -46,8 +48,6 @@
 			// Make the actual CORS request.
 			function makeCorsRequest(url) {
 			  // This is a sample server that supports CORS.
-			  //var url = /*[[${pivio.document.url}]]*/ 'No url could be found';
-			  //var url = 'https://'+${pivio.document.url}+'/prometheus';
 	
 			  var xhr = createCORSRequest('GET', url);
 			  if (!xhr) {
@@ -69,7 +69,7 @@
 			  xhr.send();
 			}
 			var url = /*[[${pivio.document.url}]]*/ '';
-			makeCorsRequest('http://'+url+'/prometheus');
+			makeCorsRequest('https://'+url+'/prometheus');
 			
 		/*]]>*/
 		</script>
@@ -407,7 +407,7 @@
     <div class="ui segment">
      	<div class="ui black top attached label">Jenkins Job Monitoring</div>
 
-		<p class="ui  basic ribbon label">Last Build</p><br/>
+		<p class="ui  basic ribbon label">Last Build</p><p/>
 		
         <div class="ui basic label">Build by
 	    	<div class="detail"><span id="buildby" th:text="XXX"></span></div>

@@ -5,14 +5,21 @@
  * 
  */
 /*<![CDATA[*/
+
+
 $(function init(){
-	var lastJenkinsJob;
-	//var name = /*[[${pivio.document.name}]]*/ '';
-	var url = 'http://localhost:8008/job/'+jenkinsurl+'/lastBuild/api/json';
-	makeCorsRequest(url);
+	console.log("12 factor");
+
+	var githubUrl = 'https://www.github.com/Nicocovi/Microservice1';
+	var repository = githubUrl.substring(githubUrl.lastIndexOf('/')+1, githubUrl.length);
+	var tmpUrl = githubUrl.substring(0, githubUrl.lastIndexOf('/'));
+	var user = githubUrl.substring(tmpUrl.lastIndexOf('/')+1, tmpUrl.length);
+	var searchUrl = user+'/'+repository;
+	console.log(repository);
+	console.log(user);
 	checkCodebase();
-	checkDependencies();
-	checkConfiguration();
+	checkDependencies(searchUrl);
+	checkConfiguration(searchUrl);
 	checkBackingServices();
 	checkBuildReleaseRun();
 	checkProcesses();
@@ -27,19 +34,42 @@ function checkCodebase() {
 	//is always yes due to groovyfile in repository
 	$("#codebase").text("Yes")
 }
-function checkDependencies() {
+function checkDependencies(searchUrl) {
 	//TODO
-	//https://api.github.com/search/code?q=dependencies+repo:
-	$("#dependencies").text("Not implemented")
+	var dependenciesUrl = 'https://api.github.com/search/code?q=dependencies+repo:'+searchUrl;
+	$.ajax({
+		url: dependenciesUrl,
+		type: "GET",
+		success: function(result){
+			if(result.items.length > 0){
+				var tmpArray = result.items;
+				var domElement = "";
+				for (i = 0; i < tmpArray.length; i++) {
+				    domElement = domElement + tmpArray[i].name + ', ';
+				}
+				//TODO remove last ,
+				console.log(domElement);
+				$("#dependencies").text(domElement)
+			}
+		}
+	});
+	
 }
-function checkConfiguration() {
+function checkConfiguration(searchUrl) {
 	//TODO
 	//strict separation of config from code
 	//check if .properties .yml  or .rb are available
-	//https://api.github.com/search/code?q=dependencies+repo:+filename:.yml
-	//https://api.github.com/search/code?q=dependencies+repo:+filename:.yaml
-	//https://api.github.com/search/code?q=dependencies+repo:+filename:.properties
-	//https://api.github.com/search/code?q=dependencies+repo:+filename:.rb
+	var yml = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.yml';
+	var yaml = 'https://api.github.com/search/code?q=+repo:'+searchUrl+'+filename:.yaml';
+	var properties = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.properties';
+	//https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.rb
+	var configArray = [];
+	var _this = this;
+	getRequestForConfigFiles(yml, _this);
+	getRequestForConfigFiles(yaml, _this);
+	getRequestForConfigFiles(properties, _this);
+	
+	
 	$("#configuration").text("Not implemented")
 }
 function checkBackingServices() {
@@ -116,8 +146,8 @@ function makeCorsRequest(url) {
   // Response handlers.
   xhr.onload = function() {
     var text = xhr.responseText;
-    console.log('Response from CORS request to ' + url);
-    lastJenkinsJob = text;
+    console.log('Response' + text);
+    return text;
   };
 
   xhr.onerror = function() {
@@ -125,5 +155,18 @@ function makeCorsRequest(url) {
   };
 
   xhr.send();
+}
+
+function getRequestForConfigFiles(URL, _this){
+	$.ajax({
+		url: URL,
+		type: "GET",
+		success: function(result, _this){
+			if(result.items.length > 0){
+				console.log(_this);
+				_this.configArray.concat(result.items);
+			}
+		}
+	});	
 }
 /*]]>*/
