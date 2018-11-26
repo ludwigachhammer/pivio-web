@@ -5,10 +5,9 @@
  * 
  */
 $(function init(){
-	//var lastJenkinsJob;
-	//console.log("Checking 12 factors...");
-	//var url = 'http://localhost:8008/job/Masterarbeitssoftware-backend/lastBuild/api/json';
-	//makeCorsRequest(url);
+	var lastJenkinsJob;
+	var url = 'http://localhost:8008/job/'+JenkinsName+'/lastBuild/api/json';
+	lastJenkinsJob = makeCorsRequest(url);
 	checkCodebase();
 	checkDependencies();
 	checkConfiguration();
@@ -23,44 +22,57 @@ $(function init(){
 	checkAdminProcesses();
 });
 function checkCodebase() {
+	//is always yes due to groovyfile in repository
 	$("#codebase").text("Yes")
 }
 function checkDependencies() {
 	//TODO
+	//https://api.github.com/search/code?q=dependencies+repo:
 	$("#dependencies").text("Not implemented")
 }
 function checkConfiguration() {
 	//TODO
 	//strict separation of config from code
 	//check if .properties .yml  or .rb are available
+	//https://api.github.com/search/code?q=dependencies+repo:+filename:.yml
+	//https://api.github.com/search/code?q=dependencies+repo:+filename:.yaml
+	//https://api.github.com/search/code?q=dependencies+repo:+filename:.properties
+	//https://api.github.com/search/code?q=dependencies+repo:+filename:.rb
 	$("#configuration").text("Not implemented")
 }
 function checkBackingServices() {
 	//TODO
+	//check services of app in CF
 	$("#backingservices").text("Not implemented")
 }
 function checkBuildReleaseRun() {
 	//TODO
+	//
 	$("#buildreleaserun").text("Not implemented")
 }
 function checkProcesses() {
 	//TODO
+	//horizontal scaling
 	$("#processes").text("Not implemented")
 }
 function checkPortBinding() {
 	//TODO
+	//port in config files
 	$("#portbinding").text("Not implemented")
 }
 function checkConcurrency() {
 	//TODO
+	//check horizontal scaleability
 	$("#concurrency").text("Not implemented")
 }
 function checkDisposability() {
 	//TODO
+	//
 	$("#disposability").text("Not implemented")
 }
 function checkDevProdParity() {
 	//TODO
+	//similarity of prod and dev config files
 	$("#devprodparity").text("Not implemented")
 }
 function checkLogs() {

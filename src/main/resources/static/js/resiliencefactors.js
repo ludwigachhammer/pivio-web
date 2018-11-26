@@ -20,7 +20,13 @@ $(function init(){
 });
 function isHostedInAZDCloud() {
 	//TODO
-	$("#azdcloud").text("Yes")
+	var url = ${pivio.document.url};
+	if(url.inclues("azd")){
+		$("#azdcloud").text("Yes")
+	}else{
+		$("#azdcloud").text("No")
+	}
+	
 }
 function checkRedundancy() {
 	//TODO
