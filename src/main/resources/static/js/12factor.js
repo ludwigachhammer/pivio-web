@@ -4,10 +4,12 @@
  * 
  * 
  */
+/*<![CDATA[*/
 $(function init(){
 	var lastJenkinsJob;
-	var url = 'http://localhost:8008/job/'+JenkinsName+'/lastBuild/api/json';
-	lastJenkinsJob = makeCorsRequest(url);
+	//var name = /*[[${pivio.document.name}]]*/ '';
+	var url = 'http://localhost:8008/job/'+jenkinsurl+'/lastBuild/api/json';
+	makeCorsRequest(url);
 	checkCodebase();
 	checkDependencies();
 	checkConfiguration();
@@ -115,7 +117,7 @@ function makeCorsRequest(url) {
   xhr.onload = function() {
     var text = xhr.responseText;
     console.log('Response from CORS request to ' + url);
-    console.log(text);
+    lastJenkinsJob = text;
   };
 
   xhr.onerror = function() {
@@ -124,4 +126,4 @@ function makeCorsRequest(url) {
 
   xhr.send();
 }
-
+/*]]>*/
