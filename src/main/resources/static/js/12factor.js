@@ -4,7 +4,7 @@
  * 
  * 
  */
-$(
+$(function init(){
 	var lastJenkinsJob;
 	console.log("Checking 12 factors...");
 	$.ajax({
@@ -13,56 +13,70 @@ $(
 	    cache: false,
 	    success: function succ(result) {
 	        //console.log("result", result);
-	    	lastJenkinsJob(result);
-	    	console.log("result");
+	    	lastJenkinsJob = result;
+	    	console.log(lastJenkinsJob);
+	    	checkCodebase();
+	    	checkDependencies();
+	    	checkConfiguration();
+	    	checkBackingServices();
+	    	checkBuildReleaseRun();
+	    	checkProcesses();
+	    	checkPortBinding();
+	    	checkConcurrency();
+	    	checkDisposability();
+	    	checkDevProdParity();
+	    	checkLogs();
+	    	checkAdminProcesses();
 	    }
 	});
-);
+});
 function checkCodebase() {
-	//TODO
-	$("#codebase").text("Not implemented")
+	//Groovy script builds from 1 repository
+	$("#codebase").text("Yes")
 }
 function checkDependencies() {
 	//TODO
-	return "Not implemented"
+	$("#dependencies").text("Not implemented")
 }
 function checkConfiguration() {
 	//TODO
-	return "Not implemented"
+	//strict separation of config from code
+	//check if .properties .yml  or .rb are available
+	$("#configuration").text("Not implemented")
 }
 function checkBackingServices() {
 	//TODO
-	return "Not implemented"
+	$("#backingservices").text("Not implemented")
 }
 function checkBuildReleaseRun() {
 	//TODO
-	return "Not implemented"
+	$("#buildreleaserun").text("Not implemented")
 }
 function checkProcesses() {
 	//TODO
-	return "Not implemented"
+	$("#processes").text("Not implemented")
 }
 function checkPortBinding() {
 	//TODO
-	return "Not implemented"
+	$("#portbinding").text("Not implemented")
 }
 function checkConcurrency() {
 	//TODO
-	return "Not implemented"
+	$("#concurrency").text("Not implemented")
 }
 function checkDisposability() {
 	//TODO
-	return "Not implemented"
+	$("#disposability").text("Not implemented")
 }
 function checkDevProdParity() {
 	//TODO
-	return "Not implemented"
+	$("#devprodparity").text("Not implemented")
 }
 function checkLogs() {
 	//TODO
-	return "Not implemented"
+	$("#logs").text("Not implemented")
 }
 function checkAdminProcesses() {
 	//TODO
-	return "Not implemented"
+	$("#adminprocesses").text("Not implemented")
 }

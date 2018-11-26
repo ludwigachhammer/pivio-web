@@ -39,11 +39,6 @@
 			  return xhr;
 			}
 	
-			// Helper method to parse the title tag from the response.
-			function getTitle(text) {
-			  return text.match('<title>(.*)?</title>')[1];
-			}
-	
 			// Make the actual CORS request.
 			function makeCorsRequest() {
 			  // This is a sample server that supports CORS.
@@ -58,8 +53,7 @@
 			  // Response handlers.
 			  xhr.onload = function() {
 			    var text = xhr.responseText;
-			    var title = getTitle(text);
-			    console.log('Response from CORS request to ' + url + ': ' + title);
+			    console.log('Response from CORS request to ' + url);
 			  };
 	
 			  xhr.onerror = function() {
