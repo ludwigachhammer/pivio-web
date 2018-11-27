@@ -9,7 +9,6 @@
 
 $(function init(){
 	console.log("12 factor");
-
 	var githubUrl = 'https://www.github.com/Nicocovi/Microservice1';
 	var repository = githubUrl.substring(githubUrl.lastIndexOf('/')+1, githubUrl.length);
 	var tmpUrl = githubUrl.substring(0, githubUrl.lastIndexOf('/'));
@@ -23,10 +22,10 @@ $(function init(){
 	checkBackingServices();
 	checkBuildReleaseRun();
 	checkProcesses();
-	checkPortBinding();
+	checkPortBinding(searchUrl);
 	checkConcurrency();
 	checkDisposability();
-	checkDevProdParity();
+	checkDevProdParity(searchUrl);
 	checkLogs();
 	checkAdminProcesses();
 });
@@ -45,10 +44,8 @@ function checkDependencies(searchUrl) {
 				var tmpArray = result.items;
 				var domElement = "";
 				for (i = 0; i < tmpArray.length; i++) {
-				    domElement = domElement + tmpArray[i].name + ', ';
+				    domElement = domElement + tmpArray[i].name + '; ';
 				}
-				//TODO remove last ,
-				console.log(domElement);
 				$("#dependencies").text(domElement)
 			}
 		}
@@ -56,7 +53,6 @@ function checkDependencies(searchUrl) {
 	
 }
 function checkConfiguration(searchUrl) {
-	//TODO
 	//strict separation of config from code
 	//check if .properties .yml  or .rb are available
 	var yml = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.yml';
@@ -65,12 +61,9 @@ function checkConfiguration(searchUrl) {
 	//https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.rb
 	var configArray = [];
 	var _this = this;
-	getRequestForConfigFiles(yml, _this);
-	getRequestForConfigFiles(yaml, _this);
-	getRequestForConfigFiles(properties, _this);
-	
-	
-	$("#configuration").text("Not implemented")
+	getRequestForConfigFiles(yml);
+	getRequestForConfigFiles(yaml);
+	getRequestForConfigFiles(properties);
 }
 function checkBackingServices() {
 	//TODO
@@ -87,10 +80,26 @@ function checkProcesses() {
 	//horizontal scaling
 	$("#processes").text("Not implemented")
 }
-function checkPortBinding() {
-	//TODO
+function checkPortBinding(searchUrl) {
 	//port in config files
-	$("#portbinding").text("Not implemented")
+	var portsUrl = 'https://api.github.com/search/code?q=port+repo:'+searchUrl;
+	$.ajax({
+		url: portsUrl,
+		type: "GET",
+		success: function(result){
+			if(result.items.length > 0){
+				var tmpArray = result.items;
+				var domElement = "";
+				for (i = 0; i < tmpArray.length; i++) {
+				    domElement = domElement + tmpArray[i].name + '; ';
+				}
+				$("#portbinding").text(domElement);
+			}else{
+				$("#portbinding").text("No ports are defined in the repository");
+			}
+		}
+	});	
+	
 }
 function checkConcurrency() {
 	//TODO
@@ -102,10 +111,13 @@ function checkDisposability() {
 	//
 	$("#disposability").text("Not implemented")
 }
-function checkDevProdParity() {
-	//TODO
+function checkDevProdParity(searchUrl) {
 	//similarity of prod and dev config files
-	$("#devprodparity").text("Not implemented")
+	var prodUrl = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:prod';
+	var devUrl = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:dev';
+	getRequestForConfigFiles(prodUrl);
+	getRequestForConfigFiles(devUrl);
+	//
 }
 function checkLogs() {
 	//TODO
@@ -157,14 +169,39 @@ function makeCorsRequest(url) {
   xhr.send();
 }
 
-function getRequestForConfigFiles(URL, _this){
+function getRequestForConfigFiles(URL){
 	$.ajax({
 		url: URL,
 		type: "GET",
-		success: function(result, _this){
+		success: function(result){
 			if(result.items.length > 0){
-				console.log(_this);
-				_this.configArray.concat(result.items);
+				var tmpArray = result.items;
+				var domElement = "";
+				for (i = 0; i < tmpArray.length; i++) {
+				    domElement = domElement + tmpArray[i].name + '; ';
+				}
+				var text = $("#configuration").text() + domElement;
+				$("#configuration").text(text);
+			}
+		}
+	});	
+}
+
+function getRequestDevProdParity(URL){
+	$.ajax({
+		url: URL,
+		type: "GET",
+		success: function(result){
+			if(result.items.length > 0){
+				var tmpArray = result.items;
+				var domElement = "";
+				for (i = 0; i < tmpArray.length; i++) {
+				    domElement = domElement + tmpArray[i].name + '; ';
+				}
+				var text = $("#devprodparity").text() + domElement;
+				$("#devprodparity").text(text);
+			}else{
+				//$("#devprodparity").text(text);
 			}
 		}
 	});	
