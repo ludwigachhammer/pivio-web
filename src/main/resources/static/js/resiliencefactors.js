@@ -5,7 +5,6 @@
  * 
  */
 $(function init(){
-	console.log("Resilience");
 	isHostedInAZDCloud();
 	checkRedundancy();
 	checkZeroDowntimeDeployment();

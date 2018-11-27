@@ -4,80 +4,41 @@
  * 
  */
 $(function init(){
-	console.log("Jenkins");
-	var url = 'http://localhost:8008/job/'+jenkinsUrl+'/lastBuild/api/json';
-	makeCorsRequest(url);
+	var jenkins = 'http://localhost:8008/job/'+jenkinsUrl+'/lastBuild/api/json';
+	$.ajax({
+		url: jenkins,
+		type: "GET",
+		success: function(result){
+			//setBuildBy(result.executor);
+			setBuildNr(result.number);
+			setDuration(result.duration);
+			setEstimatedDuration(result.estimatedDuration);
+			setResult(result.result);
+			setTimestamp(result.timestamp);
+			setJenkinsUrl(result.url);
+		}
+	});	
 });
 
-function setBuildBy() {
-	//TODO
-	$("#buildby").text("Not implemented")
+function setBuildBy(text) {
+	$("#buildby").text(text)
 }
-function setBuildNr() {
-	//TODO
-	//strict separation of config from code
-	//check if .properties .yml  or .rb are available
-	$("#buildnr").text("Not implemented")
+function setBuildNr(text) {
+	$("#buildnr").text(text)
 }
-function setBranch() {
-	//TODO
-	$("#branch").text("Not implemented")
+function setDuration(text) {
+	$("#duration").text(text)
 }
-function setDuration() {
-	//TODO
-	$("#duration").text("Not implemented")
+function setEstimatedDuration(text) {
+	$("#estimatedduration").text(text)
 }
-function setEstimatedDuration() {
-	//TODO
-	$("#estimatedduration").text("Not implemented")
+function setResult(text) {
+	$("#result").text(text)
 }
-function setResult() {
-	//TODO
-	$("#result").text("Not implemented")
+function setTimestamp(text) {
+	$("#timestamp").text(text)
 }
-function setTimestamp() {
-	//TODO
-	$("#timestamp").text("Not implemented")
-}
-
-//Create the XHR object.
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-  if ("withCredentials" in xhr) {
-    // XHR for Chrome/Firefox/Opera/Safari.
-    xhr.open(method, url, true);
-  } else if (typeof XDomainRequest != "undefined") {
-    // XDomainRequest for IE.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
-  } else {
-    // CORS not supported.
-    xhr = null;
-  }
-  return xhr;
-}
-
-// Make the actual CORS request.
-function makeCorsRequest(url) {
-  // This is a sample server that supports CORS.
-	console.log("Making request to jenkins");
-  var xhr = createCORSRequest('GET', url);
-  if (!xhr) {
-	console.log('CORS not supported');
-    return;
-  }
-
-  // Response handlers.
-  xhr.onload = function() {
-    var reponseJson = xhr.responseText;
-    console.log("respose: ");
-    console.log(reponseJson);
-  };
-
-  xhr.onerror = function() {
-    console.log('Woops, there was an error making the request.');
-  };
-
-  xhr.send();
+function setJenkinsUrl(text) {
+	$("#jenkinsurl").text(text)
 }
 

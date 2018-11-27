@@ -8,7 +8,6 @@
 
 
 $(function init(){
-	console.log("12 factor");
 	var githubUrl = 'https://www.github.com/Nicocovi/Microservice1';
 	var repository = githubUrl.substring(githubUrl.lastIndexOf('/')+1, githubUrl.length);
 	var tmpUrl = githubUrl.substring(0, githubUrl.lastIndexOf('/'));
@@ -20,7 +19,7 @@ $(function init(){
 	checkDependencies(searchUrl);
 	checkConfiguration(searchUrl);
 	checkBackingServices();
-	checkBuildReleaseRun();
+	checkBuildReleaseRun(searchUrl);
 	checkProcesses();
 	checkPortBinding(searchUrl);
 	checkConcurrency();
@@ -56,7 +55,7 @@ function checkConfiguration(searchUrl) {
 	//strict separation of config from code
 	//check if .properties .yml  or .rb are available
 	var yml = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.yml';
-	var yaml = 'https://api.github.com/search/code?q=+repo:'+searchUrl+'+filename:.yaml';
+	var yaml = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.yaml';
 	var properties = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.properties';
 	//https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:.rb
 	var configArray = [];
@@ -66,18 +65,32 @@ function checkConfiguration(searchUrl) {
 	getRequestForConfigFiles(properties);
 }
 function checkBackingServices() {
-	//TODO
-	//check services of app in CF
-	$("#backingservices").text("Not implemented")
+	
 }
-function checkBuildReleaseRun() {
-	//TODO
-	//
-	$("#buildreleaserun").text("Not implemented")
+function checkBuildReleaseRun(searchUrl) {
+	//Release should be unique and be found in the config file
+	var releaseUrl = 'https://api.github.com/search/code?q=release+repo:'+searchUrl;
+	$.ajax({
+		url: releaseUrl,
+		type: "GET",
+		success: function(result){
+			if(result.items.length > 0){
+				var tmpArray = result.items;
+				var domElement = "";
+				for (i = 0; i < tmpArray.length; i++) {
+				    domElement = domElement + tmpArray[i].name + '; ';
+				}
+				$("#buildreleaserun").text(domElement);
+			}else{
+				$("#buildreleaserun").text("Not fulfilled: No release found in onfig files")
+			}
+		}
+	});	
 }
 function checkProcesses() {
 	//TODO
-	//horizontal scaling
+	//Twelve-factor processes are stateless and share-nothing. 
+	//Any data that needs to persist must be stored in a stateful backing service, typically a database.
 	$("#processes").text("Not implemented")
 }
 function checkPortBinding(searchUrl) {
@@ -108,15 +121,16 @@ function checkConcurrency() {
 }
 function checkDisposability() {
 	//TODO
-	//
+	//app’s processes are disposable, meaning they can be started or stopped at a moment’s notice.
+	//This facilitates fast elastic scaling, rapid deployment of code or config changes, and robustness of production deploys.
 	$("#disposability").text("Not implemented")
 }
 function checkDevProdParity(searchUrl) {
 	//similarity of prod and dev config files
 	var prodUrl = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:prod';
 	var devUrl = 'https://api.github.com/search/code?q=repo:'+searchUrl+'+filename:dev';
-	getRequestForConfigFiles(prodUrl);
-	getRequestForConfigFiles(devUrl);
+	getRequestDevProdParity(prodUrl, "prod");
+	getRequestDevProdParity(devUrl, "dev");
 	//
 }
 function checkLogs() {
@@ -187,10 +201,11 @@ function getRequestForConfigFiles(URL){
 	});	
 }
 
-function getRequestDevProdParity(URL){
+function getRequestDevProdParity(URL, param){
 	$.ajax({
 		url: URL,
 		type: "GET",
+		str: param,
 		success: function(result){
 			if(result.items.length > 0){
 				var tmpArray = result.items;
@@ -201,7 +216,8 @@ function getRequestDevProdParity(URL){
 				var text = $("#devprodparity").text() + domElement;
 				$("#devprodparity").text(text);
 			}else{
-				//$("#devprodparity").text(text);
+				var text = $("#devprodparity").text() + 'No '+this.str+'-file found; ';
+				$("#devprodparity").text(text);
 			}
 		}
 	});	

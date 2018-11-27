@@ -270,13 +270,14 @@
             <div class="ui segment">
 
 
-                <div class="ui orange top attached label">Service</div>
+                <div class="ui orange top attached label">Services</div>
 
                 <p/>
-
+				<!-- 
                 <div class="ui basic ribbon label"><i class="arrow right icon"></i>Provides</div>
 
                 <p/>
+                 -->
 
                 <div th:each="provides : ${pivio.service.provides}" class="ui basic label">
                     <!-- <div class="content">
@@ -408,36 +409,32 @@
      	<div class="ui black top attached label">Jenkins Job Monitoring</div>
 
 		<p class="ui  basic ribbon label">Last Build</p><p/>
-		
+		<!-- 
         <div class="ui basic label">Build by
-	    	<div class="detail"><span id="buildby" th:text="XXX"></span></div>
+	    	<div class="detail"><a id="buildby"></a></div>
 	  	</div><br/>
-	  	
+	  	 -->
 	    <div class="ui basic label">Build number
-	    	<div class="detail"><a id="buildnr" th:text="XXX"></a></div>
-	    </div><br/>
-	    
-	    <div class="ui basic label">Branch
-	    	<div class="detail"><a id="branch" th:text="XXX"></a></div>
+	    	<div class="detail"><a id="buildnr"></a></div>
 	    </div><br/>
 	    
 	    <div class="ui basic label">Duration
-	    	<div class="detail"><a id="duration" th:text="XXX"></a></div>
+	    	<div class="detail"><a id="duration"></a></div>
 	    </div><br/>
 	    
 	    <div class="ui basic label">Estimated duration
-	    	<div class="detail"><a id="estimated duration" th:text="XXX"></a></div>
+	    	<div class="detail"><a id="estimatedduration"></a></div>
 	    </div><br/>
 	    
 	    <div class="ui basic label">Result
-	    	<div class="detail"><a id="result" th:text="XXX"></a></div>
+	    	<div class="detail"><a id="result"></a></div>
 	    </div><br/>
 	    
 	    <div class="ui basic label">Timestamp
-	    	<div class="detail"><a id="timestamp" th:text="XXX"></a></div>
+	    	<div class="detail"><a id="timestamp"></a></div>
 	    </div><br/>
 	    <div class="ui basic label">Url
-	    	<div class="detail"><a id="jenkinsurl" th:text="XXX"></a></div>
+	    	<div class="detail"><a id="jenkinsurl"></a></div>
 	    </div>
         
     </div>
@@ -454,11 +451,16 @@
 			    <div class="ui basic label">II. Dependencies
 			    	<div class="detail"><a id="dependencies"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">II. Configuration
+			    <div class="ui basic label">III. Configuration
 			    	<div class="detail"><a id="configuration"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">IV. Backing services
-			    	<div class="detail"><a id="backingservices" th:text="XXX"></a></div>
+			    	<div class="detail" th:if="${pivio.document.service != null}">
+			    		<a id="backingservices" th:text="Yes"></a>
+		    		</div>
+		    		<div class="detail" th:if="${pivio.document.service == null}">
+			    		<a id="backingservices" th:text="No"></a>
+		    		</div>
 			    </div><br/>
 			    <div class="ui basic label">V. Build, release, run
 			    	<div class="detail"><a id="buildreleaserun" th:text="XXX"></a></div>
