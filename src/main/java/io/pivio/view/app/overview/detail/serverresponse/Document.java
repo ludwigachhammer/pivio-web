@@ -13,7 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
+import org.springframework.beans.factory.annotation.Autowired;
+import io.pivio.view.app.monitoring.*;
+import org.json.JSONObject; 
+
+
 public class Document {
 
     public String owner;
@@ -45,7 +49,10 @@ public class Document {
     public List<SoftwareDependency> software_dependencies = new ArrayList<>();
     public Service service = new Service();
     public Context context = new Context();
+
+    public GithubMonitoring githubMonitoring;
     
+    public JenkinsMonitoring jenkinsMonitoring = new JenkinsMonitoring(this.name);
     
 	@JsonProperty("tags")
 	public List<String> getTags() {
@@ -101,10 +108,7 @@ public class Document {
                 ",\"lastUpdate\":\"" + lastUpdate + "\"" +
                 ",\"status\":\"" + status + "\"" +
                 ",\"url\":\"" + url + "\"" +
-                //", tags=\"" + tags ++ "\"" +
-                //", links=" + links +
                 ",\"runtime\":" + runtime.toString() +
-                //", software_dependencies:" + software_dependencies +
                 ",\"service\":" + service.toString() +
                 //Nico
                 formatAdditionalAttributes(other_attributes)+
@@ -122,6 +126,34 @@ public class Document {
     public boolean ofTypeService() {
         return type.equalsIgnoreCase("service");
     }
+    
+    public String getGithubMonitoringData() {
+    	String value = other_attributes.get("github");
+    	System.out.println("*****************************************************************");
+    	System.out.println("Github-link: "+value);
+    	githubMonitoring = new GithubMonitoring();
+    	System.out.println("GithubMonitoring: "+githubMonitoring);
+    	if(value != null) {
+    		return githubMonitoring.getMonitoringData(value);
+    	}else {
+    		return "No github information could be retrieved";
+    	}
+    }
+    
+    /*
+    public JSONObject getJenkinsMonitoringData() {
+    	jenkinsMonitoring = new JenkinsMonitoring();
+    	String jenkinsUrl = "http://localhost:8008/job/"+name+"/lastBuild/api/json";
+    	JSONObject myResponse;
+		try {
+			myResponse = jenkinsMonitoring.getLastJobInformation(jenkinsUrl);
+			System.out.println(myResponse);
+			return myResponse;
+		}catch(Exception e) {
+			return null;
+		}
+    }
+    */
     
     public String getStatusIcon() {
     	if(status.equals("running")) {

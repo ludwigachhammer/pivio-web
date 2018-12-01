@@ -19,9 +19,4 @@ public class ServiceGraphService {
         return nodes;
     }
     
-    public List<String> getLinks() throws Exception{
-        List<String> links = pivioServerConnector.getAllNames();
-        return links;
-    }
-    
 }

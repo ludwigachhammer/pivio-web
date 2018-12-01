@@ -82,7 +82,9 @@
        Domains - Applications per domain
     </h4>
 	<div id="domain-graph">
+		<!-- 
 		<iframe src="http://localhost:5603/goto/46d9d55de2138dd15a4b94a0687a642d" height="600" width="100%"></iframe>	
+		-->
 	</div>
 	
 	<script>
@@ -97,7 +99,7 @@
 			jsonArray.forEach(function(element) {
 				//element.name = element.domain+"."+element.subdomain+"."+element.product+"."+element.name;
 				element.imports = [];
-				delete element.id;
+				//delete element.id;
 				if(element.hasOwnProperty('service')){
 					if(element.service.hasOwnProperty('provides')){
 						element.service.provides.forEach(function(el){
@@ -195,6 +197,12 @@
 		      .classed("node--source", false);
 		}
 		
+		function linkToDetailView(d){
+			var id = d.data.id
+			console.log(d.data.id);
+			window.location.href = '../app/overview/'+id;
+		}
+		
 		function drawCanvas(jsonArray){
 			
 			var root = packageHierarchy(jsonArray)
@@ -218,7 +226,8 @@
 			    .attr("text-anchor", function(d){return "start";})
 			    .text(function(d){return d.data.key;})
 			    .on("mouseover", mouseovered)
-      			.on("mouseout", mouseouted);
+      			.on("mouseout", mouseouted)
+      			.on("click", linkToDetailView);
 		}
 
 		//console.log("Jsonobject:", jsonArray);

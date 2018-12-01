@@ -25,7 +25,6 @@ public class ServiceGraphController {
     	model.addAttribute("config", serverConfig);
         model.addAttribute("pageId", "tabServicegraph");
         model.addAttribute("nodes", serviceGraphService.getNodes());
-        //model.addAttribute("links", serviceGraphService.getLinks());
         return "servicegraph";
     }
 
