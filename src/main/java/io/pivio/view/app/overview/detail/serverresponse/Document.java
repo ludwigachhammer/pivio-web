@@ -53,6 +53,8 @@ public class Document {
     
     public JenkinsMonitoring jenkinsMonitoring;
     
+    public GovernanceMonitoring governanceMonitoring;
+    
 	@JsonProperty("tags")
 	public List<String> getTags() {
 		return tags;
@@ -131,6 +133,7 @@ public class Document {
     	System.out.println("Github-link: "+value);
     	githubMonitoring = new GithubMonitoring();
     	System.out.println("GithubMonitoring: "+githubMonitoring);
+    	governanceMonitoring = new GovernanceMonitoring(value);
     	if(value != null) {
     		return githubMonitoring.getMonitoringData(value);
     	}else {

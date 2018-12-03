@@ -30,6 +30,7 @@ public class DetailService {
         try {
             document = pivioServerConnector.getDocumentById(id);
             document.jenkinsMonitoring = new JenkinsMonitoring(document.name);
+            
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             // TODO

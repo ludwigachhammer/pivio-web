@@ -8,6 +8,7 @@ import java.net.URL;
 
 public class GovernanceMonitoring {
 	
+	//12 factor App
 	private String Codebase;
 	private String Dependencies;
 	private String Configuration;
@@ -21,6 +22,7 @@ public class GovernanceMonitoring {
 	private String Logs;
 	private String AdminProcesses;
 	
+	//Resilience pattern
 	private String isHostedInAZDCloud;
 	private String Redundancy;
 	private String ZeroDowntimeDeployment;
@@ -29,41 +31,48 @@ public class GovernanceMonitoring {
 	private String Caching;
 	private String Fallback;
 	private String LooseCoupling;
-	
 	private String url;
-	/*
+	
+	//TODO: Convert calls into Octokit object
+	
 	public GovernanceMonitoring(String url) {
-		this.Codebase;
-		this.Dependencies;
-		this.Configuration;
-		this.BackingServices;
-		this.BuildReleaseRun;
-		this.Processes;
-		this.PortBinding;
-		this.Concurrency;
-		this.Disposability;
-		this.DevProdParity;
-		this.Logs;
-		this.AdminProcesses;
+		System.out.println("******** getGovernanceMonitoringData ******************");
+		String governanceUrl = url;
+		String repository = governanceUrl.substring(governanceUrl.lastIndexOf('/')+1, governanceUrl.length());
+		String tmpUrl = governanceUrl.substring(0, governanceUrl.lastIndexOf('/'));
+		String user = governanceUrl.substring(tmpUrl.lastIndexOf('/')+1, tmpUrl.length());
+		String searchUrl = user+'/'+repository;
+		System.out.println(searchUrl);
+		try {
+			this.Codebase = "";
+			this.Dependencies= "";
+			this.Configuration= "";
+			this.BackingServices = "";
+			this.BuildReleaseRun = "";
+			this.Processes = "";
+			this.PortBinding = "";
+			this.Concurrency = "";
+			this.Disposability = "";
+			this.DevProdParity = "";
+			this.Logs = "";
+			this.AdminProcesses = "";
+			
+			this.isHostedInAZDCloud = "";
+			this.Redundancy = "";
+			this.ZeroDowntimeDeployment = "";
+			this.Retry = "";
+			this.Isolation = "";
+			this.Caching = "";
+			this.Fallback = "";
+			this.LooseCoupling = "";
+		}catch(Exception e) {
+			System.out.println(e);
+		}
 		
-		this.isHostedInAZDCloud;
-		this.Redundancy;
-		this.ZeroDowntimeDeployment;
-		this.Retry;
-		this.Isolation;
-		this.Caching;
-		this.Fallback;
-		this.LooseCoupling;
 	}
-	*/
 	
 	public String getCodebase() {
-		//Codebase = getRequestInformation();
 		return Codebase;
-	}
-
-	public void setCodebase(String codebase) {
-		Codebase = codebase;
 	}
 
 	public String getDependencies() {
@@ -164,5 +173,46 @@ public class GovernanceMonitoring {
 	     System.out.println(response.toString());
 	     return response.toString();
 	}
+	
+	public String getIcon(String status) {
+    	if(!(status.equals("Yes"))) {
+    		return "circle red";
+    	}
+    	else {
+    		return "circle green";
+    	}
+    }
+	
+	public String get12factorStatusIcon(int x) {
+		String status;
+		switch (x) {
+	        case 1:  status = getCodebase();
+	        		 return getIcon(status);
+	        case 2:  status = getDependencies();
+   		 			 return getIcon(status);
+	        case 3:  status = getConfiguration();
+   		 			 return getIcon(status);
+	        case 4:  status = getBackingServices();
+   		 			 return getIcon(status);
+	        case 5:  status = getBuildReleaseRun();
+   		 			 return getIcon(status);
+	        case 6:  status = getProcesses();
+   		 			 return getIcon(status);
+	        case 7:  status = getPortBinding();
+		   		 	 return getIcon(status);
+		    case 8:  status = getConcurrency();
+			 		 return getIcon(status);
+		    case 9:  status = getDisposability();
+			 		 return getIcon(status);
+		    case 10: status = getDevProdParity();
+			 		 return getIcon(status);
+		    case 11: status = getLogs();
+			 		 return getIcon(status);
+		    case 12: status = getAdminProcesses();
+			 		 return getIcon(status);
+	        default: status = "circle red";
+   		 			 return status;
+	    }
+    }
 
 }

@@ -361,27 +361,50 @@
 
 		<p class="ui  basic ribbon label">Last Build</p><p/>
 
-	    <div class="ui basic label">Build number
-	    	<div class="detail"><a id="buildnr" th:text="${pivio.document.jenkinsMonitoring.getBuildNumber()}"></a></div>
+	    <div class="ui basic label">
+	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(1)}"></i>
+	    	Build number
+	    	<div class="detail">
+	    		<a id="buildnr" th:text="${pivio.document.jenkinsMonitoring.getBuildNumber()}"></a>
+   			</div>
 	    </div><br/>
 	    
-	    <div class="ui basic label">Duration
-	    	<div class="detail"><a id="duration" th:text="${pivio.document.jenkinsMonitoring.getDuration()}"></a></div>
+	    <div class="ui basic label">
+	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(2)}"></i>
+	    	Duration
+	    	<div class="detail">
+	    		<a id="duration" th:text="${pivio.document.jenkinsMonitoring.getDuration()}"></a>
+    		</div>
 	    </div><br/>
 	    
-	    <div class="ui basic label">Estimated duration
-	    	<div class="detail"><a id="estimatedduration" th:text="${pivio.document.jenkinsMonitoring.getEstimatedDuration()}"></a></div>
+	    <div class="ui basic label">
+	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(3)}"></i>
+	    	Estimated duration
+	    	<div class="detail">
+	    		<a id="estimatedduration" th:text="${pivio.document.jenkinsMonitoring.getEstimatedDuration()}"></a>
+    		</div>
 	    </div><br/>
 	    
-	    <div class="ui basic label">Result
-	    	<div class="detail"><a id="result" th:text="${pivio.document.jenkinsMonitoring.getResult()}"></a></div>
+	    <div class="ui basic label">
+	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(4)}"></i>Result
+	    	<div class="detail">
+	    		<a id="result" th:text="${pivio.document.jenkinsMonitoring.getResult()}"></a>
+    		</div>
 	    </div><br/>
 	    
-	    <div class="ui basic label">Timestamp
-	    	<div class="detail"><a id="timestamp" th:text="${pivio.document.jenkinsMonitoring.getTimestamp()}"></a></div>
+	    <div class="ui basic label">
+	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(5)}"></i>
+	    	Timestamp
+	    	<div class="detail">
+	    		<a id="timestamp" th:text="${pivio.document.jenkinsMonitoring.getTimestamp()}"></a>
+    		</div>
 	    </div><br/>
-	    <div class="ui basic label">Url
-	    	<div class="detail"><a id="jenkinsurl" th:text="${pivio.document.jenkinsMonitoring.getUrl()}"></a></div>
+	    <div class="ui basic label">
+	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(6)}"></i>
+	    	Url
+	    	<div class="detail">
+	    		<a id="jenkinsurl" th:text="${pivio.document.jenkinsMonitoring.getUrl()}"></a>
+	    	</div>
 	    </div>
         
     </div>
@@ -392,16 +415,24 @@
 	        <div class="column ui segment">
 		        <p class="ui  basic ribbon label">The twelve-factor methodology</p>
 		        <p/>
-		        <div class="ui basic label">I. Codebase
+		        <div class="ui basic label">
+		        	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+		        	I. Codebase
 			    	<div class="detail"><a id="codebase"></a></div>
 			  	</div><br/>
-			    <div class="ui basic label">II. Dependencies
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(2)}"></i>
+			    	II. Dependencies
 			    	<div class="detail"><a id="dependencies"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">III. Configuration
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(3)}"></i>
+			    	III. Configuration
 			    	<div class="detail"><a id="configuration"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">IV. Backing services
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(4)}"></i>
+			    	IV. Backing services
 			    	<div class="detail" th:if="${pivio.document.service != null}">
 			    		<a id="backingservices" th:text="Yes"></a>
 		    		</div>
@@ -409,28 +440,44 @@
 			    		<a id="backingservices" th:text="No"></a>
 		    		</div>
 			    </div><br/>
-			    <div class="ui basic label">V. Build, release, run
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(5)}"></i>
+			    	V. Build, release, run
 			    	<div class="detail"><a id="buildreleaserun" th:text="XXX"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">VI. Processes
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(6)}"></i>
+			    	VI. Processes
 			    	<div class="detail"><a id="processes" th:text="XXX"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">VII. Port binding
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	VII. Port binding
 			    	<div class="detail"><a id="portbinding"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">VIII. Concurrency
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	VIII. Concurrency
 			    	<div class="detail"><a id="concurrency" th:text="XXX"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">IX. Disposability
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	IX. Disposability
 			    	<div class="detail"><a id="disposability" th:text="XXX"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">X. Dev/prod parity
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	X. Dev/prod parity
 			    	<div class="detail"><a id="devprodparity"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">XI. Logs
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	XI. Logs
 			    	<div class="detail"><a id="logs" th:text="XXX"></a></div>
 			    </div><br/>
-			    <div class="ui basic label">XII. Admin processes
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	XII. Admin processes
 			    	<div class="detail"><a id="adminprocesses" th:text="XXX"></a></div>
 			    </div>
 		    </div>
@@ -438,28 +485,44 @@
 		    <div class="column ui segment">
 			    <p class="ui  basic ribbon label">Resilienz</p>
 			    <p/>
-			    <div class="ui basic label">I. AZD Cloud
+			    <div class="ui basic label">
+			    	<i class="icon circle red"></i>
+			    	I. AZD Cloud
 			    	<div class="detail"><a id="azdcloud" th:text="XXX"></a></div>
 			  	</div><br/>
-			    <div class="ui basic label">II. Redundancy
+			    <div class="ui basic label">
+			    	<i class="icon circle red"></i>
+			    	II. Redundancy
 			    	<div class="detail"><a id="redundancy" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">III. Zero Downtime deployment
+			  	<div class="ui basic label">
+			  		<i class="icon circle red"></i>
+			  		III. Zero Downtime deployment
 			    	<div class="detail"><a id="zerodowntimedeployment" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">IV. Retry
+			  	<div class="ui basic label">
+			  		<i class="icon circle red"></i>
+			  		IV. Retry
 			    	<div class="detail"><a id="retry" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">V. Isolation
+			  	<div class="ui basic label">
+			  		<i class="icon circle red"></i>
+			  		V. Isolation
 			    	<div class="detail"><a id="isolation" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">VI. Caching
+			  	<div class="ui basic label">
+			  		<i class="icon circle red"></i>
+			  		VI. Caching
 			    	<div class="detail"><a id="caching" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">VII. Fallback
+			  	<div class="ui basic label">
+			  		<i class="icon circle red"></i>
+			  		VII. Fallback
 			    	<div class="detail"><a id="fallback" th:text="XXX"></a></div>
 			  	</div><br/>
-			  	<div class="ui basic label">VIII. Loose Coupling
+			  	<div class="ui basic label">
+			  		<i class="icon circle red"></i>
+			  		VIII. Loose Coupling
 			    	<div class="detail"><a id="loosecoupling" th:text="XXX"></a></div>
 			  	</div>
 		  	</div>

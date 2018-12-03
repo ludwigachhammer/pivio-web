@@ -40,6 +40,7 @@ public class JenkinsMonitoring {
 	}
 	
 	public JenkinsMonitoring(String name) {
+		System.out.println("******** getJenkinsMonitoringData ******************");
 		String jenkinsUrl = "http://localhost:8081/job/"+name+"/lastBuild/api/json";
 		JSONObject jenkinsMonitoringData;
 		try {
@@ -53,7 +54,6 @@ public class JenkinsMonitoring {
 			this.Url = jenkinsMonitoringData.getString("url");
 		}
 		catch(Exception e) {
-			System.out.println("******** getJenkinsMonitoringData ******************");
 			System.out.println(e);
 			this.BuildNumber = "Error";
 			this.Duration = "Error";
@@ -139,4 +139,33 @@ public class JenkinsMonitoring {
 		JSONObject myResponse = new JSONObject();
 	    return myResponse;
 	}
+	
+	public String getIcon(String status) {
+    	if(status.equals("Error")) {
+    		return "circle red";
+    	}
+    	else {
+    		return "circle green";
+    	}
+    }
+	
+	public String getStatusIcon(int x) {
+		String status;
+		switch (x) {
+	        case 1:  status = getBuildNumber();
+	        		 return getIcon(status);
+	        case 2:  status = getDuration();
+   		 			 return getIcon(status);
+	        case 3:  status = getEstimatedDuration();
+   		 			 return getIcon(status);
+	        case 4:  status = getResult();
+   		 			 return getIcon(status);
+	        case 5:  status = getTimestamp();
+   		 			 return getIcon(status);
+	        case 6:  status = getUrl();
+   		 			 return getIcon(status);
+	        default: status = "circle red";
+   		 			 return status;
+	    }
+    }
 }
