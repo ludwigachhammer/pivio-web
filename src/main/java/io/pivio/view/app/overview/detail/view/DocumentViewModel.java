@@ -18,7 +18,6 @@ public class DocumentViewModel {
     public Document document;
     public ServiceViewModel service = new ServiceViewModel();
     public List<SoftwareDependency> softwareDependencies = new ArrayList<>();
-    //public Map<String, String> other_attributes = new HashMap<>();
 
     public DocumentViewModel(Document document) {
         this.document = document;
@@ -36,12 +35,6 @@ public class DocumentViewModel {
         this.softwareDependencies = document.software_dependencies;
     }
     
-    //Nico
-    /*
-    private void setupAdditionalAttributes() {
-        //todo
-        this.other_attributes = document.other_attributes;
-    }*/
 
     public List<String> getConsolidatedLicenses() {
         List<String> result = new ArrayList<>();

@@ -8,6 +8,16 @@ import java.net.ProtocolException;
 import java.net.URL;
 import org.json.JSONObject; 
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+
 import org.joda.time.DateTime;
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -33,7 +43,7 @@ public class JenkinsMonitoring {
 		String jenkinsUrl = "http://localhost:8081/job/"+name+"/lastBuild/api/json";
 		JSONObject jenkinsMonitoringData;
 		try {
-			jenkinsMonitoringData = getLastJobInformation(jenkinsUrl);
+			jenkinsMonitoringData = getInformation(jenkinsUrl);
 			this.BuildNumber = jenkinsMonitoringData.getString("number");
 			this.Duration = jenkinsMonitoringData.getString("duration");
 			this.EstimatedDuration = jenkinsMonitoringData.getString("estimatedDuration");
@@ -84,6 +94,8 @@ public class JenkinsMonitoring {
 	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 	     try {
 			con.setRequestMethod("GET");
+			System.setProperty("http.agent", "Chrome");
+			con.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,5 +112,30 @@ public class JenkinsMonitoring {
 	     System.out.println(response.toString());
 	     JSONObject myResponse = new JSONObject(response.toString());
 	     return myResponse;
+	}
+	
+	public JSONObject getInformation(String url) throws Exception {
+
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet request = new HttpGet(url);
+
+		// add request header
+		//request.addHeader("User-Agent", USER_AGENT);
+		HttpResponse response = client.execute(request);
+
+		System.out.println("Response Code : " 
+	                + response.getStatusLine().getStatusCode());
+		//System.out.println("myResponse: " + response.getEntity().getContent());
+		BufferedReader rd = new BufferedReader(
+			new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+		System.out.println("myResponse: " + line);
+		JSONObject myResponse = new JSONObject();
+	    return myResponse;
 	}
 }

@@ -9,6 +9,8 @@ import io.pivio.view.app.overview.detail.view.ServiceDependencyViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.pivio.view.app.monitoring.*;
+
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class DetailService {
         Document document = new Document();
         try {
             document = pivioServerConnector.getDocumentById(id);
+            document.jenkinsMonitoring = new JenkinsMonitoring(document.name);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             // TODO

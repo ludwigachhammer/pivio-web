@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.pivio.view.app.monitoring.*;
 import org.json.JSONObject; 
 
-
 public class Document {
 
     public String owner;
@@ -52,7 +51,7 @@ public class Document {
 
     public GithubMonitoring githubMonitoring;
     
-    public JenkinsMonitoring jenkinsMonitoring = new JenkinsMonitoring(this.name);
+    public JenkinsMonitoring jenkinsMonitoring;
     
 	@JsonProperty("tags")
 	public List<String> getTags() {
@@ -72,9 +71,8 @@ public class Document {
 	public void set(String name, String value) {
 		this.other_attributes.put(name, value);
 	}
-    
-    
-    //Nico
+	
+	
     public String formatAdditionalAttributes(Map<String, String> other_attributes_arg) {
 		
 		if(other_attributes_arg.isEmpty()) {
@@ -139,21 +137,6 @@ public class Document {
     		return "No github information could be retrieved";
     	}
     }
-    
-    /*
-    public JSONObject getJenkinsMonitoringData() {
-    	jenkinsMonitoring = new JenkinsMonitoring();
-    	String jenkinsUrl = "http://localhost:8008/job/"+name+"/lastBuild/api/json";
-    	JSONObject myResponse;
-		try {
-			myResponse = jenkinsMonitoring.getLastJobInformation(jenkinsUrl);
-			System.out.println(myResponse);
-			return myResponse;
-		}catch(Exception e) {
-			return null;
-		}
-    }
-    */
     
     public String getStatusIcon() {
     	if(status.equals("running")) {
