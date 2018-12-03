@@ -29,55 +29,6 @@
 		</script>
 		<script th:inline="javascript" src="/js/12factor.js"></script>
 		<script th:inline="javascript" src="/js/resiliencefactors.js"></script>
-		<script th:inline="javascript" src="/js/jenkinsmonitoring.js"></script>
-		<script th:inline="javascript">
-		/*<![CDATA[*/
-			// Create the XHR object.
-			function createCORSRequest(method, url) {
-			  var xhr = new XMLHttpRequest();
-			  if ("withCredentials" in xhr) {
-			    // XHR for Chrome/Firefox/Opera/Safari.
-			    xhr.open(method, url, true);
-			  } else if (typeof XDomainRequest != "undefined") {
-			    // XDomainRequest for IE.
-			    xhr = new XDomainRequest();
-			    xhr.open(method, url);
-			  } else {
-			    // CORS not supported.
-			    xhr = null;
-			  }
-			  return xhr;
-			}
-	
-			// Make the actual CORS request.
-			function makeCorsRequest(url) {
-			  // This is a sample server that supports CORS.
-	
-			  var xhr = createCORSRequest('GET', url);
-			  if (!xhr) {
-				console.log('CORS not supported');
-			    return;
-			  }
-	
-			  // Response handlers.
-			  xhr.onload = function() {
-			    var text = xhr.responseText;
-			    //console.log('Response from CORS request to ' + url);
-			    //console.log(text);
-			  };
-	
-			  xhr.onerror = function() {
-			    console.log('Woops, there was an error making the request.');
-			  };
-	
-			  xhr.send();
-			}
-			var url = /*[[${pivio.document.url}]]*/ '';
-			makeCorsRequest('https://'+url+'/prometheus');
-			
-		/*]]>*/
-		</script>
-    
 		
 		<!-- first column -->    
         <div class="column">
@@ -108,15 +59,15 @@
 				<div th:if="${pivio.document.domain}" class="ui basic label">
                     <i class="circle thin icon"></i> Domain
                     <div class="detail" th:text="${pivio.document.domain}"></div>
-                </div><p/>
+                </div>
                 <div th:if="${pivio.document.subdomain}" class="ui basic label">
                     <i class="circle thin icon"></i> Subdomain
                     <div class="detail" th:text="${pivio.document.subdomain}"></div>
-                </div><p/>
+                </div>
                 <div th:if="${pivio.document.product}" class="ui basic label">
                     <i class="circle thin icon"></i> Product
                     <div class="detail" th:text="${pivio.document.product}"></div>
-                </div><p/>
+                </div>
                 <div class="ui basic label">
                     <i class="users icon"></i> Owner
                     <a th:href="'/app/overview/list?field=owner&amp;value='+${pivio.document.owner}"

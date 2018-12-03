@@ -22,7 +22,7 @@ public class ListController {
 
     @RequestMapping("/")
     public String main() {
-        return "redirect:/app/overview";
+        return "redirect:/app/landingpage";
     }
 
     @RequestMapping("/app/overview")

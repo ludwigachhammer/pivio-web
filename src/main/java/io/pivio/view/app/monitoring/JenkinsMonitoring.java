@@ -44,6 +44,7 @@ public class JenkinsMonitoring {
 		JSONObject jenkinsMonitoringData;
 		try {
 			jenkinsMonitoringData = getInformation(jenkinsUrl);
+			System.out.println("JSONObject: "+jenkinsMonitoringData.toString());
 			this.BuildNumber = jenkinsMonitoringData.getString("number");
 			this.Duration = jenkinsMonitoringData.getString("duration");
 			this.EstimatedDuration = jenkinsMonitoringData.getString("estimatedDuration");
