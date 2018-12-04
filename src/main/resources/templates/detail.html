@@ -30,9 +30,7 @@
 				float: right;
 			}
 		</style>
-		<script th:inline="javascript">
-			var cloudUrl = /*[[${pivio.document.url}]]*/ 'No url could be found';
-		</script>
+		
 		<!--  
 		<script th:inline="javascript" src="/js/12factor.js"></script> 
 		<script th:inline="javascript" src="/js/resiliencefactors.js"></script>
@@ -347,34 +345,31 @@
      	<p th:text="${pivio.document.getJiraMonitoringData()}"></p>
 		
 		<div class="column">
-	        
 		  	<div class="ui basic label">Total Issues
-		    	<div class="detail"><a th:text="${pivio.document.jiraMonitoring.getTotalIssues()}"></a></div>
+		    	<div class="detail"><a id="total-issues" th:text="${pivio.document.jiraMonitoring.getTotalIssues()}"></a></div>
 		    </div>
-		  	
-		  	<!-- 
 		    <div class="ui basic label">Open Issues
-		    	<div class="detail"><a th:text="${pivio.document.jiraMonitoring.getOpenIssues()}"></a></div>
+		    	<div class="detail"><a id="open-issues" th:text="${pivio.document.jiraMonitoring.getOpenIssues()}"></a></div>
 		    </div>
-		     -->
-		    
-		    <p/>
-		    <p class="ui  basic ribbon label">Related Components</p>
+		    <br/>
+		    <br/>
+		    <p class="ui  basic ribbon label">Components in Jira-Project</p>
+		    <br/>
+		    <br/>
 	        <div th:if="${pivio.document.jiraMonitoring.components}">
-              	<p>
                 	<div th:each="component: ${pivio.document.jiraMonitoring.components}" class="ui basic label">
-	                    	<i class="file thin icon"></i><span th:text="${component.key}"/>
-                    		<div class="detail" th:text="${component.value}"></div>
-                    		<p />
+	                    	<i class="file thin icon"></i><span th:text="${component.key}"></span>
+                    		<div class="detail" th:text="${component.value}">
+                    		</div>
+                    		<br/>
                 	</div>
-              	</p>
            	</div>
-
 	    </div>
 	    
 	    <div class="column">
-	        <p/>
 	        <!-- Diagrams -->
+	        <div id="issues-ratio">
+	        </div>
 	    </div>
         
     </div>
@@ -580,6 +575,51 @@
     </div>
 
 </div>
+
+	<script th:inline="javascript">
+		var totalIssues = parseInt($("#total-issues").text(),10);
+		var openIssues = parseInt($("#open-issues").text(),10);
+		
+		var data = [totalIssues-openIssues, openIssues];
+	
+		var width = $("#issues-ratio").width();
+	    var height = width;
+	    var radius = Math.min(width, height) / 2;
+		var color = d3.scaleOrdinal()
+		    .range(["#2185d0", "#0000cc"]);
+
+		var arc = d3.arc()
+		    .outerRadius(radius - 10)
+		    .innerRadius(0);
+
+		var labelArc = d3.arc()
+		    .outerRadius(radius - 40)
+		    .innerRadius(radius - 40);
+
+		var pie = d3.pie()
+		    .sort(null)
+		    .value(function(d) { return d; });
+
+		var svg = d3.select("#issues-ratio").append("svg")
+		    .attr("width", width)
+		    .attr("height", height)
+		  .append("g")
+		    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+		  var g = svg.selectAll(".arc")
+		      .data(pie(data))
+		    .enter().append("g")
+		      .attr("class", "arc");
+
+		  g.append("path")
+		      .attr("d", arc)
+		      .style("fill", function(d) { return color(d.data); });
+
+		  g.append("text")
+		      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+		      .attr("dy", ".35em")
+		      .text(function(d) { return d.data; });
+	</script>
 
 </body>
 

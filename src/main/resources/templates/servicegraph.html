@@ -110,24 +110,23 @@
 					if(element.domain == elementInSunData.name){
 						console.log("elementInSunData.children: ", elementInSunData.children);
 						console.log("ForEach in elementInSunData.children");
-						//TODO: first children.length = 0 wenn ja push element, wenn nein forEach
 						if(elementInSunData.children.length == 0){
+							console.log("elementInSunData.children.length == 0");
 							elementInSunData.children.push({
 								"name": element.product,
 								"size": 1
 							});
 						}else{
-							elementInSunData.children.forEach(function(elementInSunDataChild){
-								if(elementInSunDataChild.name == element.product){
-									console.log("Ist in array enthalten: ", element.product);
-								}else{
-									console.log("Ist NICHT in array enthalten: ", element.product);
-									elementInSunData.children.push({
-										"name": element.product,
-										"size": 1
-									});
-								}
-							});
+							console.log("elementInSunData.children.length != 0");
+							if(elementInSunData.children.some(item => item.name === element.product)){
+								console.log("Ist IN array enthalten: ", element.product);
+							}else{
+								console.log("Ist NICHT in array enthalten: ", element.product);
+								elementInSunData.children.push({
+									"name": element.product,
+									"size": 1
+								});
+							}
 						}
 					}
 					console.log("******************************");
@@ -157,12 +156,15 @@
 					"children": []
 					};
 			var domains = [];
+			var products = [];
 			var uniqueDomains = [];
 			var uniqueProducts = [];
 			//include provides and dependson for relationships
 			jsonArray.forEach(function(element) {
 				domains.push(element.domain);
+				products.push(element.product);
 			});
+			console.log("products", products);
 			$.each(domains, function(i, el){
 			    if($.inArray(el, uniqueDomains) === -1) uniqueDomains.push(el);
 			});
