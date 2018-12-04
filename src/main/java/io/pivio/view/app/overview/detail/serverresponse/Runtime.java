@@ -12,6 +12,31 @@ public class Runtime {
     public String host_type;
     public String network_zone;
     
+	public String getCpu() {
+		return cpu;
+	}
+
+	public String getRam() {
+		return ram;
+	}
+
+	public String getDisk() {
+		return disk;
+	}
+
+	public String getInstances() {
+		return instances;
+	}
+
+	public String getHost_type() {
+		return host_type;
+	}
+
+
+	public String getNetwork_zone() {
+		return network_zone;
+	}
+    
     public String toString(){
     	return "{"+
     			"\"cpu\":\"" + cpu + "\"" +

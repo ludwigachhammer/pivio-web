@@ -23,12 +23,17 @@
 			.ui.segment:last-child{
 				margin-bottom: 1em !important;
 			}
+			.governance-monitoring > .ui.basic.label{
+				width: 100%;
+			}
 		</style>
 		<script th:inline="javascript">
 			var cloudUrl = /*[[${pivio.document.url}]]*/ 'No url could be found';
 		</script>
-		<script th:inline="javascript" src="/js/12factor.js"></script>
+		<!--  
+		<script th:inline="javascript" src="/js/12factor.js"></script> 
 		<script th:inline="javascript" src="/js/resiliencefactors.js"></script>
+		-->
 		
 		<!-- first column -->    
         <div class="column">
@@ -174,7 +179,7 @@
                 <div class="ui blue top attached label">Runtime</div>
 
 				<div class="ui basic label"> Instances
-                    <div class="detail"><a th:text="1"></a></div>
+                    <div class="detail"><a th:text="${pivio.document.runtime.instances}"></a></div>
                 </div>
                 <div class="ui basic label"> RAM
                     <div class="detail"><a th:text="${pivio.document.runtime.ram}"></a></div>
@@ -412,26 +417,27 @@
     <div class="ui segment">
     	<div class="ui yellow top attached label">Governance Monitoring</div>
 		<div class="ui two column grid">
-	        <div class="column ui segment">
+	        <div class="column ui segment governance-monitoring">
 		        <p class="ui  basic ribbon label">The twelve-factor methodology</p>
 		        <p/>
 		        <div class="ui basic label">
 		        	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
 		        	I. Codebase
-			    	<div class="detail"><a id="codebase"></a></div>
+			    	<div class="detail"><a id="codebase" th:text="${pivio.document.governanceMonitoring.getCodebase()}"></a></div>
 			  	</div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(2)}"></i>
 			    	II. Dependencies
-			    	<div class="detail"><a id="dependencies"></a></div>
+			    	<div class="detail"><a id="dependencies" th:text="${pivio.document.governanceMonitoring.getDependencies()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(3)}"></i>
 			    	III. Configuration
-			    	<div class="detail"><a id="configuration"></a></div>
+			    	<div class="detail"><a id="configuration" th:text="${pivio.document.governanceMonitoring.getConfiguration()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
-			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(4)}"></i>
+			    	<i th:if="${pivio.document.service != null}" class="icon circle green"></i>
+			    	<i th:if="${pivio.document.service == null}" class="icon circle red"></i>
 			    	IV. Backing services
 			    	<div class="detail" th:if="${pivio.document.service != null}">
 			    		<a id="backingservices" th:text="Yes"></a>
@@ -443,87 +449,87 @@
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(5)}"></i>
 			    	V. Build, release, run
-			    	<div class="detail"><a id="buildreleaserun" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="buildreleaserun" th:text="${pivio.document.governanceMonitoring.getBuildReleaseRun()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(6)}"></i>
 			    	VI. Processes
-			    	<div class="detail"><a id="processes" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="processes" th:text="${pivio.document.governanceMonitoring.getProcesses()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
-			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(7)}"></i>
 			    	VII. Port binding
-			    	<div class="detail"><a id="portbinding"></a></div>
+			    	<div class="detail"><a id="portbinding" th:text="${pivio.document.governanceMonitoring.getPortBinding()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
-			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(8)}"></i>
 			    	VIII. Concurrency
-			    	<div class="detail"><a id="concurrency" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="concurrency" th:text="${pivio.document.governanceMonitoring.getConcurrency()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
-			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(9)}"></i>
 			    	IX. Disposability
-			    	<div class="detail"><a id="disposability" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="disposability" th:text="${pivio.document.governanceMonitoring.getDisposability()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
-			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(10)}"></i>
 			    	X. Dev/prod parity
-			    	<div class="detail"><a id="devprodparity"></a></div>
+			    	<div class="detail"><a id="devprodparity" th:text="${pivio.document.governanceMonitoring.getDevProdParity()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
-			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(11)}"></i>
 			    	XI. Logs
-			    	<div class="detail"><a id="logs" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="logs" th:text="${pivio.document.governanceMonitoring.getLogs()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
-			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
+			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(12)}"></i>
 			    	XII. Admin processes
-			    	<div class="detail"><a id="adminprocesses" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="adminprocesses" th:text="${pivio.document.governanceMonitoring.getAdminProcesses()}"></a></div>
 			    </div>
 		    </div>
 		    
-		    <div class="column ui segment">
-			    <p class="ui  basic ribbon label">Resilienz</p>
+		    <div class="column ui segment governance-monitoring">
+			    <p class="ui  basic ribbon label">Resilience</p>
 			    <p/>
 			    <div class="ui basic label">
 			    	<i class="icon circle red"></i>
 			    	I. AZD Cloud
-			    	<div class="detail"><a id="azdcloud" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="azdcloud" th:text="${pivio.document.governanceMonitoring.getIsHostedInAZDCloud()}"></a></div>
 			  	</div><br/>
 			    <div class="ui basic label">
 			    	<i class="icon circle red"></i>
 			    	II. Redundancy
-			    	<div class="detail"><a id="redundancy" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="redundancy" th:text="${pivio.document.governanceMonitoring.getRedundancy()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		III. Zero Downtime deployment
-			    	<div class="detail"><a id="zerodowntimedeployment" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="zerodowntimedeployment" th:text="${pivio.document.governanceMonitoring.getZeroDowntimeDeployment()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		IV. Retry
-			    	<div class="detail"><a id="retry" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="retry" th:text="${pivio.document.governanceMonitoring.getRetry()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		V. Isolation
-			    	<div class="detail"><a id="isolation" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="isolation" th:text="${pivio.document.governanceMonitoring.getIsolation()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		VI. Caching
-			    	<div class="detail"><a id="caching" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="caching" th:text="${pivio.document.governanceMonitoring.getCaching()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		VII. Fallback
-			    	<div class="detail"><a id="fallback" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="fallback" th:text="${pivio.document.governanceMonitoring.getFallback()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		VIII. Loose Coupling
-			    	<div class="detail"><a id="loosecoupling" th:text="XXX"></a></div>
+			    	<div class="detail"><a id="loosecoupling" th:text="${pivio.document.governanceMonitoring.getLooseCoupling()}"></a></div>
 			  	</div>
 		  	</div>
 	    </div>

@@ -115,6 +115,10 @@ public class Document {
                 '}';
     }
     
+    public String getUrl() {
+        return url;
+    }
+    
     public String getPrettyUploadDate() {
         return new PrettyTime().format(new DateTime(lastUpload).toDate());
     }
@@ -133,10 +137,11 @@ public class Document {
     	System.out.println("Github-link: "+value);
     	githubMonitoring = new GithubMonitoring();
     	System.out.println("GithubMonitoring: "+githubMonitoring);
-    	governanceMonitoring = new GovernanceMonitoring(value);
     	if(value != null) {
+    		governanceMonitoring = new GovernanceMonitoring(value, runtime.getInstances(), getUrl(), service.toString());
     		return githubMonitoring.getMonitoringData(value);
     	}else {
+    		governanceMonitoring = new GovernanceMonitoring();
     		return "No github information could be retrieved";
     	}
     }

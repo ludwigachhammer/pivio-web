@@ -15,18 +15,18 @@ $(function init(){
 	var searchUrl = user+'/'+repository;
 	console.log(repository);
 	console.log(user);
-	checkCodebase();
-	checkDependencies(searchUrl);
-	checkConfiguration(searchUrl);
-	checkBackingServices();
-	checkBuildReleaseRun(searchUrl);
-	checkProcesses();
-	checkPortBinding(searchUrl);
-	checkConcurrency();
-	checkDisposability();
-	checkDevProdParity(searchUrl);
-	checkLogs();
-	checkAdminProcesses();
+	//checkCodebase();
+	//checkDependencies(searchUrl);
+	//checkConfiguration(searchUrl);
+	//checkBackingServices();
+	//heckBuildReleaseRun(searchUrl);
+	//checkProcesses();
+	//checkPortBinding(searchUrl);
+	//checkConcurrency();
+	//checkDisposability();
+	//checkDevProdParity(searchUrl);
+	//checkLogs();
+	//checkAdminProcesses();
 });
 function checkCodebase() {
 	//is always yes due to groovyfile in repository
