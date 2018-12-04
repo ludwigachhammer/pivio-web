@@ -98,7 +98,17 @@
 	
 	function servicegraph(jsonArray){
 		
-		function format_help(sunData, jsonArray, diameter){
+		function countProductSize(word, products){
+			var numOfProducts = 0;
+			products.forEach(function(element) {
+				if(element === word){
+			    	numOfProducts++;
+			    }
+			});
+			return numOfProducts;
+		}
+		
+		function format_help(sunData, jsonArray, diameter, products){
 			jsonArray.forEach(function(element) {
 				//element.name = element.domain+"."+element.subdomain+"."+element.product+"."+element.name;
 				element.imports = [];
@@ -114,7 +124,7 @@
 							console.log("elementInSunData.children.length == 0");
 							elementInSunData.children.push({
 								"name": element.product,
-								"size": 1
+								"size": countProductSize(element.product, products)
 							});
 						}else{
 							console.log("elementInSunData.children.length != 0");
@@ -124,7 +134,7 @@
 								console.log("Ist NICHT in array enthalten: ", element.product);
 								elementInSunData.children.push({
 									"name": element.product,
-									"size": 1
+									"size": countProductSize(element.product, products)
 								});
 							}
 						}
@@ -175,8 +185,7 @@
 				});
 			});
 			console.log("sunData", sunData);
-			
-			format_help(sunData, jsonArray, diameter);
+			format_help(sunData, jsonArray, diameter, products);
 			drawCanvas(jsonArray); //communication diagram
 		}
 		
@@ -284,7 +293,7 @@
       			.on("click", linkToDetailView);
 		}
 
-		//console.log("Jsonobject:", jsonArray);
+		console.log("Jsonobject:", jsonArray);
 		var cloudfoundryDivBounding = d3.select("#graph-cloudfoundry").node().getBoundingClientRect();
 		console.log(cloudfoundryDivBounding);
 		
