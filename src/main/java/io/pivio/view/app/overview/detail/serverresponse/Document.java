@@ -55,6 +55,8 @@ public class Document {
     
     public GovernanceMonitoring governanceMonitoring;
     
+    public JiraMonitoring jiraMonitoring;
+    
 	@JsonProperty("tags")
 	public List<String> getTags() {
 		return tags;
@@ -143,6 +145,19 @@ public class Document {
     	}else {
     		governanceMonitoring = new GovernanceMonitoring();
     		return "No github information could be retrieved";
+    	}
+    }
+    
+    public String getJiraMonitoringData() {
+    	String value = other_attributes.get("jira");
+    	String key = other_attributes.get("key");
+    	System.out.println("*****************************************************************");
+    	System.out.println("Jira-link: "+value);
+    	if(value != null) {
+    		jiraMonitoring = new JiraMonitoring();
+    		return jiraMonitoring.getMonitoringData(value, key);
+    	}else {
+    		return "No jira information could be retrieved";
     	}
     }
     

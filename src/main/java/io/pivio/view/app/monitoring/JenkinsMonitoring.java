@@ -17,6 +17,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.HttpEntity;
+import java.util.Base64;
 
 import org.joda.time.DateTime;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -41,16 +44,16 @@ public class JenkinsMonitoring {
 	
 	public JenkinsMonitoring(String name) {
 		System.out.println("******** getJenkinsMonitoringData ******************");
-		String jenkinsUrl = "http://localhost:8081/job/"+name+"/lastBuild/api/json";
+		String jenkinsUrl = "http://131.159.30.173:8081/job/"+name+"/lastBuild/api/json";
 		JSONObject jenkinsMonitoringData;
 		try {
 			jenkinsMonitoringData = getInformation(jenkinsUrl);
 			System.out.println("JSONObject: "+jenkinsMonitoringData.toString());
-			this.BuildNumber = jenkinsMonitoringData.getString("number");
-			this.Duration = jenkinsMonitoringData.getString("duration");
-			this.EstimatedDuration = jenkinsMonitoringData.getString("estimatedDuration");
+			this.BuildNumber = String.valueOf(jenkinsMonitoringData.getInt("number"));
+			this.Duration = String.valueOf(jenkinsMonitoringData.getInt("duration"));
+			this.EstimatedDuration = String.valueOf(jenkinsMonitoringData.getInt("estimatedDuration"));
 			this.Result = jenkinsMonitoringData.getString("result");
-			this.Timestamp = jenkinsMonitoringData.getString("timestamp");
+			this.Timestamp = String.valueOf(jenkinsMonitoringData.getInt("timestamp"));
 			this.Url = jenkinsMonitoringData.getString("url");
 		}
 		catch(Exception e) {
@@ -90,53 +93,23 @@ public class JenkinsMonitoring {
 		return this.Url;
 	}
 	
-	public JSONObject getLastJobInformation(String url) throws Exception {
-	     URL obj = new URL(url);
-	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-	     try {
-			con.setRequestMethod("GET");
-			System.setProperty("http.agent", "Chrome");
-			con.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	     int responseCode = con.getResponseCode();
-	     System.out.println("Sending 'GET' request to URL : " + url);
-	     System.out.println("Response Code : " + responseCode);
-	     BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-	     String inputLine;
-	     StringBuffer response = new StringBuffer();
-	     while ((inputLine = in.readLine()) != null) {
-	     	response.append(inputLine);
-	     }
-	     in.close();
-	     System.out.println(response.toString());
-	     JSONObject myResponse = new JSONObject(response.toString());
-	     return myResponse;
-	}
 	
 	public JSONObject getInformation(String url) throws Exception {
 
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(url);
-
+		String userpass = "admin" + ":" + "admin";
+	    System.out.println("userpass: "+userpass);
+	    String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userpass.getBytes()));
+	    System.out.println(basicAuth);
 		// add request header
-		//request.addHeader("User-Agent", USER_AGENT);
+		request.addHeader("Authorization", basicAuth);
 		HttpResponse response = client.execute(request);
-
-		System.out.println("Response Code : " 
-	                + response.getStatusLine().getStatusCode());
-		//System.out.println("myResponse: " + response.getEntity().getContent());
-		BufferedReader rd = new BufferedReader(
-			new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		System.out.println("myResponse: " + line);
-		JSONObject myResponse = new JSONObject();
+		HttpEntity entity = response.getEntity();
+		String responseString = EntityUtils.toString(entity, "UTF-8");
+		System.out.println(responseString);
+		
+		JSONObject myResponse = new JSONObject(responseString);
 	    return myResponse;
 	}
 	

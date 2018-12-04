@@ -26,6 +26,9 @@
 			.governance-monitoring > .ui.basic.label{
 				width: 100%;
 			}
+			.governance-monitoring > .ui.basic.label > .detail{
+				float: right;
+			}
 		</style>
 		<script th:inline="javascript">
 			var cloudUrl = /*[[${pivio.document.url}]]*/ 'No url could be found';
@@ -340,14 +343,38 @@
     
    	<div class="ui segment">
      	<div class="ui blue top attached label">Jira Monitoring</div>
+     	
+     	<p th:text="${pivio.document.getJiraMonitoringData()}"></p>
+		
+		<div class="column">
+	        
+		  	<div class="ui basic label">Total Issues
+		    	<div class="detail"><a th:text="${pivio.document.jiraMonitoring.getTotalIssues()}"></a></div>
+		    </div>
+		  	
+		  	<!-- 
+		    <div class="ui basic label">Open Issues
+		    	<div class="detail"><a th:text="${pivio.document.jiraMonitoring.getOpenIssues()}"></a></div>
+		    </div>
+		     -->
+		    
+		    <p/>
+		    <p class="ui  basic ribbon label">Related Components</p>
+	        <div th:if="${pivio.document.jiraMonitoring.components}">
+              	<p>
+                	<div th:each="component: ${pivio.document.jiraMonitoring.components}" class="ui basic label">
+	                    	<i class="file thin icon"></i><span th:text="${component.key}"/>
+                    		<div class="detail" th:text="${component.value}"></div>
+                    		<p />
+                	</div>
+              	</p>
+           	</div>
 
-        <p/>
-        <div class="ui basic label">Related Components
-	    	<div class="detail"><span th:text="..."></span></div>
-	  	</div>
-	  	
-	    <div class="ui basic label">Open Issues
-	    	<div class="detail"><a th:text="X"></a></div>
+	    </div>
+	    
+	    <div class="column">
+	        <p/>
+	        <!-- Diagrams -->
 	    </div>
         
     </div>
@@ -423,7 +450,10 @@
 		        <div class="ui basic label">
 		        	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
 		        	I. Codebase
-			    	<div class="detail"><a id="codebase" th:text="${pivio.document.governanceMonitoring.getCodebase()}"></a></div>
+			    	<div class="detail">
+			    		<a id="codebase" th:text="${pivio.document.governanceMonitoring.getCodebase()}"></a>
+			    		<i class="icon info circle yellow"></i>
+		    		</div>
 			  	</div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(2)}"></i>

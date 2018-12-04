@@ -45,6 +45,7 @@ public class Service {
     	service = "{"+ providesString + "," + buildpacksString +"}";
     	System.out.println("******Services*******");
     	System.out.println(service);
+    	System.out.println("*********************");
     	return service;
     }
     

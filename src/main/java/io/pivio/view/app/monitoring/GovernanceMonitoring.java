@@ -38,9 +38,9 @@ public class GovernanceMonitoring {
 	private String LooseCoupling;
 	private String url;
 	
-	@Value("${config.username}")
+	@Value("${github.username}")
 	private String username;
-	@Value("${config.password}")
+	@Value("${github.password}")
 	private String password;
 	
 	//TODO: Convert calls into Octokit object
@@ -174,7 +174,8 @@ public class GovernanceMonitoring {
 	public String getRequestInformation(String url) throws Exception {
 	     URL obj = new URL(url);
 	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-	     String userpass = username + ":" + password;
+	     String userpass = "Nicocovi" + ":" + "nico0205";
+	     System.out.println("userpass: "+userpass);
 	     String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userpass.getBytes()));
 	     con.setRequestProperty("Authorization", basicAuth);
 	     try {
