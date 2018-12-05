@@ -70,6 +70,13 @@
 		    width: 50%;
 		    padding: 10px;
 		}
+		.sunburst-path{
+			opacity: 0.2;
+  			filter: alpha(opacity=50); /* For IE8 and earlier */
+		}
+		.sunburst-path:hover{
+			opacity: 1;
+		}
 
     </style>
 
@@ -112,26 +119,26 @@
 			jsonArray.forEach(function(element) {
 				//element.name = element.domain+"."+element.subdomain+"."+element.product+"."+element.name;
 				element.imports = [];
-				console.log("sunData.children ", sunData.children);
+				//console.log("sunData.children ", sunData.children);
 				sunData.children.forEach(function(elementInSunData){
-					console.log("elementInSunData.name ", elementInSunData.name);
-					console.log("element.domain ", element.domain);
-					console.log("element.product ", element.product);
+					//console.log("elementInSunData.name ", elementInSunData.name);
+					//console.log("element.domain ", element.domain);
+					//console.log("element.product ", element.product);
 					if(element.domain == elementInSunData.name){
-						console.log("elementInSunData.children: ", elementInSunData.children);
-						console.log("ForEach in elementInSunData.children");
+						//console.log("elementInSunData.children: ", elementInSunData.children);
+						//console.log("ForEach in elementInSunData.children");
 						if(elementInSunData.children.length == 0){
-							console.log("elementInSunData.children.length == 0");
+							//console.log("elementInSunData.children.length == 0");
 							elementInSunData.children.push({
 								"name": element.product,
 								"size": countProductSize(element.product, products)
 							});
 						}else{
-							console.log("elementInSunData.children.length != 0");
+							//console.log("elementInSunData.children.length != 0");
 							if(elementInSunData.children.some(item => item.name === element.product)){
-								console.log("Ist IN array enthalten: ", element.product);
+								//console.log("Ist IN array enthalten: ", element.product);
 							}else{
-								console.log("Ist NICHT in array enthalten: ", element.product);
+								//console.log("Ist NICHT in array enthalten: ", element.product);
 								elementInSunData.children.push({
 									"name": element.product,
 									"size": countProductSize(element.product, products)
@@ -139,7 +146,7 @@
 							}
 						}
 					}
-					console.log("******************************");
+					//console.log("******************************");
 				});
 				if(element.hasOwnProperty('service')){
 					if(element.service.hasOwnProperty('provides')){
@@ -174,7 +181,7 @@
 				domains.push(element.domain);
 				products.push(element.product);
 			});
-			console.log("products", products);
+			//console.log("products", products);
 			$.each(domains, function(i, el){
 			    if($.inArray(el, uniqueDomains) === -1) uniqueDomains.push(el);
 			});
@@ -184,7 +191,7 @@
 					"children": []
 				});
 			});
-			console.log("sunData", sunData);
+			//console.log("sunData", sunData);
 			format_help(sunData, jsonArray, diameter, products);
 			drawCanvas(jsonArray); //communication diagram
 		}
@@ -225,7 +232,7 @@
 
 		  // For each import, construct a link from the source to target node.
 		  nodes.forEach(function(d) {
-			console.log("D: ", d);
+			//console.log("D: ", d);
 		    if(d.data.hasOwnProperty('imports')){
 		    	d.data.imports.forEach(function(i) {
 				      imports.push(map[d.data.name].path(map[i]));
@@ -262,7 +269,7 @@
 		
 		function linkToDetailView(d){
 			var id = d.data.id
-			console.log(d.data.id);
+			//console.log(d.data.id);
 			window.location.href = '../app/overview/'+id;
 		}
 		
@@ -293,17 +300,17 @@
       			.on("click", linkToDetailView);
 		}
 
-		console.log("Jsonobject:", jsonArray);
+		//console.log("Jsonobject:", jsonArray);
 		var cloudfoundryDivBounding = d3.select("#graph-cloudfoundry").node().getBoundingClientRect();
 		console.log(cloudfoundryDivBounding);
 		
-		var diameter = (cloudfoundryDivBounding.width) - 200,
+		var diameter = (cloudfoundryDivBounding.width) - 40,
 	    	radius = diameter / 2,
-	    	innerRadius = radius /2;
+	    	innerRadius = radius / 2;
 		
 		var color = d3.scaleOrdinal(d3.schemeCategory20b);
 		
-		d3.select("#graph-cloudfoundry").attr("style", "padding: 20px 100px")
+		d3.select("#graph-cloudfoundry").attr("style", "padding: 20px 20px")
 
 		var cluster = d3.cluster()
 	    	.size([360, innerRadius]);
@@ -318,6 +325,7 @@
 	    	.attr("height", diameter)
 	    	.attr("margin", "180px")
 	  		.append("g")
+	  		.attr("id", "sunburst-g")
 	    	.attr("transform", "translate(" + radius + "," + radius + ")");
 
 		var link = svg.append("g").selectAll(".link"),
