@@ -29,12 +29,130 @@
 			.governance-monitoring > .ui.basic.label > .detail{
 				float: right;
 			}
+			.bar{ 
+				fill: cornflowerblue; 
+			}
+			.arc text {
+		  text-anchor: middle;
+		}
 		</style>
 		
-		<!--  
-		<script th:inline="javascript" src="/js/12factor.js"></script> 
-		<script th:inline="javascript" src="/js/resiliencefactors.js"></script>
-		-->
+		<script src="/webjars/d3js/4.2.1/d3.min.js"></script>
+		<script th:inline="javascript">
+		
+			function drawJiraProgress(){
+				console.log("Start drawing");
+				var totalIssues = parseInt($("#total-issues").text(),10);
+				var openIssues = parseInt($("#open-issues").text(),10);
+				console.log("totalIssues", totalIssues);
+				console.log("openIssues", openIssues);
+				
+				var data = [totalIssues-openIssues, openIssues];
+				var text = ["Done", "To Do"];
+				console.log("data", data);
+			
+				var width = $("#leftjiraside").width();
+				console.log("width", width);
+			    var height = $("#leftjiraside").height();;
+			    console.log("height", height);
+			    var radius = Math.min(width, height) / 2;
+			    console.log("radius", radius);
+				var color = d3.scaleOrdinal()
+				    .range(["#21ba45", "#db2828"]);
+		
+				var arc = d3.arc()
+				    .outerRadius(radius - 10)
+				    .innerRadius(0);
+		
+				var labelArc = d3.arc()
+				    .outerRadius(radius - 40)
+				    .innerRadius(radius - 40);
+		
+				var pie = d3.pie()
+				    .sort(null)
+				    .value(function(d) { return d; });
+		
+				var svg = d3.select("#issues-ratio").append("svg")
+				    	.attr("width", width)
+				    	.attr("height", height)
+				  		.append("g")
+				    	.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+		
+				  var g = svg.selectAll(".arc")
+				      	.data(pie(data))
+				    	.enter().append("g")
+				      	.attr("class", "arc");
+		
+				  g.append("path")
+				      .attr("d", arc)
+				      .style("fill", function(d) { return color(d.data); });
+		
+				  g.append("text")
+				      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+				      .attr("dy", ".35em")
+				      .text(function(d) { 
+				    	  return text[d.index]; 
+			    	  });
+			}
+			
+			function drawJenkinsTimeComparisson(){
+				// set the dimensions and margins of the graph
+				var margin = {top: 20, right: 20, bottom: 30, left: 40},
+				    width = $("#jenkins-time-comparisson").width() - margin.left - margin.right,
+				    height = $("#leftjenkinsside").height() - margin.top - margin.bottom;
+				var duration = parseInt($("#duration").text(),10);
+				var estimatedduration = parseInt($("#estimatedduration").text(),10);
+				//console.log("Duration", duration);
+				//console.log("estimatedduration", estimatedduration);
+
+				// set the ranges
+				var x = d3.scaleBand()
+				          .range([0, width])
+				          .padding(0.1);
+				var y = d3.scaleLinear()
+				          .range([height, 0]);
+				          
+				// append the svg object to the body of the page
+				// append a 'group' element to 'svg'
+				// moves the 'group' element to the top left margin
+				var svg = d3.select("#jenkins-time-comparisson").append("svg")
+				    .attr("width", width + margin.left + margin.right)
+				    .attr("height", height + margin.top + margin.bottom)
+				  .append("g")
+				    .attr("transform", 
+				          "translate(" + margin.left + "," + margin.top + ")");
+
+				// get the data
+				data = [
+						{name:"duration", value: duration},
+						{name:"estimated duration", value: estimatedduration}
+					];
+				
+				// Scale the range of the data in the domains
+				x.domain(data.map(function(d) { return d.name; }));
+				y.domain([0, d3.max(data, function(d) { return d.value; })]);
+				
+				// append the rectangles for the bar chart
+				svg.selectAll(".bar")
+				    .data(data)
+				  .enter().append("rect")
+				    .attr("class", "bar")
+				    .attr("x", function(d) { return x(d.name); })
+				    .attr("width", x.bandwidth())
+				    .attr("y", function(d) { return y(d.value); })
+				    .attr("height", function(d) { return height - y(d.value); });
+				
+				// add the x Axis
+				svg.append("g")
+				    .attr("transform", "translate(0," + height + ")")
+				    .call(d3.axisBottom(x));
+				
+				// add the y Axis
+				svg.append("g")
+				    .call(d3.axisLeft(y));
+			}
+		</script>
+
 		
 		<!-- first column -->    
         <div class="column">
@@ -339,103 +457,122 @@
         </div>
     </div>
     
+    <!-- Jira Monitoring -->
    	<div class="ui segment">
      	<div class="ui blue top attached label">Jira Monitoring</div>
-     	
-     	<p th:text="${pivio.document.getJiraMonitoringData()}"></p>
-		
-		<div class="column">
-		  	<div class="ui basic label" th:if="${pivio.document.jiraMonitoring}">Total Issues
-		    	<div class="detail"><a id="total-issues" th:text="${pivio.document.jiraMonitoring.getTotalIssues()}"></a></div>
+     	<div class="ui two column grid">
+			<div class="column ui segment" id="leftjiraside">
+				<span th:text="${pivio.document.getJiraMonitoringData()}"></span>
+				 <div th:if="${pivio.document.jiraMonitoring}">
+			    	<p class="ui  basic ribbon label">Jira Issues</p>
+			    </div>
+			    <br/>
+			  	<div class="ui basic label" th:if="${pivio.document.jiraMonitoring}">Total Issues
+			    	<div class="detail"><a id="total-issues" th:text="${pivio.document.jiraMonitoring.getTotalIssues()}"></a></div>
+			    </div>
+			    <div class="ui basic label" th:if="${pivio.document.jiraMonitoring}">Open Issues
+			    	<div class="detail"><a id="open-issues" th:text="${pivio.document.jiraMonitoring.getOpenIssues()}"></a></div>
+			    </div>
+			    <br/>
+			    <br/>
+			    <div th:if="${pivio.document.jiraMonitoring}">
+			    	<p class="ui  basic ribbon label">Components in Jira-Project</p>
+			    </div>
+			    <br/>
+		        <div th:if="${pivio.document.jiraMonitoring}">
+	                	<div th:each="component: ${pivio.document.jiraMonitoring.components}" class="ui basic label">
+		                    	<i class="file thin icon"></i><span th:text="${component.key}"></span>
+	                    		<div class="detail" th:text="${component.value}">
+	                    		</div>
+	                    		<br/>
+	                	</div>
+	           	</div>
 		    </div>
-		    <div class="ui basic label" th:if="${pivio.document.jiraMonitoring}">Open Issues
-		    	<div class="detail"><a id="open-issues" th:text="${pivio.document.jiraMonitoring.getOpenIssues()}"></a></div>
+		    
+		    <div class="column ui segment">
+		        <div id="issues-ratio" th:if="${pivio.document.jiraMonitoring}">
+		        	<script type="text/javascript">
+						drawJiraProgress();
+					</script>
+		        </div>
 		    </div>
-		    <br/>
-		    <br/>
-		    <p class="ui  basic ribbon label" th:if="${pivio.document.jiraMonitoring}">Components in Jira-Project</p>
-		    <br/>
-		    <br/>
-	        <div th:if="${pivio.document.jiraMonitoring}">
-                	<div th:each="component: ${pivio.document.jiraMonitoring.components}" class="ui basic label">
-	                    	<i class="file thin icon"></i><span th:text="${component.key}"></span>
-                    		<div class="detail" th:text="${component.value}">
-                    		</div>
-                    		<br/>
-                	</div>
-           	</div>
-	    </div>
-	    
-	    <div class="column">
-	        <!-- Diagrams -->
-	        <div id="issues-ratio">
-	        </div>
-	    </div>
-        
+		</div>
     </div>
     
+    <!-- Github Monitoring -->
     <div class="ui segment">
      	<div class="ui grey top attached label">Github Monitoring</div>
 	  	
 	    <div class="ui basic label">Contributors
            <div class="detail" th:text="${pivio.document.getGithubMonitoringData()}"></div>
-       </div>
-        
+       	</div>
     </div>
     
+    <!-- Jenkins Monitoring -->
     <div class="ui segment">>
      	<div class="ui black top attached label">Jenkins Job Monitoring</div>
-
-		<p class="ui  basic ribbon label">Last Build</p><p/>
-
-	    <div class="ui basic label">
-	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(1)}"></i>
-	    	Build number
-	    	<div class="detail">
-	    		<a id="buildnr" th:text="${pivio.document.jenkinsMonitoring.getBuildNumber()}"></a>
-   			</div>
-	    </div><br/>
-	    
-	    <div class="ui basic label">
-	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(2)}"></i>
-	    	Duration
-	    	<div class="detail">
-	    		<a id="duration" th:text="${pivio.document.jenkinsMonitoring.getDuration()}"></a>
-    		</div>
-	    </div><br/>
-	    
-	    <div class="ui basic label">
-	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(3)}"></i>
-	    	Estimated duration
-	    	<div class="detail">
-	    		<a id="estimatedduration" th:text="${pivio.document.jenkinsMonitoring.getEstimatedDuration()}"></a>
-    		</div>
-	    </div><br/>
-	    
-	    <div class="ui basic label">
-	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(4)}"></i>Result
-	    	<div class="detail">
-	    		<a id="result" th:text="${pivio.document.jenkinsMonitoring.getResult()}"></a>
-    		</div>
-	    </div><br/>
-	    
-	    <div class="ui basic label">
-	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(5)}"></i>
-	    	Timestamp
-	    	<div class="detail">
-	    		<a id="timestamp" th:text="${pivio.document.jenkinsMonitoring.getTimestamp()}"></a>
-    		</div>
-	    </div><br/>
-	    <div class="ui basic label">
-	    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(6)}"></i>
-	    	Url
-	    	<div class="detail">
-	    		<a id="jenkinsurl" th:text="${pivio.document.jenkinsMonitoring.getUrl()}"></a>
-	    	</div>
-	    </div>
-        
+		
+		<div class="ui two column grid">
+			<div class="column ui segment" id="leftjenkinsside">
+				<p class="ui  basic ribbon label">Last Build</p><p/>
+		
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(1)}"></i>
+			    	Build number
+			    	<div class="detail">
+			    		<a id="buildnr" th:text="${pivio.document.jenkinsMonitoring.getBuildNumber()}"></a>
+		   			</div>
+			    </div><br/>
+			    
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(2)}"></i>
+			    	Duration
+			    	<div class="detail">
+			    		<a id="duration" th:text="${pivio.document.jenkinsMonitoring.getDuration()}"></a>
+		    		</div>
+			    </div><br/>
+			    
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(3)}"></i>
+			    	Estimated duration
+			    	<div class="detail">
+			    		<a id="estimatedduration" th:text="${pivio.document.jenkinsMonitoring.getEstimatedDuration()}"></a>
+		    		</div>
+			    </div><br/>
+			    
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(4)}"></i>Result
+			    	<div class="detail">
+			    		<a id="result" th:text="${pivio.document.jenkinsMonitoring.getResult()}"></a>
+		    		</div>
+			    </div><br/>
+			    
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(5)}"></i>
+			    	Timestamp
+			    	<div class="detail">
+			    		<a id="timestamp" th:text="${pivio.document.jenkinsMonitoring.getTimestamp()}"></a>
+		    		</div>
+			    </div><br/>
+			    <div class="ui basic label">
+			    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(6)}"></i>
+			    	Url
+			    	<div class="detail">
+			    		<a id="jenkinsurl" th:text="${pivio.document.jenkinsMonitoring.getUrl()}"></a>
+			    	</div>
+			    </div>
+			</div>
+			<div class="column ui segment">
+				<div id="jenkins-time-comparisson" th:if="${pivio.document.jenkinsMonitoring}">
+					<script type="text/javascript">
+						drawJenkinsTimeComparisson();
+					</script>
+				</div>
+			</div>
+        </div>
     </div>
     
+    <!-- Governance Monitoring -->
     <div class="ui segment">
     	<div class="ui yellow top attached label">Governance Monitoring</div>
 		<div class="ui two column grid">
@@ -560,6 +697,7 @@
 	    </div>
     </div>
     
+    <!-- Actions -->
     <div class="ui segment">
      	<div class="ui black top attached label">Actions</div>
 
@@ -575,51 +713,6 @@
     </div>
 
 </div>
-
-	<script th:inline="javascript">
-		var totalIssues = parseInt($("#total-issues").text(),10);
-		var openIssues = parseInt($("#open-issues").text(),10);
-		
-		var data = [totalIssues-openIssues, openIssues];
-	
-		var width = $("#issues-ratio").width();
-	    var height = width;
-	    var radius = Math.min(width, height) / 2;
-		var color = d3.scaleOrdinal()
-		    .range(["#2185d0", "#0000cc"]);
-
-		var arc = d3.arc()
-		    .outerRadius(radius - 10)
-		    .innerRadius(0);
-
-		var labelArc = d3.arc()
-		    .outerRadius(radius - 40)
-		    .innerRadius(radius - 40);
-
-		var pie = d3.pie()
-		    .sort(null)
-		    .value(function(d) { return d; });
-
-		var svg = d3.select("#issues-ratio").append("svg")
-		    .attr("width", width)
-		    .attr("height", height)
-		  .append("g")
-		    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-		  var g = svg.selectAll(".arc")
-		      .data(pie(data))
-		    .enter().append("g")
-		      .attr("class", "arc");
-
-		  g.append("path")
-		      .attr("d", arc)
-		      .style("fill", function(d) { return color(d.data); });
-
-		  g.append("text")
-		      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-		      .attr("dy", ".35em")
-		      .text(function(d) { return d.data; });
-	</script>
 
 </body>
 

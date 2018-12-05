@@ -82,6 +82,7 @@ public class JiraMonitoring {
 	
 	public String getMonitoringData(String url, String key) {
 		System.out.println("KEY : " + key);
+		System.out.println("url : " + url);
 		String issuesUrl = "http://vmmatthes32.informatik.tu-muenchen.de:6000/rest/api/2/search?jql=project="+key;
 		System.out.println(issuesUrl);
 		int totalIssues = 0;
