@@ -345,18 +345,18 @@
      	<p th:text="${pivio.document.getJiraMonitoringData()}"></p>
 		
 		<div class="column">
-		  	<div class="ui basic label">Total Issues
+		  	<div class="ui basic label" th:if="${pivio.document.jiraMonitoring}">Total Issues
 		    	<div class="detail"><a id="total-issues" th:text="${pivio.document.jiraMonitoring.getTotalIssues()}"></a></div>
 		    </div>
-		    <div class="ui basic label">Open Issues
+		    <div class="ui basic label" th:if="${pivio.document.jiraMonitoring}">Open Issues
 		    	<div class="detail"><a id="open-issues" th:text="${pivio.document.jiraMonitoring.getOpenIssues()}"></a></div>
 		    </div>
 		    <br/>
 		    <br/>
-		    <p class="ui  basic ribbon label">Components in Jira-Project</p>
+		    <p class="ui  basic ribbon label" th:if="${pivio.document.jiraMonitoring}">Components in Jira-Project</p>
 		    <br/>
 		    <br/>
-	        <div th:if="${pivio.document.jiraMonitoring.components}">
+	        <div th:if="${pivio.document.jiraMonitoring}">
                 	<div th:each="component: ${pivio.document.jiraMonitoring.components}" class="ui basic label">
 	                    	<i class="file thin icon"></i><span th:text="${component.key}"></span>
                     		<div class="detail" th:text="${component.value}">
