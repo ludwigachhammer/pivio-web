@@ -102,8 +102,6 @@
 				    height = $("#leftjenkinsside").height() - margin.top - margin.bottom;
 				var duration = parseInt($("#duration").text(),10);
 				var estimatedduration = parseInt($("#estimatedduration").text(),10);
-				//console.log("Duration", duration);
-				//console.log("estimatedduration", estimatedduration);
 
 				// set the ranges
 				var x = d3.scaleBand()
@@ -124,8 +122,8 @@
 
 				// get the data
 				data = [
-						{name:"duration", value: duration},
-						{name:"estimated duration", value: estimatedduration}
+						{name:"duration in ms", value: duration},
+						{name:"estimated duration in ms", value: estimatedduration}
 					];
 				
 				// Scale the range of the data in the domains
@@ -326,7 +324,7 @@
             
             <!--PROMETHEUS-->
             <div class="ui segment">
-                <div class="ui red top attached label">APM Agent - Prometheus</div>
+                <div class="ui red top attached label">Metrics monitoring (Agent)</div>
                 
                 <div class="ui basic label"> URL
                     <div class="detail"><a target="_blank" th:href="'https://'+${pivio.document.url}" th:text="${pivio.document.url}"></a></div>
@@ -463,7 +461,7 @@
      	<div class="ui two column grid">
 			<div class="column ui segment" id="leftjiraside">
 				<span th:text="${pivio.document.getJiraMonitoringData()}"></span>
-				 <div th:if="${pivio.document.jiraMonitoring}">
+				<div th:if="${pivio.document.jiraMonitoring}">
 			    	<p class="ui  basic ribbon label">Jira Issues</p>
 			    </div>
 			    <br/>
@@ -490,6 +488,9 @@
 		    </div>
 		    
 		    <div class="column ui segment">
+		    	<div th:if="${pivio.document.jiraMonitoring}">
+			    	<p class="ui  basic ribbon label">Jira progress</p>
+			    </div>
 		        <div id="issues-ratio" th:if="${pivio.document.jiraMonitoring}">
 		        	<script type="text/javascript">
 						drawJiraProgress();
@@ -558,11 +559,12 @@
 			    	<i th:class="'icon '+${pivio.document.jenkinsMonitoring.getStatusIcon(6)}"></i>
 			    	Url
 			    	<div class="detail">
-			    		<a id="jenkinsurl" th:text="${pivio.document.jenkinsMonitoring.getUrl()}"></a>
+			    		<a id="jenkinsurl" target="_blank" th:href="${pivio.document.jenkinsMonitoring.getUrl()}" th:text="${pivio.document.jenkinsMonitoring.getUrl()}"></a>
 			    	</div>
 			    </div>
 			</div>
 			<div class="column ui segment">
+				<p class="ui  basic ribbon label">Last job comparisson</p>
 				<div id="jenkins-time-comparisson" th:if="${pivio.document.jenkinsMonitoring}">
 					<script type="text/javascript">
 						drawJenkinsTimeComparisson();
@@ -584,7 +586,6 @@
 		        	I. Codebase
 			    	<div class="detail">
 			    		<a id="codebase" th:text="${pivio.document.governanceMonitoring.getCodebase()}"></a>
-			    		<i class="icon info circle green"></i>
 		    		</div>
 			  	</div><br/>
 			    <div class="ui basic label">
@@ -651,6 +652,11 @@
 		    </div>
 		    
 		    <div class="column ui segment governance-monitoring">
+		    	<p class="ui  basic ribbon label">Security belt</p>
+		    		<!-- TODO -->
+		    		<br/>
+		    		<br/>
+			    <p/>
 			    <p class="ui  basic ribbon label">Resilience</p>
 			    <p/>
 			    <div class="ui basic label">

@@ -85,7 +85,16 @@ public class JenkinsMonitoring {
 	}
 	
 	public String getTimestamp() {
-		//return new PrettyTime().format(new DateTime(this.Timestamp).toDate());
+		/*
+		String prettyTime;
+		try {
+			prettyTime = new PrettyTime().format(new DateTime(this.Timestamp).toDate());
+			return prettyTime;
+		}catch(Exception e) {
+			System.out.println(e);
+			return "Error";
+		}
+		*/
 		return this.Timestamp;
 	}
 	
