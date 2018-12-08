@@ -26,6 +26,19 @@ public class GovernanceMonitoring {
 	private String DevProdParity;
 	private String Logs;
 	private String AdminProcesses;
+	//12 factor App - Info
+	private String InfoCodebase;
+	private String InfoDependencies;
+	private String InfoConfiguration;
+	private String InfoBackingServices;
+	private String InfoBuildReleaseRun;
+	private String InfoProcesses;
+	private String InfoPortBinding;
+	private String InfoConcurrency;
+	private String InfoDisposability;
+	private String InfoDevProdParity;
+	private String InfoLogs;
+	private String InfoAdminProcesses;
 	
 	//Resilience pattern
 	private String isHostedInAZDCloud;
@@ -36,7 +49,17 @@ public class GovernanceMonitoring {
 	private String Caching;
 	private String Fallback;
 	private String LooseCoupling;
-	private String url;
+	private String Url;
+	//Resilience pattern - Info
+	private String InfoisHostedInAZDCloud;
+	private String InfoRedundancy;
+	private String InfoZeroDowntimeDeployment;
+	private String InfoRetry;
+	private String InfoIsolation;
+	private String InfoCaching;
+	private String InfoFallback;
+	private String InfoLooseCoupling;
+	private String InfoUrl;
 	
 	@Value("${github.username}")
 	private String username;
