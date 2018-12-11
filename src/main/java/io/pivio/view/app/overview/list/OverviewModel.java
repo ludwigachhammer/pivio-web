@@ -15,6 +15,9 @@ public class OverviewModel {
     public String lastUpload;
     public String lastUpdate;
     public Context context;
+    public String domain;
+    public String subdomain;
+    public String product;
     public String id;
     public String owner;
     public String type;
@@ -28,17 +31,30 @@ public class OverviewModel {
     }
 
     public String getMeta() {
-        String meta = name + " " + short_name + " " + description + " " + owner + " ";
+        String meta = "cloudfoundry" + name + " " + short_name + " " + description + " " + owner + " " + domain + " " + subdomain + " " + product;
         if (context != null) {
             meta = meta + " " + context.belongs_to_bounded_context;
         }
         return meta.toLowerCase();
     }
     
+    public String getName(){
+    	return name;
+    }
+    
+    public String getDomain() {
+    	return domain;
+    }
+    
+    public String getSubdomain() {
+    	return subdomain;
+    }
+    
+    public String getProduct() {
+    	return product;
+    }
+    
     public String getStatusIcon() {
-    	//System.out.println("*******************************************");
-    	//System.out.println("Name: "+name+" Status: "+status);
-    	//System.out.println("*******************************************");
     	if(status != null) {
     		if(status.equals("running")) {
         		return "circle green";

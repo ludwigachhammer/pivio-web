@@ -24,6 +24,9 @@ public class Overview implements Comparable {
     public String lastUpload;
     public String lastUpdate;
     public Context context;
+    public String domain;
+    public String subdomain;
+    public String product;
     public String id;
     public String owner;
     public String type;

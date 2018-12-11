@@ -10,11 +10,13 @@ function list(field, value) {
         dataType: 'json',
         cache: false,
         success: function listDocuments(documents) {
+        	
             documents.pivioValue = value;
             documents.pivioField = field;
             var source = $("#list-template").html(),
                 template = Handlebars.compile(source);
             $('#list').append(template(documents));
+            console.log("Documents: "+documents);
         }
     });
 
