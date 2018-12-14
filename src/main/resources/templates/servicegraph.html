@@ -24,7 +24,6 @@
 
         .link {
             stroke: steelblue;
-            stroke-opacity: .8;
             fill: none;
             pointer-events: none;
             stroke-width: 2px;
@@ -109,8 +108,8 @@
 			var width = $("#graph-cloudfoundry").width();
 			var height = width;
 			  const adjacencyMatrix = d3.adjacencyMatrixLayout();
-			  console.log('adjacencyMatrix', adjacencyMatrix);
-			  console.log('d3', d3);
+			  //console.log('adjacencyMatrix', adjacencyMatrix);
+			  //console.log('d3', d3);
 
 			  adjacencyMatrix
 			    .size([width-240,height-240])
@@ -123,8 +122,7 @@
 
 			  console.log(matrixData)
 
-			  const someColors = d3.scaleOrdinal()
-			    .range(d3.schemeCategory20b);
+			  const someColors = d3.scaleOrdinal().range(d3.schemeCategory20b);
 
 			  d3.select('#domain-graph')
 			  	.append('svg')
@@ -144,8 +142,8 @@
 			        .style('stroke', 'black')
 			        .style('stroke-width', '1px')
 			        .style('stroke-opacity', .1)
-			        .style('fill', d => someColors(d.source.group))
-			        .style('fill-opacity', d => d.weight * 0.8);
+			        .style('fill', 'steelblue')
+			        .style('fill-opacity', d => d.weight * 1);
 
 			  d3.select('#adjacencyG')
 			    .call(adjacencyMatrix.xAxis);
@@ -164,20 +162,30 @@
 			return numOfProducts;
 		}
 		
-		function format_help(sunData, jsonArray, diameter, products){
+		function getSortedIndex(matrixData, name, servicename){
+			var src = null;
+			var dest = null;
+			if(matrixData.nodes.some(item => item.name === name)){
+				src = matrixData.nodes.findIndex(x => x.name === name);
+				//src = matrixData.nodes[index].sortedIndex //sortedIndex of source
+			}
+			if(matrixData.nodes.some(item => item.name === servicename)){
+				dest = matrixData.nodes.findIndex(x => x.name === servicename);
+				//dest = matrixData.nodes[index].sortedIndex//TODO: dest = sortedIndex of item
+			}
+			matrixData.links.push({
+				"source": src,
+				"target": dest,
+				"value" : 0
+			});
+		}
+		
+		function format_help(sunData, jsonArray, diameter, products, matrixData){
 			jsonArray.forEach(function(element) {
-				//element.name = element.domain+"."+element.subdomain+"."+element.product+"."+element.name;
 				element.imports = [];
-				//console.log("sunData.children ", sunData.children);
 				sunData.children.forEach(function(elementInSunData){
-					//console.log("elementInSunData.name ", elementInSunData.name);
-					//console.log("element.domain ", element.domain);
-					//console.log("element.product ", element.product);
 					if(element.domain == elementInSunData.name){
-						//console.log("elementInSunData.children: ", elementInSunData.children);
-						//console.log("ForEach in elementInSunData.children");
 						if(elementInSunData.children.length == 0){
-							//console.log("elementInSunData.children.length == 0");
 							elementInSunData.children.push({
 								"name": element.product,
 								"size": countProductSize(element.product, products)
@@ -185,9 +193,8 @@
 						}else{
 							//console.log("elementInSunData.children.length != 0");
 							if(elementInSunData.children.some(item => item.name === element.product)){
-								//console.log("Ist IN array enthalten: ", element.product);
+								
 							}else{
-								//console.log("Ist NICHT in array enthalten: ", element.product);
 								elementInSunData.children.push({
 									"name": element.product,
 									"size": countProductSize(element.product, products)
@@ -195,14 +202,16 @@
 							}
 						}
 					}
-					//console.log("******************************");
 				});
 				if(element.hasOwnProperty('service')){
 					if(element.service.hasOwnProperty('provides')){
 						element.service.provides.forEach(function(el){
 							//el.service_name = element.domain+"."+element.subdomain+"."+element.product+"."+el.service_name;
 							element.imports.push(el.service_name);
-							//console.log("Provides el name:", el.service_name);
+							//console.log("element.name:", element.name);
+							//console.log("el.service_name:", el.service_name);
+							//console.log("***************************************");
+							getSortedIndex(matrixData, element.name, el.service_name);
 						});
 					}
 					//TODO
@@ -212,6 +221,7 @@
 					}
 				}
 			});
+			
 			drawSunburst(sunData, diameter);
 		}
 		
@@ -226,23 +236,26 @@
 					"links": []
 			};
 			var domains = [];
+			var subdomains = [];
 			var products = [];
 			var uniqueDomains = [];
 			var uniqueProducts = [];
+			//console.log("jsonArray: ", jsonArray);
 			//include provides and dependson for relationships
 			jsonArray.forEach(function(element) {
 				domains.push(element.domain);
+				subdomains.push(element.subdomain);
 				products.push(element.product);
-				if(matrixData.nodes.some(item => item.name === element.subdomain)){
+				if(matrixData.nodes.some(item => item.name === element.name)){
 					
 				}else{
 					matrixData.nodes.push({
-						"name": element.subdomain,
-						"group": 0
+						"name": element.name,
+						"group": element.domain
 					});
 				}
 			});
-			console.log("matrixData: ", matrixData);
+			//console.log("matrixData: ", matrixData);
 			$.each(domains, function(i, el){
 			    if($.inArray(el, uniqueDomains) === -1) uniqueDomains.push(el);
 			});
@@ -253,8 +266,10 @@
 				});
 			});
 			//console.log("sunData", sunData);
-			format_help(sunData, jsonArray, diameter, products);
+			format_help(sunData, jsonArray, diameter, products, matrixData);
 			drawCanvas(jsonArray); //communication diagram
+			console.log("matrixData", matrixData);
+			//console.log("matrixData: ", matrixData);
 			createAdjacencyMatrix(matrixData);
 		}
 		
@@ -364,7 +379,7 @@
 
 		//console.log("Jsonobject:", jsonArray);
 		var cloudfoundryDivBounding = d3.select("#graph-cloudfoundry").node().getBoundingClientRect();
-		console.log(cloudfoundryDivBounding);
+		//console.log(cloudfoundryDivBounding);
 		
 		var diameter = (cloudfoundryDivBounding.width) - 40,
 	    	radius = diameter / 2,

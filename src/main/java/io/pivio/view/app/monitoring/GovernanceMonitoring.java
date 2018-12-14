@@ -27,18 +27,18 @@ public class GovernanceMonitoring {
 	private String Logs;
 	private String AdminProcesses;
 	//12 factor App - Info
-	private String InfoCodebase;
-	private String InfoDependencies;
-	private String InfoConfiguration;
-	private String InfoBackingServices;
-	private String InfoBuildReleaseRun;
-	private String InfoProcesses;
-	private String InfoPortBinding;
-	private String InfoConcurrency;
-	private String InfoDisposability;
-	private String InfoDevProdParity;
-	private String InfoLogs;
-	private String InfoAdminProcesses;
+	private String InfoCodebase = "";
+	private String InfoDependencies = "";
+	private String InfoConfiguration = "";
+	private String InfoBackingServices = "";
+	private String InfoBuildReleaseRun = "";
+	private String InfoProcesses = "";
+	private String InfoPortBinding = "";
+	private String InfoConcurrency = "";
+	private String InfoDisposability = "";
+	private String InfoDevProdParity = "";
+	private String InfoLogs = "";
+	private String InfoAdminProcesses = "";
 	
 	//Resilience pattern
 	private String isHostedInAZDCloud;
@@ -51,15 +51,15 @@ public class GovernanceMonitoring {
 	private String LooseCoupling;
 	private String Url;
 	//Resilience pattern - Info
-	private String InfoisHostedInAZDCloud;
-	private String InfoRedundancy;
-	private String InfoZeroDowntimeDeployment;
-	private String InfoRetry;
-	private String InfoIsolation;
-	private String InfoCaching;
-	private String InfoFallback;
-	private String InfoLooseCoupling;
-	private String InfoUrl;
+	private String InfoisHostedInAZDCloud = "";
+	private String InfoRedundancy = "";
+	private String InfoZeroDowntimeDeployment = "";
+	private String InfoRetry = "";
+	private String InfoIsolation = "";
+	private String InfoCaching = "";
+	private String InfoFallback = "";
+	private String InfoLooseCoupling = "";
+	private String InfoUrl = "";
 	
 	@Value("${github.username}")
 	private String username;
@@ -92,7 +92,6 @@ public class GovernanceMonitoring {
 		this.Fallback = "";
 		this.LooseCoupling = "";
 	}
-	
 	public GovernanceMonitoring(String url, String instances, String cloudUrl, String services) {
 		System.out.println("******** GovernanceMonitoringData ******************");
 		String governanceUrl = url;
@@ -129,6 +128,7 @@ public class GovernanceMonitoring {
 		}
 	}
 	
+	//GETTER
 	//12 factor App
 	public String getCodebase() {
 		return Codebase;
@@ -165,8 +165,7 @@ public class GovernanceMonitoring {
 	}
 	public String getAdminProcesses() {
 		return AdminProcesses;
-	}
-	
+	}	
 	//Resilience Pattern
 	public String getIsHostedInAZDCloud() {
 		return isHostedInAZDCloud;
@@ -192,8 +191,6 @@ public class GovernanceMonitoring {
 	public String getLooseCoupling() {
 		return LooseCoupling;
 	}
-	
-	
 	public String getRequestInformation(String url) throws Exception {
 	     URL obj = new URL(url);
 	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -218,8 +215,7 @@ public class GovernanceMonitoring {
 	     in.close();
 	     //System.out.println(response.toString());
 	     return response.toString();
-	}
-	
+	}	
 	public String getIcon(String status) {
 		if(status.equals("Not implemented")) {
     		return "circle red";
@@ -230,8 +226,7 @@ public class GovernanceMonitoring {
     	else {
     		return "circle red";
     	}
-    }
-	
+    }	
 	public String get12factorStatusIcon(int x) {
 		String status;
 		switch (x) {
@@ -263,7 +258,6 @@ public class GovernanceMonitoring {
    		 			 return status;
 	    }
     }
-	
 	public String getResiliencePatternStatusIcon(int x) {
 		String status;
 		switch (x) {
@@ -287,11 +281,11 @@ public class GovernanceMonitoring {
    		 			 return status;
 	    }
     }
-
 	
-	//Setter
+	//SETTER
 	//12 factor App
 	public void setCodebase() {
+		setInfoCodebase("");
 		this.Codebase = "Yes";
 	}
 	public void setDependencies(String searchUrl) {
@@ -305,6 +299,7 @@ public class GovernanceMonitoring {
 				for (int i = 0; i < arr.length(); i++) {
 				    domElement = domElement + arr.getJSONObject(i).getString("name")+";";
 				}
+				setInfoDependencies(domElement);
 				//domElement for InfoDialog
 				this.Dependencies = "Yes";
 			}else {
@@ -332,6 +327,7 @@ public class GovernanceMonitoring {
 				for (int i = 0; i < arr1.length(); i++) {
 				    domElement = domElement + arr1.getJSONObject(i).getString("name")+";";
 				}
+				setInfoConfiguration(domElement);
 				//domElement for InfoDialog
 				System.out.println(this.Configuration);
 				this.Configuration = "Yes";
@@ -470,8 +466,7 @@ public class GovernanceMonitoring {
 	}
 	public void setAdminProcesses() {
 		this.AdminProcesses = "Not implemented";
-	}
-	
+	}	
 	//Resilience Pattern
 	public void setIsHostedInAZDCloud(String url) {
 		System.out.println("setIsHostedInAZDCloud: " + url);
@@ -580,4 +575,173 @@ public class GovernanceMonitoring {
 		this.LooseCoupling = "Not implemented";
 	}
 	
+	
+	//Info for dialog box
+	public String getInfoisHostedInAZDCloud() {
+		return InfoisHostedInAZDCloud;
+	}
+
+	public void setInfoisHostedInAZDCloud(String infoisHostedInAZDCloud) {
+		InfoisHostedInAZDCloud = infoisHostedInAZDCloud;
+	}
+
+	public String getInfoRedundancy() {
+		return InfoRedundancy;
+	}
+
+	public void setInfoRedundancy(String infoRedundancy) {
+		InfoRedundancy = infoRedundancy;
+	}
+
+	public String getInfoZeroDowntimeDeployment() {
+		return InfoZeroDowntimeDeployment;
+	}
+
+	public void setInfoZeroDowntimeDeployment(String infoZeroDowntimeDeployment) {
+		InfoZeroDowntimeDeployment = infoZeroDowntimeDeployment;
+	}
+
+	public String getInfoRetry() {
+		return InfoRetry;
+	}
+
+	public void setInfoRetry(String infoRetry) {
+		InfoRetry = infoRetry;
+	}
+
+	public String getInfoIsolation() {
+		return InfoIsolation;
+	}
+
+	public void setInfoIsolation(String infoIsolation) {
+		InfoIsolation = infoIsolation;
+	}
+
+	public String getInfoCaching() {
+		return InfoCaching;
+	}
+
+	public void setInfoCaching(String infoCaching) {
+		InfoCaching = infoCaching;
+	}
+
+	public String getInfoFallback() {
+		return InfoFallback;
+	}
+
+	public void setInfoFallback(String infoFallback) {
+		InfoFallback = infoFallback;
+	}
+
+	public String getInfoLooseCoupling() {
+		return InfoLooseCoupling;
+	}
+
+	public void setInfoLooseCoupling(String infoLooseCoupling) {
+		InfoLooseCoupling = infoLooseCoupling;
+	}
+
+	public String getInfoUrl() {
+		return InfoUrl;
+	}
+
+	public void setInfoUrl(String infoUrl) {
+		InfoUrl = infoUrl;
+	}
+
+	public String getInfoCodebase() {
+		return InfoCodebase;
+	}
+
+	public void setInfoCodebase(String infoCodebase) {
+		InfoCodebase = infoCodebase;
+	}
+
+	public String getInfoDependencies() {
+		return InfoDependencies;
+	}
+
+	public void setInfoDependencies(String infoDependencies) {
+		InfoDependencies = infoDependencies;
+	}
+
+	public String getInfoConfiguration() {
+		return InfoConfiguration;
+	}
+
+	public void setInfoConfiguration(String infoConfiguration) {
+		InfoConfiguration = infoConfiguration;
+	}
+
+	public String getInfoBackingServices() {
+		return InfoBackingServices;
+	}
+
+	public void setInfoBackingServices(String infoBackingServices) {
+		InfoBackingServices = infoBackingServices;
+	}
+
+	public String getInfoBuildReleaseRun() {
+		return InfoBuildReleaseRun;
+	}
+
+	public void setInfoBuildReleaseRun(String infoBuildReleaseRun) {
+		InfoBuildReleaseRun = infoBuildReleaseRun;
+	}
+
+	public String getInfoProcesses() {
+		return InfoProcesses;
+	}
+
+	public void setInfoProcesses(String infoProcesses) {
+		InfoProcesses = infoProcesses;
+	}
+
+	public String getInfoPortBinding() {
+		return InfoPortBinding;
+	}
+
+	public void setInfoPortBinding(String infoPortBinding) {
+		InfoPortBinding = infoPortBinding;
+	}
+
+	public String getInfoConcurrency() {
+		return InfoConcurrency;
+	}
+
+	public void setInfoConcurrency(String infoConcurrency) {
+		InfoConcurrency = infoConcurrency;
+	}
+
+	public String getInfoDisposability() {
+		return InfoDisposability;
+	}
+
+	public void setInfoDisposability(String infoDisposability) {
+		InfoDisposability = infoDisposability;
+	}
+
+	public String getInfoDevProdParity() {
+		return InfoDevProdParity;
+	}
+
+	public void setInfoDevProdParity(String infoDevProdParity) {
+		InfoDevProdParity = infoDevProdParity;
+	}
+
+	public String getInfoLogs() {
+		return InfoLogs;
+	}
+
+	public void setInfoLogs(String infoLogs) {
+		InfoLogs = infoLogs;
+	}
+
+	public String getInfoAdminProcesses() {
+		return InfoAdminProcesses;
+	}
+
+	public void setInfoAdminProcesses(String infoAdminProcesses) {
+		InfoAdminProcesses = infoAdminProcesses;
+	}
 }

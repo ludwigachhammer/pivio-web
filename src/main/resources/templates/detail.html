@@ -44,8 +44,19 @@
 		<script src="/webjars/d3js/4.2.1/d3.min.js"></script>
 		<script th:inline="javascript">
 		
-			function openInfoDialog(){
-				console.log("test");
+			function openInfoDialog(name){
+				console.log("name: ",name);
+				console.log("message: ",message);
+				$(".ui.modal").modal("show");
+				$("#header-infobox").text(name);
+				switch(name) {
+				  case "Codebase":
+					  var message = 'No information available';
+					  $("#content-infobox").text(message);
+				    break;				    
+				  default:
+					  $("#content-infobox").text("Error retrieving information message");;
+				}
 			}
 		
 			function drawJiraProgress(){
@@ -511,14 +522,23 @@
     <!-- Github Monitoring -->
     <div class="ui segment">
      	<div class="ui grey top attached label">Github Monitoring</div>
-	  	
-	    <div class="ui basic label">Contributors
-           <div class="detail" th:text="${pivio.document.getGithubMonitoringData()}"></div>
+	  	<div class="ui two column grid">
+	  			<div class="column ui segment" id="leftgithubside">
+				    <div class="ui basic label">Contributors
+			           <div class="detail" th:text="${pivio.document.getGithubMonitoringData()}"></div>
+			       	</div>
+			       	<div class="ui basic label">Lines of code
+			           <div class="detail" text=""></div>
+			       	</div>
+	       		</div>
+	       		<div class="column ui segment">
+				    <p class="ui  basic ribbon label">Commit activity</p><p/>
+	       		</div>
        	</div>
     </div>
     
     <!-- Jenkins Monitoring -->
-    <div class="ui segment">>
+    <div class="ui segment">
      	<div class="ui black top attached label">Jenkins Job Monitoring</div>
 		
 		<div class="ui two column grid">
@@ -593,74 +613,74 @@
 		        	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(1)}"></i>
 		        	I. Codebase
 			    	<div class="detail">
-			    		<a id="codebase" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getCodebase()}"></a>
+			    		<a id="codebase" class="infodialog" onclick="openInfoDialog('Codebase')" th:text="${pivio.document.governanceMonitoring.getCodebase()}"></a>
 		    		</div>
 			  	</div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(2)}"></i>
 			    	II. Dependencies
-			    	<div class="detail"><a id="dependencies" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getDependencies()}"></a></div>
+			    	<div class="detail"><a id="dependencies" class="infodialog" onclick="openInfoDialog('Dependencies')" th:text="${pivio.document.governanceMonitoring.getDependencies()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(3)}"></i>
 			    	III. Configuration
-			    	<div class="detail"><a id="configuration" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getConfiguration()}"></a></div>
+			    	<div class="detail"><a id="configuration" class="infodialog" onclick="openInfoDialog('Configuration')" th:text="${pivio.document.governanceMonitoring.getConfiguration()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:if="${pivio.document.service != null}" class="icon circle green"></i>
 			    	<i th:if="${pivio.document.service == null}" class="icon circle red"></i>
 			    	IV. Backing services
 			    	<div class="detail" th:if="${pivio.document.service != null}">
-			    		<a id="backingservices" class="infodialog" onclick="openInfoDialog()" th:text="Yes"></a>
+			    		<a id="backingservices" class="infodialog" onclick="openInfoDialog('Backing services')" th:text="Yes"></a>
 		    		</div>
 		    		<div class="detail" th:if="${pivio.document.service == null}">
-			    		<a id="backingservices" class="infodialog" onclick="openInfoDialog()" th:text="No"></a>
+			    		<a id="backingservices" class="infodialog" onclick="openInfoDialog('Backing services')" th:text="No"></a>
 		    		</div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(5)}"></i>
 			    	V. Build, release, run
-			    	<div class="detail"><a id="buildreleaserun" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getBuildReleaseRun()}"></a></div>
+			    	<div class="detail"><a id="buildreleaserun" class="infodialog" onclick="openInfoDialog('Build, release and run')" th:text="${pivio.document.governanceMonitoring.getBuildReleaseRun()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(6)}"></i>
 			    	VI. Processes
-			    	<div class="detail"><a id="processes" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getProcesses()}"></a></div>
+			    	<div class="detail"><a id="processes" class="infodialog" onclick="openInfoDialog('Processes')" th:text="${pivio.document.governanceMonitoring.getProcesses()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(7)}"></i>
 			    	VII. Port binding
-			    	<div class="detail"><a id="portbinding" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getPortBinding()}"></a></div>
+			    	<div class="detail"><a id="portbinding" class="infodialog" onclick="openInfoDialog('Port binding')" th:text="${pivio.document.governanceMonitoring.getPortBinding()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(8)}"></i>
 			    	VIII. Concurrency
-			    	<div class="detail"><a id="concurrency" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getConcurrency()}"></a></div>
+			    	<div class="detail"><a id="concurrency" class="infodialog" onclick="openInfoDialog('Concurrency')" th:text="${pivio.document.governanceMonitoring.getConcurrency()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(9)}"></i>
 			    	IX. Disposability
-			    	<div class="detail"><a id="disposability" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getDisposability()}"></a></div>
+			    	<div class="detail"><a id="disposability" class="infodialog" onclick="openInfoDialog('Disposability')" th:text="${pivio.document.governanceMonitoring.getDisposability()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(10)}"></i>
 			    	X. Dev/prod parity
-			    	<div class="detail"><a id="devprodparity" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getDevProdParity()}"></a></div>
+			    	<div class="detail"><a id="devprodparity" class="infodialog" onclick="openInfoDialog('Dev/prod parity')" th:text="${pivio.document.governanceMonitoring.getDevProdParity()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(11)}"></i>
 			    	XI. Logs
-			    	<div class="detail"><a id="logs" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getLogs()}"></a></div>
+			    	<div class="detail"><a id="logs" class="infodialog" onclick="openInfoDialog('Logs')" th:text="${pivio.document.governanceMonitoring.getLogs()}"></a></div>
 			    </div><br/>
 			    <div class="ui basic label">
 			    	<i th:class="'icon '+${pivio.document.governanceMonitoring.get12factorStatusIcon(12)}"></i>
 			    	XII. Admin processes
-			    	<div class="detail"><a id="adminprocesses" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getAdminProcesses()}"></a></div>
+			    	<div class="detail"><a id="adminprocesses" class="infodialog" onclick="openInfoDialog('Admin processes')" th:text="${pivio.document.governanceMonitoring.getAdminProcesses()}"></a></div>
 			    </div>
 		    </div>
 		    
 		    <div class="column ui segment governance-monitoring">
-		    	<p class="ui  basic ribbon label">Security belt</p>
+		    	<p class="ui  basic ribbon label">Architecture belt</p>
 		    		<!-- TODO -->
 		    		<br/>
 		    		<br/>
@@ -670,42 +690,42 @@
 			    <div class="ui basic label">
 			    	<i class="icon circle red"></i>
 			    	I. AZD Cloud
-			    	<div class="detail"><a id="azdcloud" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getIsHostedInAZDCloud()}"></a></div>
+			    	<div class="detail"><a id="azdcloud" class="infodialog" onclick="openInfoDialog('AZD Cloud')" th:text="${pivio.document.governanceMonitoring.getIsHostedInAZDCloud()}"></a></div>
 			  	</div><br/>
 			    <div class="ui basic label">
 			    	<i class="icon circle red"></i>
 			    	II. Redundancy
-			    	<div class="detail"><a id="redundancy" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getRedundancy()}"></a></div>
+			    	<div class="detail"><a id="redundancy" class="infodialog" onclick="openInfoDialog('Redundancy')" th:text="${pivio.document.governanceMonitoring.getRedundancy()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		III. Zero Downtime deployment
-			    	<div class="detail"><a id="zerodowntimedeployment" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getZeroDowntimeDeployment()}"></a></div>
+			    	<div class="detail"><a id="zerodowntimedeployment" class="infodialog" onclick="openInfoDialog('Zero Downtime deployment')" th:text="${pivio.document.governanceMonitoring.getZeroDowntimeDeployment()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		IV. Retry
-			    	<div class="detail"><a id="retry" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getRetry()}"></a></div>
+			    	<div class="detail"><a id="retry" class="infodialog" onclick="openInfoDialog('Retry')" th:text="${pivio.document.governanceMonitoring.getRetry()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		V. Isolation
-			    	<div class="detail"><a id="isolation" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getIsolation()}"></a></div>
+			    	<div class="detail"><a id="isolation" class="infodialog" onclick="openInfoDialog('Isolation')" th:text="${pivio.document.governanceMonitoring.getIsolation()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		VI. Caching
-			    	<div class="detail"><a id="caching" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getCaching()}"></a></div>
+			    	<div class="detail"><a id="caching" class="infodialog" onclick="openInfoDialog('Caching')" th:text="${pivio.document.governanceMonitoring.getCaching()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		VII. Fallback
-			    	<div class="detail"><a id="fallback" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getFallback()}"></a></div>
+			    	<div class="detail"><a id="fallback" class="infodialog" onclick="openInfoDialog('Fallback')" th:text="${pivio.document.governanceMonitoring.getFallback()}"></a></div>
 			  	</div><br/>
 			  	<div class="ui basic label">
 			  		<i class="icon circle red"></i>
 			  		VIII. Loose Coupling
-			    	<div class="detail"><a id="loosecoupling" class="infodialog" onclick="openInfoDialog()" th:text="${pivio.document.governanceMonitoring.getLooseCoupling()}"></a></div>
+			    	<div class="detail"><a id="loosecoupling" class="infodialog" onclick="openInfoDialog('Loose Coupling')" th:text="${pivio.document.governanceMonitoring.getLooseCoupling()}"></a></div>
 			  	</div>
 		  	</div>
 	    </div>
@@ -725,9 +745,26 @@
         </button>
         
     </div>
-
+	
+	<!-- MODAL -->
+	<div class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+	    <i class="icon info circle"></i>Information
+	  </div>
+	  <div class="image content">
+	    <div class="description">
+	      <div id="header-infobox" class="ui header"></div>
+	      <p id="content-infobox"></p>
+	    </div>
+	  </div>
+	  <div class="actions">
+	    <div class="ui black right deny button">
+	      Close
+	    </div>
+	  </div>
+	</div>
 </div>
-
 </body>
 
 </html>

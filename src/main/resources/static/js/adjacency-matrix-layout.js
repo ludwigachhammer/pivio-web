@@ -149,7 +149,12 @@
 
       var xAxis = d3.axisTop().scale(nameScale).tickSize(4);
 
-      calledG.append('g').attr('class', 'am-xAxis am-axis').call(xAxis).selectAll('text').style('text-anchor', 'end').attr('transform', 'translate(-10,-10) rotate(90)');
+      calledG.append('g')
+      		.attr('class', 'am-xAxis am-axis')
+      		.call(xAxis)
+      		.selectAll('text')
+      		.style('text-anchor', 'end')
+      		.attr('transform', 'translate(-10,-10) rotate(90)');
     };
 
     matrix.yAxis = function (calledG) {
