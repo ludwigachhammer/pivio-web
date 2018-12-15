@@ -23,7 +23,7 @@
 		/* Lines */
 		.link {
 		  	fill: none;
-		  	stroke: #424242;
+		  	stroke: #e8e8e8 !important;
 		  	stroke-width: 1.5px;
 		}
 		#org-chart {
@@ -38,7 +38,6 @@
     <script th:inline="javascript">
     	function drawOrgTree(data){
     		var treeData = data;
-
     		// Set the dimensions and margins of the diagram
     		var margin = {top: 20, right: 90, bottom: 30, left: 90},
     		    width = $("#org-chart").width() - margin.left - margin.right,
@@ -208,9 +207,14 @@
 
     		  // Toggle children on click.
     		  function click(d) {
-    			  console.log("Clicked on: ",d.data.name);
+    			console.log("Clicked on: ",d.data.name);
+    			if(d.data.url){
+    				console.log("url: ",d.data.url);
+    				window.open(d.data.url,'_blank');
+    			}else{
     			  $("#searchbox").val(d.data.name);
-    			  $("#searchbox").change();
+      			  $("#searchbox").change();
+    			}
 			    if (d.children) {
 			        d._children = d.children;
 			        d.children = null;
@@ -249,81 +253,89 @@
 
 		<div th:if="${pivioOverview}">
 			<script th:inline="javascript">
-				var overviewData = /*[[${pivioOverview}]]*/ '';
-			  	var data = {
-			  			name: "Cloudfoundry",
-			  			children: []
-			  	};
-			  	//domains
-			  	overviewData.forEach(function(element){
-			  		if(data.children.length == 0){
-			  			data.children.push({
-			  				name: element.domain,
-			  				children: []
-			  			});
-			  		}else{
-						if(data.children.some(item => item.name === element.domain)){
-							
-						}else{
-							data.children.push({
-								name: element.domain,
-								children: []
-							});
-						}
-			  		}
-			  	});
-			  	//subdomains
-			  	data.children.forEach(function(domain){
-			  		overviewData.forEach(function(element){
-			  			if(domain.name == element.domain){
-			  				if(domain.children.some(item => item.name === element.subdomain)){
+				function formTreeStructure(overviewData, data){
+				  	//domains
+				  	overviewData.forEach(function(element){
+				  		if(data.children.length == 0){
+				  			data.children.push({
+				  				name: element.domain,
+				  				children: []
+				  			});
+				  		}else{
+							if(data.children.some(item => item.name === element.domain)){
+								
 							}else{
-								domain.children.push({
-									name: element.subdomain,
+								data.children.push({
+									name: element.domain,
 									children: []
 								});
 							}
-			  			}
-			  		});
-			  	});
-			  	//products
-			  	data.children.forEach(function(domain){
-			  		domain.children.forEach(function(subdomain){
-			  			overviewData.forEach(function(element){
-				  			if(subdomain.name == element.subdomain){
-				  				if(subdomain.children.some(item => item.name === element.product)){
-				  					
+				  		}
+				  	});
+				  	//subdomains
+				  	data.children.forEach(function(domain){
+				  		overviewData.forEach(function(element){
+				  			if(domain.name == element.domain){
+				  				if(domain.children.some(item => item.name === element.subdomain)){
 								}else{
-									subdomain.children.push({
-										name: element.product,
+									domain.children.push({
+										name: element.subdomain,
 										children: []
 									});
 								}
 				  			}
 				  		});
-			  		});
-			  	});
-			  	//application/services
-			  	//products
-			  	data.children.forEach(function(domain){
-			  		domain.children.forEach(function(subdomain){
-			  			subdomain.children.forEach(function(product){
-			  				overviewData.forEach(function(element){
-					  			if(product.name == element.product){
-					  				if(product.children.some(item => item.name === element.name)){
+				  	});
+				  	//products
+				  	data.children.forEach(function(domain){
+				  		domain.children.forEach(function(subdomain){
+				  			overviewData.forEach(function(element){
+					  			if(subdomain.name == element.subdomain){
+					  				if(subdomain.children.some(item => item.name === element.product)){
 					  					
 									}else{
-										product.children.push({
-											name: element.name,
+										subdomain.children.push({
+											name: element.product,
 											children: []
 										});
 									}
 					  			}
 					  		});
-			  			});
-			  		});
-			  	});
-			  	
+				  		});
+				  	});
+				  	//application/services
+				  	//products
+				  	data.children.forEach(function(domain){
+				  		domain.children.forEach(function(subdomain){
+				  			subdomain.children.forEach(function(product){
+				  				overviewData.forEach(function(element){
+						  			if(product.name == element.product){
+						  				if(product.children.some(item => item.name === element.name)){
+						  					
+										}else{
+											product.children.push({
+												name: element.name,
+												children: [
+													{name: "jira", url: "jira", children: []},
+													{name: "github", url: "github", children: []},
+													{name: "jenkins", url: "jenkins", children: []},
+													{name: "cf-link", url: "cf-link", children: []},
+													{name: "iteraplan", url: "iteraplan", children: []}
+												]
+											});
+										}
+						  			}
+						  		});
+				  			});
+				  		});
+				  	});
+				}//end of method
+				var overviewData = /*[[${pivioOverview}]]*/ '';
+				var data = {
+			  			name: "Cloudfoundry",
+			  			children: []
+			  	};
+				formTreeStructure(overviewData, data)
 			  	drawOrgTree(data);
 			</script>
 		</div>	

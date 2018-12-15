@@ -56,7 +56,7 @@
         }
       });
 
-      console.log('nodes', nodes, nodes.length);
+      //console.log('nodes', nodes, nodes.length);
 
       nodes.forEach(function (sourceNode, a) {
         nodes.forEach(function (targetNode, b) {
@@ -95,7 +95,7 @@
         });
       });
 
-      console.log('matrix', matrix, matrix.length);
+      //console.log('matrix', matrix, matrix.length);
 
       return matrix;
     }
