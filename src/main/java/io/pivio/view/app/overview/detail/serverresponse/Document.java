@@ -37,6 +37,13 @@ public class Document {
     public Map<String, String> links = new HashMap<>();
     public Map<String, String> other_attributes = new HashMap<>();
     
+    //Links
+    public String github;
+    public String jira;
+    public String jenkins;
+    public String cloudfoundry;
+    public String iteraplan;
+    
     //
     public String domain;
     public String subdomain;
@@ -114,6 +121,11 @@ public class Document {
                 ",\"service\":" + service.toString() +
                 //Nico
                 formatAdditionalAttributes(other_attributes)+
+                ",\"github\":\"" + github + "\"" +
+                ",\"jira\":\"" + jira + "\"" +
+                ",\"jenkins\":\"" + jenkins + "\"" +
+                ",\"cloudfoundry\":\"" + cloudfoundry + "\"" +
+                ",\"iteraplan\":\"" + iteraplan + "\"" +
                 '}';
     }
     

@@ -93,7 +93,7 @@
     var responseFromServer;
     
     function showCommunicationInfo(){
-    	console.log("CLicked on cell");
+    	console.log("Clicked on cell...");
     }
     
     function drawMatrixAgain(){
@@ -193,7 +193,7 @@
 	        .style('stroke-opacity', .1)
 	        .style('fill', 'steelblue')
 	        .style('fill-opacity', d => d.weight * 1)
-	        .on('click', 'showCommunicationInfo');
+	        .on('click', showCommunicationInfo);
 
 	  d3.select('#adjacencyG')
 	    .call(adjacencyMatrix.xAxis);
