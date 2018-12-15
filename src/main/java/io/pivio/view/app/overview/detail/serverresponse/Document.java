@@ -146,8 +146,9 @@ public class Document {
     }
     
     public String getGithubMonitoringData() {
-    	String value = other_attributes.get("github");
+    	//String value = other_attributes.get("github");
     	System.out.println("*****************************************************************");
+    	String value = this.github;
     	System.out.println("Github-link: "+value);
     	githubMonitoring = new GithubMonitoring();
     	System.out.println("GithubMonitoring: "+githubMonitoring);
@@ -161,9 +162,10 @@ public class Document {
     }
     
     public String getJiraMonitoringData() {
-    	String value = other_attributes.get("jira");
-    	String key = other_attributes.get("key");
     	System.out.println("*****************************************************************");
+    	String value = this.jira;
+    	//String value = other_attributes.get("jira");
+    	String key = other_attributes.get("key");
     	System.out.println("Jira-link: "+value);
     	if(value != null) {
     		jiraMonitoring = new JiraMonitoring();

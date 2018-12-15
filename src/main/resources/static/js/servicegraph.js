@@ -10,7 +10,6 @@ $(function getRelations(nodes, links) {
 	    dataType: 'json',
 	    cache: false,
 	    success: function listRelations(result) {
-	        //console.log("result", result);
 	        servicegraph(result);
 	    }
 	});

@@ -279,10 +279,42 @@
                     </div>
                     </p>
                 </div>
-
                 <div class="ui tiny label ">
                     <i class="upload icon"></i><span th:text="${pivio.document.getPrettyUploadDate()}"></span> &nbsp;
                     <i class="write icon"></i> <span th:text="${pivio.document.getPrettyUploadDate()}"></span>
+                </div>
+                <p />
+                <p class="ui  basic ribbon label">Links</p>
+				<p />
+                <div th:if="${pivio.document.jira}" class="ui basic label">
+                    <i class="file thin icon"></i> Jira
+                    <div class="detail">
+                    	<a target="_blank" th:href="${pivio.document.jira}" th:text="${pivio.document.jira}"></a>
+                    </div>
+                </div>
+                <div th:if="${pivio.document.github}" class="ui basic label">
+                    <i class="file thin icon"></i> Github
+                    <div class="detail">
+                    	<a target="_blank" th:href="${pivio.document.github}" th:text="${pivio.document.github}"></a>
+                    </div>
+                </div>
+                <div th:if="${pivio.document.jenkins}" class="ui basic label">
+                    <i class="file thin icon"></i> Jenkins
+                    <div class="detail">
+                    	<a target="_blank" th:href="${pivio.document.jenkins}" th:text="${pivio.document.jenkins}"></a>
+                    </div>
+                </div>
+                <div th:if="${pivio.document.cloudfoundry}" class="ui basic label">
+                    <i class="file thin icon"></i> CF-link
+                    <div class="detail">
+                    	<a target="_blank" th:href="${pivio.document.cloudfoundry}" th:text="${pivio.document.cloudfoundry}"></a>
+                    </div>
+                </div>
+                <div th:if="${pivio.document.iteraplan}" class="ui basic label">
+                    <i class="file thin icon"></i> Iteraplan
+                    <div class="detail">
+                    	<a target="_blank" th:href="${pivio.document.iteraplan}" th:text="${pivio.document.iteraplan}"></a>
+                    </div>
                 </div>
 
 				<p/>

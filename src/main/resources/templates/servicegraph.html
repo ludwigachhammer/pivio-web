@@ -92,8 +92,15 @@
 	};
     var responseFromServer;
     
-    function showCommunicationInfo(){
+    function showCommunicationInfo(element){
     	console.log("Clicked on cell...");
+    	console.log(element);
+		$(".ui.modal").modal("show");
+		$("#header-infobox").text(element.id);
+		$("#domain-src").text(element.source.group);
+		$("#name-src").text(element.source.name);
+		$("#domain-dest").text(element.target.group);
+		$("#name-dest").text(element.target.name);
     }
     
     function getCount(name){
@@ -202,7 +209,7 @@
 	        .style('stroke-opacity', .1)
 	        .style('fill', 'steelblue')
 	        .style('fill-opacity', d => d.weight * 1)
-	        .on('click', showCommunicationInfo);
+	        .on('click', function(d){showCommunicationInfo(d)});
 
 	  d3.select('#adjacencyG')
 	    .call(adjacencyMatrix.xAxis);
@@ -490,8 +497,41 @@
 		<div id="domain-graph">
 			<!-- Matrix diagram -->
 		</div>
-	
 	</div>
-</div>
+	
+	<!-- MODAL -->
+	<div class="ui modal">
+	  <i class="close icon"></i>
+	  <div class="header">
+	    <i class="icon info circle"></i>Communication information
+	  </div>
+	  <div class="image content">
+	    <div class="description">
+	      <div id="header-infobox" class="ui header"></div>
+	      <div id="content-infobox">
+	      	<div class="ui two column grid">
+	      		<div class="column" id="src-column">
+	      			<p><span><b>Source domain: </b></span><span id="domain-src"></span></p>
+	      			<p><span><b>Source service: </b></span><span id="name-src"></span></p>
+	      		</div>
+	      		<div class="column" id="dest-column">
+	      			<p><span><b>Destination domain: </b></span><span id="domain-dest"></span></p>
+	      			<p><span><b>Destination service: </b></span><span id="name-dest"></span></p>
+	      		</div>
+	      	</div>
+	      	<div>
+	      		<!-- TODO: write API between services etc etc. -->
+	      	</div>
+	      </div>	
+	    </div>
+	  </div>
+	  <div class="actions">
+	    <div class="ui black right deny button">
+	      Close
+	    </div>
+	  </div>
+	</div><!-- end of modal -->
+	
+</div><!-- end of fragment content -->
 </body>
 </html>
