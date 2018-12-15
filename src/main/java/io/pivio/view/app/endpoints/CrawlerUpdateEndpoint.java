@@ -73,7 +73,7 @@ public class CrawlerUpdateEndpoint{
 			docToBeUpdated.lastUpdate = doc.lastUpdate;
 			
 			//Update document
-			String url = "http://192.168.99.100:9123/document";
+			String url = "http://localhost:9123/document";
 			HttpMethod httpMethod = HttpMethod.POST;
 	    	String docString = docToBeUpdated.toString();
 	    	docString.replaceAll("\"", "\\\"");
