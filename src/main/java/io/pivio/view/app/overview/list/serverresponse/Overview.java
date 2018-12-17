@@ -30,6 +30,12 @@ public class Overview implements Comparable {
     public String id;
     public String owner;
     public String type;
+    //links
+    public String jira;
+    public String github;
+    public String jenkins;
+    public String cloudfoundry;
+    public String iteraplan;
 
     @Override
     public int compareTo(Object o) {

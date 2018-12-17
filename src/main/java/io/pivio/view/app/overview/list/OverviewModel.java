@@ -21,6 +21,12 @@ public class OverviewModel {
     public String id;
     public String owner;
     public String type;
+    //links
+    public String jira;
+    public String github;
+    public String jenkins;
+    public String cloudfoundry;
+    public String iteraplan;
 
     public String getPrettyUploadDate() {
         return new PrettyTime().format(new DateTime(lastUpload).toDate());
@@ -32,6 +38,8 @@ public class OverviewModel {
 
     public String getMeta() {
         String meta = "cloudfoundry" + name + " " + short_name + " " + description + " " + owner + " " + domain + " " + subdomain + " " + product;
+        //links
+        meta = meta + " " + jira + " " + github + " " + jenkins + " " + cloudfoundry + " " + iteraplan;
         if (context != null) {
             meta = meta + " " + context.belongs_to_bounded_context;
         }
@@ -54,6 +62,23 @@ public class OverviewModel {
     	return product;
     }
     
+    //Links to other tools
+    public String getJira() {
+    	return jira;
+    }
+    public String getGithub() {
+    	return github;
+    }
+    public String getJenkins() {
+    	return jenkins;
+    }
+    public String getCloudfoundry() {
+    	return cloudfoundry;
+    }
+    public String getIteraplan() {
+    	return iteraplan;
+    }
+    
     public String getStatusIcon() {
     	if(status != null) {
     		if(status.equals("running")) {
@@ -68,9 +93,7 @@ public class OverviewModel {
     	}else {
     		return "circle yellow";
     	}
-    	
     }	
-    
 
     public String getCardColor() {
         if (type.equalsIgnoreCase("service")) {

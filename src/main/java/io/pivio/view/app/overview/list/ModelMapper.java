@@ -21,6 +21,12 @@ public class ModelMapper {
         overviewModel.id = overview.id;
         overviewModel.owner = overview.owner;
         overviewModel.type = overview.type;
+        //links
+        overviewModel.jira = overview.jira;
+        overviewModel.github = overview.github;
+        overviewModel.jenkins = overview.jenkins;
+        overviewModel.cloudfoundry = overview.cloudfoundry;
+        overviewModel.iteraplan = overview.iteraplan;
         return overviewModel;
     }
 }

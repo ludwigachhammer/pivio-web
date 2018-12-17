@@ -22,8 +22,8 @@ import java.nio.charset.Charset;
 @Service
 public class ExporterService {
 	
-	private String iteraplanHost = "http://localhost";
-	private String iteraplanPort = "1234";
+	private String iteraplanHost = "http://vmmatthes32.informatik.tu-muenchen.de";
+	private String iteraplanPort = "8080";
 	
 	private String serverConfig = iteraplanHost+":"+iteraplanPort+"/iteraplan/api/element/InformationSystem";
 	 

@@ -61,7 +61,7 @@
 
     		// Assigns parent, children, height, depth
     		root = d3.hierarchy(treeData, function(d) { 
-    				if(d.children.length > 0){
+    				if(d.children){
     					return d.children; 
     				}else{
     					return [];	
@@ -253,6 +253,38 @@
 
 		<div th:if="${pivioOverview}">
 			<script th:inline="javascript">
+				function getLinkToOtherTools(name){
+					var children = [];
+					var overviewData = /*[[${pivioOverview}]]*/ '';
+					var index = overviewData.findIndex(x => x.name === name);
+					if(overviewData[index].jira != null){
+						if(overviewData[index].jira != "null"){
+							children.push({name: "jira", url: overviewData[index].jira, children: []});
+						}
+					}
+					if(overviewData[index].github != null){
+						if(overviewData[index].github != "null"){
+							children.push({name: "github", url: overviewData[index].github, children: []});
+						}
+					}
+					if(overviewData[index].jenkins != null){
+						if(overviewData[index].jenkins != "null"){
+							children.push({name: "jenkins", url: overviewData[index].jenkins, children: []});
+						}
+					}
+					if(overviewData[index].cloudfoundry != null){
+						if(overviewData[index].cloudfoundry != "null"){
+							children.push({name: "cloudfoundry", url: overviewData[index].cloudfoundry, children: []});
+						}
+					}
+					if(overviewData[index].iteraplan != null){
+						if(overviewData[index].iteraplan != "null"){
+							children.push({name: "iteraplan", url: overviewData[index].iteraplan, children: []});
+						}
+					}					
+					return children;
+				}
+			
 				function formTreeStructure(overviewData, data){
 				  	//domains
 				  	overviewData.forEach(function(element){
@@ -315,13 +347,7 @@
 										}else{
 											product.children.push({
 												name: element.name,
-												children: [
-													{name: "jira", url: "jira", children: []},
-													{name: "github", url: "github", children: []},
-													{name: "jenkins", url: "jenkins", children: []},
-													{name: "cf-link", url: "cf-link", children: []},
-													{name: "iteraplan", url: "iteraplan", children: []}
-												]
+												children: getLinkToOtherTools(element.name)
 											});
 										}
 						  			}
@@ -331,6 +357,7 @@
 				  	});
 				}//end of method
 				var overviewData = /*[[${pivioOverview}]]*/ '';
+				console.log(overviewData);
 				var data = {
 			  			name: "Cloudfoundry",
 			  			children: []
