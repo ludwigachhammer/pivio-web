@@ -102,7 +102,7 @@ public class GovernanceMonitoring {
 		System.out.println(searchUrl);
 		try {
 			//12factor App
-			setCodebase();
+			setCodebase(searchUrl);
 			setDependencies(searchUrl);
 			setConfiguration(searchUrl);
 			//TODO setBackingServices(searchUrl);
@@ -112,7 +112,7 @@ public class GovernanceMonitoring {
 			setConcurrency();
 			setDisposability();
 			setDevProdParity(searchUrl);
-			setLogs();
+			setLogs(searchUrl);
 			setAdminProcesses();
 			//Resilience pattern
 			setIsHostedInAZDCloud(cloudUrl);
@@ -218,7 +218,7 @@ public class GovernanceMonitoring {
 	}	
 	public String getIcon(String status) {
 		if(status.equals("Not implemented")) {
-    		return "circle red";
+    		return "circle orange";
     	}
     	if(status.equals("Yes")) {
     		return "circle green";
@@ -284,8 +284,8 @@ public class GovernanceMonitoring {
 	
 	//SETTER
 	//12 factor App
-	public void setCodebase() {
-		setInfoCodebase("");
+	public void setCodebase(String searchUrl) {
+		setInfoCodebase("The repository for the application/service is: "+searchUrl);
 		this.Codebase = "Yes";
 	}
 	public void setDependencies(String searchUrl) {
@@ -299,7 +299,7 @@ public class GovernanceMonitoring {
 				for (int i = 0; i < arr.length(); i++) {
 				    domElement = domElement + arr.getJSONObject(i).getString("name")+";";
 				}
-				setInfoDependencies(domElement);
+				setInfoDependencies("The following files contain dependencies: "+domElement);
 				//domElement for InfoDialog
 				this.Dependencies = "Yes";
 			}else {
@@ -327,7 +327,8 @@ public class GovernanceMonitoring {
 				for (int i = 0; i < arr1.length(); i++) {
 				    domElement = domElement + arr1.getJSONObject(i).getString("name")+";";
 				}
-				setInfoConfiguration(domElement);
+				infoString = infoString + domElement;
+				setInfoConfiguration(infoString);
 				//domElement for InfoDialog
 				System.out.println(this.Configuration);
 				this.Configuration = "Yes";
@@ -340,6 +341,8 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr2.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				infoString = infoString + domElement;
+				setInfoConfiguration(infoString);
 				System.out.println(this.Configuration);
 				this.Configuration = "Yes";
 			}
@@ -351,6 +354,8 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr3.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				infoString = infoString + domElement;
+				setInfoConfiguration(infoString);
 				System.out.println(this.Configuration);
 				this.Configuration = "Yes";
 			}
@@ -362,9 +367,12 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr4.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				infoString = infoString + domElement;
+				setInfoConfiguration(infoString);
 				System.out.println(this.Configuration);
 				this.Configuration = "Yes";
 			}
+			setInfoConfiguration("The following files are configuration files: "+infoString);
 			System.out.println(this.Configuration);
 		}catch(Exception e) {
 			this.Configuration = "No";
@@ -372,7 +380,8 @@ public class GovernanceMonitoring {
 	}
 	public void setBackingServices() {
 		//TODO search for most common DBs
-		this.BackingServices = "";
+		this.BackingServices = "Yes";
+		setInfoBackingServices("No information about the backing services available");
 	}
 	public void setBuildReleaseRun(String searchUrl) {
 		String releaseUrl = "https://api.github.com/search/code?q=release+repo:"+searchUrl;
@@ -386,6 +395,7 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				setInfoBuildReleaseRun(domElement);
 				this.BuildReleaseRun = "Yes";
 			}else {
 				this.BuildReleaseRun = "No";
@@ -395,7 +405,8 @@ public class GovernanceMonitoring {
 		}
 	}
 	public void setProcesses() {
-		this.Processes = "Not implemented";
+		setInfoProcesses("No information about the processes available");
+		this.Processes = "Yes";
 	}
 	public void setPortBinding(String searchUrl) {
 		String portsUrl = "https://api.github.com/search/code?q=port+repo:"+searchUrl;
@@ -410,8 +421,10 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				setInfoPortBinding("A static port is defined in the following documents: "+domElement);
 				this.PortBinding = "No";
 			}else {
+				setInfoPortBinding("No static ports are defined.");
 				this.PortBinding = "Yes";
 			}
 		}catch(Exception e ) {
@@ -419,9 +432,11 @@ public class GovernanceMonitoring {
 		}
 	}
 	public void setConcurrency() {
+		setInfoConcurrency("Not implemented");
 		this.Concurrency = "Not implemented";
 	}
 	public void setDisposability() {
+		setInfoDisposability("Not implemented");
 		this.Disposability = "Not implemented";
 	}
 	public void setDevProdParity(String searchUrl) {
@@ -429,6 +444,7 @@ public class GovernanceMonitoring {
 		String devUrl = "https://api.github.com/search/code?q=repo:"+searchUrl+"+filename:dev";
 		Boolean prodBoolean = false;
 		Boolean devBoolean = false;
+		String infoString = "";
 		try{
 			JSONObject responseProd = new JSONObject(getRequestInformation(prodUrl));
 			JSONArray arr1 = responseProd.getJSONArray("items");
@@ -439,6 +455,8 @@ public class GovernanceMonitoring {
 				}
 				//domElement for InfoDialog
 				//this.DevProdParity = "No";
+				infoString = infoString + domElement;
+				setInfoDevProdParity(infoString);
 				prodBoolean = true;
 			}
 			JSONObject responseDev = new JSONObject(getRequestInformation(devUrl));
@@ -450,29 +468,57 @@ public class GovernanceMonitoring {
 				}
 				//domElement for InfoDialog
 				//this.DevProdParity = "No";
+				infoString = infoString + domElement;
+				setInfoDevProdParity(infoString);
 				devBoolean = true;
 			}
 			if(prodBoolean && devBoolean) {
+				setInfoDevProdParity("The following dev/prod configuration files were found: "+infoString);
 				this.DevProdParity = "Yes";
 			}else {
+				setInfoDevProdParity("No dev/prod configuration files found");
 				this.DevProdParity = "No";
 			}
 		}catch(Exception e ) {
+			setInfoDevProdParity("Error retrieving dev/prod information");
 			this.DevProdParity = "No";
 		}
 	}
-	public void setLogs() {
-		this.Logs = "Not implemented";
+	public void setLogs(String searchUrl) {
+		String logsUrl = "https://api.github.com/search/code?q=log+repo:"+searchUrl;
+		try{
+			JSONObject response = new JSONObject(getRequestInformation(logsUrl));
+			System.out.println(response);
+			JSONArray arr = response.getJSONArray("items");
+			if(arr.length() > 0){
+				String domElement = "";
+				for (int i = 0; i < arr.length(); i++) {
+				    domElement = domElement + arr.getJSONObject(i).getString("name")+";";
+				}
+				//domElement for InfoDialog
+				setInfoLogs(domElement);
+				this.Logs = "No";
+			}else {
+				setInfoLogs("The application/service does not use log dependencies");
+				this.Logs = "Yes";
+			}
+		}catch(Exception e ) {
+			setInfoDevProdParity("Error retrieving logs information");
+			this.Logs = "No";
+		}
 	}
 	public void setAdminProcesses() {
+		setInfoAdminProcesses("Not implemented");
 		this.AdminProcesses = "Not implemented";
 	}	
 	//Resilience Pattern
 	public void setIsHostedInAZDCloud(String url) {
 		System.out.println("setIsHostedInAZDCloud: " + url);
 		if(url.contains("azd")) {
+			setInfoisHostedInAZDCloud("This application is hosted in the AZD Cloud");
 			this.isHostedInAZDCloud = "Yes";
 		}else {
+			setInfoisHostedInAZDCloud("This application is not hosted in the AZD Cloud");
 			this.isHostedInAZDCloud = "No";
 		}
 	}
@@ -481,8 +527,10 @@ public class GovernanceMonitoring {
 		String tmp = instances.substring(0, instances.lastIndexOf('/'));
 		int numberOfInstances = Integer.parseInt(tmp);
 		if(numberOfInstances > 1) {
+			setInfoRedundancy("This application has implemented redundancy");
 			this.Redundancy = "Yes";
 		}else {
+			setInfoRedundancy("This application has not implemented redundancy");
 			this.Redundancy = "No";
 		}
 	}
@@ -491,8 +539,10 @@ public class GovernanceMonitoring {
 		String tmp = instances.substring(0, instances.lastIndexOf('/'));
 		int numberOfInstances = Integer.parseInt(tmp);
 		if(numberOfInstances > 1) {
+			setInfoZeroDowntimeDeployment("");
 			this.ZeroDowntimeDeployment = "Yes";
 		}else {
+			setInfoZeroDowntimeDeployment("");
 			this.ZeroDowntimeDeployment = "No";
 		}
 	}
@@ -502,6 +552,7 @@ public class GovernanceMonitoring {
 		//TODO boolean for histrix und failsafe
 		Boolean failsafe = false;
 		Boolean histrix = false;
+		String infoString = "";
 		try {
 			JSONObject responseFailsafe = new JSONObject(getRequestInformation(failsafeUrl));
 			JSONObject responseHistrix = new JSONObject(getRequestInformation(histrixUrl));
@@ -513,6 +564,8 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr1.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				infoString = infoString + domElement;
+				setInfoRetry(infoString);
 				failsafe = true;
 			}
 			//Histrix
@@ -523,6 +576,8 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr2.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				infoString = infoString + domElement;
+				setInfoRetry(infoString);
 				histrix = true;
 			}
 			if(failsafe && histrix) {
@@ -540,8 +595,10 @@ public class GovernanceMonitoring {
 	//TODO: number fo services
 	public void setIsolation(String services) {
 		if(services.length() > 0) {
+			setInfoIsolation("This application/service is not isolated, please see section services");
 			this.Isolation = "No";
 		}else {
+			setInfoIsolation("This application/services is isolated. Does not communicate to other applications/services");
 			this.Isolation = "Yes";
 		}
 	}
@@ -549,6 +606,7 @@ public class GovernanceMonitoring {
 		String cacheUrl = "https://api.github.com/search/code?q=cach+repo:"+searchUrl;
 		this.Caching = "";
 		String dependenciesUrl = "https://api.github.com/search/code?q=dependencies+repo:"+searchUrl;
+		String infoString = "";
 		try{
 			JSONObject response = new JSONObject(getRequestInformation(cacheUrl));
 			System.out.println(response);
@@ -559,11 +617,15 @@ public class GovernanceMonitoring {
 				    domElement = domElement + arr.getJSONObject(i).getString("name")+";";
 				}
 				//domElement for InfoDialog
+				infoString = infoString + domElement;
+				setInfoCaching(infoString);
 				this.Caching = "Yes";
 			}else {
+				setInfoCaching("This application/service has no caching dependency");
 				this.Caching = "No";
 			}
 		}catch(Exception e ) {
+			setInfoCaching("This application/service has no caching dependency");
 			this.Caching = "No";
 		}
 	}
@@ -572,6 +634,7 @@ public class GovernanceMonitoring {
 		//this.Fallback = "";
 	}
 	public void setLooseCoupling(){
+		setInfoLooseCoupling("Not implemented");
 		this.LooseCoupling = "Not implemented";
 	}
 	

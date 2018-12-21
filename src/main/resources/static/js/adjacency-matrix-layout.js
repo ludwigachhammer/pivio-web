@@ -148,7 +148,10 @@
       var nameScale = d3.scalePoint().domain(nodes.map(nodeID)).range([0, size[0]]).padding(1);
 
       var xAxis = d3.axisTop().scale(nameScale).tickSize(4);
+      var color = d3.scaleOrdinal(d3.schemeCategory20b);
 
+      console.log('calledG: ',calledG);
+      
       calledG.append('g')
       		.attr('class', 'am-xAxis am-axis')
       		.call(xAxis)

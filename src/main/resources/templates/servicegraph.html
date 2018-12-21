@@ -10,7 +10,11 @@
 
     <style>
         .node {
-            font: 300 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font: 300 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            fill: #000;
+        }
+        .matrixname {
+            font: 300 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
             fill: #000;
         }
         .node text{
@@ -211,6 +215,8 @@
 	        .style('fill-opacity', d => d.weight * 1)
 	        .on('click', function(d){showCommunicationInfo(d)});
 
+	  console.log("adjacencyMatrix x axis: ", adjacencyMatrix.xAxis);
+	  
 	  d3.select('#adjacencyG')
 	    .call(adjacencyMatrix.xAxis);
 
