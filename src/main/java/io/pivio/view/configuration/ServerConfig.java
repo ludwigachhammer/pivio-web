@@ -9,7 +9,6 @@ import java.util.List;
 @Component
 public class ServerConfig {
     public List pages = new ArrayList<>(); // show nothing for default
-    
     //TODO: Link config file to variables
     public String apiAddress = "https://pivio-server.cfapps.io:9123"; // default @Value("${config.api}")
     public String mainUrl = "https://pivio-web.cfapps.io:9999"; // needs to be determined later to match the host with the 'main' app. @Value("${config.js_api}")
