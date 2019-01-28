@@ -224,11 +224,11 @@ public class Document {
     	if(status.equals("running")) {
     		return "circle green";
     	}
-    	if(status.equals("stopped") || status.equals("crashed")) {
+    	if(status.equals("down") || status.equals("stopped") || status.equals("crashed")) {
     		return "circle red";
     	}
     	else {
-    		return "circle yellow";
+    		return "circle red";
     	}
     }
 

@@ -34,6 +34,7 @@ public class PivioServerConnector {
         return get(serverConfig.apiAddress + path + encodedQuery, type);
     }
 
+    //change aufruf für sql
     public Document getDocumentById(String id) throws UnsupportedEncodingException {
         ResponseEntity responseEntity = get(serverConfig.apiAddress + "/document/" + id, Document.class);
         return (Document) responseEntity.getBody();
@@ -43,11 +44,12 @@ public class PivioServerConnector {
         return get(serverConfig.apiAddress + path, type);
     }
 
+    //change aufruf für sql
     public List<Overview> getOverviews() throws IOException {
     	//matchAllQuery (Nico)
     	String matchAllQuery = "&query={\"query\":{\"match_all\":{}}}";
     	String encodedQuery = URLEncoder.encode(matchAllQuery, "UTF-8");
-        String path = "/document?"+encodedQuery;
+        String path = "/document?"+encodedQuery; //hier
         String url = serverConfig.apiAddress + path;
         RestTemplate restTemplate = new RestTemplate();
         ParameterizedTypeReference<List<Overview>> typeRef = new ParameterizedTypeReference<List<Overview>>() {
@@ -78,8 +80,9 @@ public class PivioServerConnector {
         return headers;
     }
 
+    //change aufruf für sql
     public List<ServiceIdShortName> getAllServices() {
-        String url = serverConfig.apiAddress + "/document?fields=service,id,short_name";
+        String url = serverConfig.apiAddress + "/document?fields=service,id,short_name"; //hier
         RestTemplate restTemplate = new RestTemplate();
         ParameterizedTypeReference<List<ServiceIdShortName>> typeRef = new ParameterizedTypeReference<List<ServiceIdShortName>>() {
         };
@@ -88,8 +91,9 @@ public class PivioServerConnector {
         return response.getBody();
     }
     
+    //change aufruf für sql
     public List<String> getAllNames() throws IOException{
-        String url = serverConfig.apiAddress + "/document?fields=name"; //+encodedQuery;
+        String url = serverConfig.apiAddress + "/document?fields=name"; //+encodedQuery; //hier
         RestTemplate restTemplate = new RestTemplate();
         ParameterizedTypeReference<List<Document>> typeRef = new ParameterizedTypeReference<List<Document>>() {
         };

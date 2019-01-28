@@ -27,8 +27,10 @@ public class InformationCollectorService {
 	
 	private final Logger log = LoggerFactory.getLogger(InformationCollectorService.class);
 	
+	//TODO: put url and port in config file
+	
 	//@Value("${elasticsearch.host}")
-    private String esHost = "http://192.168.99.100";
+    private String esHost = "http://localhost";
 
     //@Value("${elasticsearch.port}")
     private String esPort = "9123";
