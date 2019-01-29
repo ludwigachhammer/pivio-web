@@ -34,9 +34,10 @@ public class PivioServerConnector {
         return get(serverConfig.apiAddress + path + encodedQuery, type);
     }
 
-    //change aufruf für sql
-    public Document getDocumentById(String id) throws UnsupportedEncodingException {
-        ResponseEntity responseEntity = get(serverConfig.apiAddress + "/document/" + id, Document.class);
+    //Mongodb call
+    public Document getDocumentById(String _id) throws UnsupportedEncodingException {
+        ResponseEntity responseEntity = get(serverConfig.apiAddress + "/application/" + _id, Document.class); //"/document/" + id, Document.class);
+        System.out.println("Asking _ID :" + _id);
         return (Document) responseEntity.getBody();
     }
 
@@ -44,12 +45,12 @@ public class PivioServerConnector {
         return get(serverConfig.apiAddress + path, type);
     }
 
-    //change aufruf für sql
+    //Mongodb call
     public List<Overview> getOverviews() throws IOException {
     	//matchAllQuery (Nico)
     	String matchAllQuery = "&query={\"query\":{\"match_all\":{}}}";
     	String encodedQuery = URLEncoder.encode(matchAllQuery, "UTF-8");
-        String path = "/document?"+encodedQuery; //hier
+        String path = "/application"; //"/document?"+encodedQuery; //hier
         String url = serverConfig.apiAddress + path;
         RestTemplate restTemplate = new RestTemplate();
         ParameterizedTypeReference<List<Overview>> typeRef = new ParameterizedTypeReference<List<Overview>>() {
@@ -69,8 +70,10 @@ public class PivioServerConnector {
     private <T> ResponseEntity get(String url, Class<T> type) throws UnsupportedEncodingException {
         RestTemplate restTemplate = new RestTemplate();
         log.debug("Asking for :" + url);
+        System.out.println("Asking for :" + url);
         ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>("", getHeaders()), type);
         log.debug("Response :" + response.getBody().toString());
+        System.out.println("Response :" + response.getBody().toString());
         return response;
     }
 
@@ -80,9 +83,9 @@ public class PivioServerConnector {
         return headers;
     }
 
-    //change aufruf für sql
+    //Mongodb call
     public List<ServiceIdShortName> getAllServices() {
-        String url = serverConfig.apiAddress + "/document?fields=service,id,short_name"; //hier
+        String url = serverConfig.apiAddress + "/application"; //"/document?fields=service,id,short_name"; //hier
         RestTemplate restTemplate = new RestTemplate();
         ParameterizedTypeReference<List<ServiceIdShortName>> typeRef = new ParameterizedTypeReference<List<ServiceIdShortName>>() {
         };
@@ -91,9 +94,9 @@ public class PivioServerConnector {
         return response.getBody();
     }
     
-    //change aufruf für sql
+    //Mongodb call
     public List<String> getAllNames() throws IOException{
-        String url = serverConfig.apiAddress + "/document?fields=name"; //+encodedQuery; //hier
+        String url = serverConfig.apiAddress + "/application"; //"/document?fields=name"; //+encodedQuery; //hier
         RestTemplate restTemplate = new RestTemplate();
         ParameterizedTypeReference<List<Document>> typeRef = new ParameterizedTypeReference<List<Document>>() {
         };
@@ -113,10 +116,11 @@ public class PivioServerConnector {
         return nameList;
     }
 
-    public boolean deleteDocument(String id) throws IOException {
+    //Mongodb call
+    public boolean deleteDocument(String _id) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = getHeaders();
-        String url = serverConfig.apiAddress + "/document/" + id;
+        String url = serverConfig.apiAddress + "/application/" + _id; //"/document/" + id;
         ResponseEntity<Object> exchange = null;
         try {
             exchange = restTemplate.exchange(url, HttpMethod.DELETE, new HttpEntity<>("", headers), Object.class);

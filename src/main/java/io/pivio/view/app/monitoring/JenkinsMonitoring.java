@@ -20,6 +20,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpEntity;
 import java.util.Base64;
+import java.util.Date;
+import java.text.DateFormat;  
+import java.text.SimpleDateFormat;  
 
 import org.joda.time.DateTime;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -53,7 +56,7 @@ public class JenkinsMonitoring {
 			this.Duration = String.valueOf(jenkinsMonitoringData.getInt("duration"));
 			this.EstimatedDuration = String.valueOf(jenkinsMonitoringData.getInt("estimatedDuration"));
 			this.Result = jenkinsMonitoringData.getString("result");
-			this.Timestamp = String.valueOf(jenkinsMonitoringData.getInt("timestamp"));
+			this.Timestamp = String.valueOf(jenkinsMonitoringData.getLong("timestamp"));
 			this.Url = jenkinsMonitoringData.getString("url");
 		}
 		catch(Exception e) {
@@ -84,18 +87,26 @@ public class JenkinsMonitoring {
 		return this.Result;
 	}
 	
+	
 	public String getTimestamp() {
-		/*
-		String prettyTime;
-		try {
-			prettyTime = new PrettyTime().format(new DateTime(this.Timestamp).toDate());
-			return prettyTime;
-		}catch(Exception e) {
-			System.out.println(e);
-			return "Error";
+		System.out.println("******** getTimestamp ******************");
+		System.out.println(this.Timestamp);
+		
+		if(this.Timestamp.equals("Error")) {
+			return this.Timestamp;
+		}else {
+			try {
+				long l = Long.parseLong(this.Timestamp, 10); 
+				Date time = new Date(l);
+				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+	            String strDate = dateFormat.format(time);  
+	            System.out.println(strDate);
+	            System.out.println("****************************************");
+				return strDate;
+			}catch(Exception e){
+				return "Error";
+			}
 		}
-		*/
-		return this.Timestamp;
 	}
 	
 	public String getUrl() {

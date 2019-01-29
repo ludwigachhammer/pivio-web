@@ -1,5 +1,5 @@
-api: http://localhost:9123/
-js_api: http://localhost:9123/
+api: http://localhost:3000/api/
+js_api: http://localhost:3000/api/
 mainurl: http://localhost:8025
 pages:
   - description: Overview

@@ -367,7 +367,7 @@
 			</script>
 		</div>	
         <a th:each="card : ${pivioOverview}" class="ui card"
-           data-th-attr="data-meta=${card.meta}" th:href="'/app/overview/' + ${card.id}">
+           data-th-attr="data-meta=${card.meta}" th:href="'/app/overview/' + ${card._id}">
            
             <div class="content">
             <!-- th:if="${card.status}"  -->

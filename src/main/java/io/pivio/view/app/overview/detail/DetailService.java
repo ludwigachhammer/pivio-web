@@ -24,11 +24,11 @@ public class DetailService {
     @Autowired
     ServiceListGenerator serviceListGenerator;
 
-    public DocumentViewModel getDetail(String id) {
+    public DocumentViewModel getDetail(String _id) {
 
         Document document = new Document();
         try {
-            document = pivioServerConnector.getDocumentById(id);
+            document = pivioServerConnector.getDocumentById(_id);
             document.jenkinsMonitoring = new JenkinsMonitoring(document.name);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

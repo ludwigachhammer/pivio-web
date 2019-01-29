@@ -23,24 +23,24 @@ public class DetailController {
     @Autowired
     PivioServerConnector pivioServerConnector;
 
-    @RequestMapping(value = "/app/overview/{id}")
-    public String detail(@PathVariable String id, Model model) {
+    @RequestMapping(value = "/app/overview/{_id}")
+    public String detail(@PathVariable String _id, Model model) {
         model.addAttribute("config", serverConfig);
         model.addAttribute("pageId", "tabOverview");
-        model.addAttribute("pivio", detailService.getDetail(id));
+        model.addAttribute("pivio", detailService.getDetail(_id));
         return "detail";
     }
 
-    @RequestMapping(value = "/app/overview/{id}/delete")
-    public String delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/app/overview/{_id}/delete")
+    public String delete(@PathVariable String _id, RedirectAttributes redirectAttributes) {
         try {
-            if (pivioServerConnector.deleteDocument(id)) {
-                redirectAttributes.addFlashAttribute("pivioMessage", "Document with id " + id + " was deleted.");
+            if (pivioServerConnector.deleteDocument(_id)) {
+                redirectAttributes.addFlashAttribute("pivioMessage", "Document with _id " + _id + " was deleted.");
             } else {
-                redirectAttributes.addFlashAttribute("pivioErrorMessage", "Document with id " + id + " was NOT deleted.");
+                redirectAttributes.addFlashAttribute("pivioErrorMessage", "Document with _id " + _id + " was NOT deleted.");
             }
         } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("pivioErrorMessage", "Document with id " + id + " was NOT deleted. Could not communicate with document server.");
+            redirectAttributes.addFlashAttribute("pivioErrorMessage", "Document with _id " + _id + " was NOT deleted. Could not communicate with document server.");
         }
         return "redirect:/app/overview";
     }

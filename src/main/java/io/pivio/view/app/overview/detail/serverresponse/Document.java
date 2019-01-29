@@ -33,6 +33,7 @@ public class Document {
     public String name;
     public String short_name;
     public String id;
+    public String _id; //MongoDB ID
     public String contact;
     public String created;
     public String lastUpload;
@@ -115,6 +116,7 @@ public class Document {
                 ",\"name\":\"" + name + "\"" +
                 ",\"short_name\":\"" + short_name + "\"" +
                 ",\"id\":\"" + id + "\"" +
+                ",\"_id\":\"" + _id + "\"" +
                 ",\"domain\":\"" + domain + "\"" +
                 ",\"subdomain\":\"" + subdomain + "\"" +
                 ",\"product\":\"" + product + "\"" +

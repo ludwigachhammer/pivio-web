@@ -19,6 +19,7 @@ public class OverviewModel {
     public String subdomain;
     public String product;
     public String id;
+    public String _id;
     public String owner;
     public String type;
     //links
