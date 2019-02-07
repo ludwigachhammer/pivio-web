@@ -57,7 +57,7 @@ public class JenkinsMonitoring {
 			this.Duration = String.valueOf(jenkinsMonitoringData.getInt("duration"));
 			this.EstimatedDuration = String.valueOf(jenkinsMonitoringData.getInt("estimatedDuration"));
 			this.Result = jenkinsMonitoringData.getString("result");
-			this.Timestamp = String.valueOf(jenkinsMonitoringData.getInt("timestamp"));
+			this.Timestamp = String.valueOf(jenkinsMonitoringData.getLong("timestamp"));
 			this.Url = jenkinsMonitoringData.getString("url");
 		}
 		catch(Exception e) {
