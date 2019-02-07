@@ -111,8 +111,8 @@
 			function drawGithubCommitActivity(){
 				
 				//TODO: get github data
-				//var data = [{date: "1-May-12", value: "58.13"}, {date: "30-Apr-12", value: "53.98"}];
-				var data = [];
+				var data = [{date: "1-Feb-19", value: "0"}, {date: "31-Jan-19", value: "8"}, {date: "30-Jan-19", value: "38"}, {date: "28-Jan-19", value: "0"}];
+				//var data = [];
 				
 				var margin = {top: 20, right: 20, bottom: 30, left: 40};
 				var width = $("#github-commit-activity").width() - margin.left - margin.right;
@@ -231,6 +231,11 @@
                 <div class="ui  basic ribbon label">Description</div>
                 <p/>
                 <p th:text="${pivio.document.description}"></p>
+                
+                <div class="ui basic label"> URL
+                    <div class="detail"><a target="_blank" th:href="'https://'+${pivio.document.url}" th:text="${pivio.document.url}"></a></div>
+                </div>
+                <p/>
                 
                 <div class="ui basic label">
                     Shortname
@@ -433,10 +438,6 @@
             <!--PROMETHEUS-->
             <div class="ui segment">
                 <div class="ui blue top attached label">Metrics monitoring (Agent)</div>
-                
-                <div class="ui basic label"> URL
-                    <div class="detail"><a target="_blank" th:href="'https://'+${pivio.document.url}" th:text="${pivio.document.url}"></a></div>
-                </div>
                 
                 <div class="ui basic label"> Prometheus metrics
                     <div class="detail"><a target="_blank" th:href="'https://'+${pivio.document.url}+'/prometheus'" th:text="${pivio.document.url}+'/prometheus'"></a></div>
