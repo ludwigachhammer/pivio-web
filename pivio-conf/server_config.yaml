@@ -1,6 +1,9 @@
-api: http://localhost:9123/
-js_api: http://localhost:9123/
+api: http://192.168.99.100:9123/
+js_api: http://192.168.99.100:9123/
 mainurl: http://localhost:8025
+#api: http://localhost:9123/
+#js_api: http://localhost:9123/
+#mainurl: http://localhost:8025
 pages:
   - description: Overview
     url: /app/overview
